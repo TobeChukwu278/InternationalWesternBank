@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { createServiceClient } from "@/lib/supabase/service";
 
 export async function sendMoney(formData: FormData) {
   const supabase = await createClient();
@@ -19,8 +20,25 @@ export async function sendMoney(formData: FormData) {
     return { error: "Invalid amount" };
   }
 
-  // Find recipient's default sub_account
-  const { data: recipientAccount } = await supabase
+  // Verify sender actually owns this sub_account (using auth'd client)
+  const { data: senderSub } = await supabase
+    .from("sub_accounts")
+    .select("id, balance")
+    .eq("id", fromSubAccountId)
+    .single();
+
+  if (!senderSub) {
+    return { error: "Sender account not found" };
+  }
+
+  if (Number(senderSub.balance) < amount) {
+    return { error: "Insufficient balance" };
+  }
+
+  // Use service client to find recipient (bypasses RLS)
+  const serviceSupabase = createServiceClient();
+
+  const { data: recipientAccount } = await serviceSupabase
     .from("accounts")
     .select("id")
     .eq("account_number", recipientAccountNumber)
@@ -30,7 +48,7 @@ export async function sendMoney(formData: FormData) {
     return { error: "Recipient account not found" };
   }
 
-  const { data: recipientSubAccount } = await supabase
+  const { data: recipientSubAccount } = await serviceSupabase
     .from("sub_accounts")
     .select("id")
     .eq("account_id", recipientAccount.id)
@@ -41,10 +59,9 @@ export async function sendMoney(formData: FormData) {
     return { error: "Recipient has no active account" };
   }
 
-  // Generate unique reference
   const reference = `TXN${Date.now()}${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
 
-  // Execute transfer via DB function
+  // Execute transfer via DB function (SECURITY DEFINER, bypasses RLS internally)
   const { data: result, error: rpcError } = await supabase.rpc("transfer_money", {
     p_from_sub_account_id: fromSubAccountId,
     p_to_sub_account_id: recipientSubAccount.id,
