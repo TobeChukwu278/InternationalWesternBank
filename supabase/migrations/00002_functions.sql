@@ -22,7 +22,7 @@ $$;
 CREATE OR REPLACE FUNCTION handle_new_user()
 RETURNS TRIGGER
 LANGUAGE plpgsql
-SECURITY DEFINER SET search_path = ''
+SECURITY DEFINER SET search_path = 'public'
 AS $$
 DECLARE
   v_account_id UUID;
