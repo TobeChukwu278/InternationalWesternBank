@@ -1,17 +1,28 @@
-import { Card } from "@/components/ui/card";
+import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
+import { SendMoneyForm } from "@/components/features/send-money-form";
 
-export default function SendMoneyPage() {
-  return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold text-iwb-navy">Send Money</h1>
-        <p className="mt-1 text-sm text-iwb-slate">
-          Transfer funds to another account
-        </p>
+export default async function SendMoneyPage() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) redirect("/login");
+
+  const { data: account } = await supabase
+    .from("accounts")
+    .select("*, sub_accounts(*)")
+    .eq("user_id", user.id)
+    .single();
+
+  const subAccounts = account?.sub_accounts ?? [];
+
+  if (!subAccounts.length) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <p className="text-iwb-slate">No accounts available</p>
       </div>
-      <Card className="p-12 text-center">
-        <p className="text-iwb-slate">Send money form coming soon</p>
-      </Card>
-    </div>
-  );
+    );
+  }
+
+  return <SendMoneyForm subAccounts={subAccounts} />;
 }
