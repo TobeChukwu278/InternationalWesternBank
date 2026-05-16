@@ -1,6 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { Card } from "@/components/ui/card";
+import { BalanceCard } from "@/components/features/balance-card";
+import { QuickActions } from "@/components/features/quick-actions";
+import { RecentTransactions } from "@/components/features/recent-transactions";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -10,9 +12,31 @@ export default async function DashboardPage() {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("*, accounts(*)")
+    .select("full_name")
     .eq("id", user.id)
     .single();
+
+  const { data: account } = await supabase
+    .from("accounts")
+    .select("*, sub_accounts(*)")
+    .eq("user_id", user.id)
+    .single();
+
+  const subAccounts = account?.sub_accounts ?? [];
+  const totalBalance = subAccounts.reduce(
+    (sum: number, sa: { balance: number }) => sum + Number(sa.balance),
+    0,
+  );
+
+  const subAccountIds = subAccounts.map((sa: { id: string }) => sa.id);
+  const { data: recentTxs } = await supabase
+    .from("transactions")
+    .select("*")
+    .or(
+      `from_sub_account_id.in.(${subAccountIds.join(",")}),to_sub_account_id.in.(${subAccountIds.join(",")})`,
+    )
+    .order("created_at", { ascending: false })
+    .limit(5);
 
   return (
     <div className="space-y-6">
@@ -25,15 +49,14 @@ export default async function DashboardPage() {
         </p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <Card className="bg-iwb-navy p-6 text-white">
-          <p className="text-sm text-iwb-slate-light">Total Balance</p>
-          <p className="mt-2 text-3xl font-bold">$0.00</p>
-          <p className="mt-1 text-xs text-iwb-slate-light">
-            Account: ****{profile?.accounts?.[0]?.account_number?.slice(-4) ?? "0000"}
-          </p>
-        </Card>
-      </div>
+      <BalanceCard
+        totalBalance={totalBalance}
+        accountNumber={account?.account_number ?? "N/A"}
+      />
+
+      <QuickActions />
+
+      <RecentTransactions transactions={recentTxs ?? []} />
     </div>
   );
 }
