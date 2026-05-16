@@ -16,21 +16,32 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ recipients: [] });
   }
 
-  // Use service_role client to bypass RLS and find other users
   const serviceSupabase = createServiceClient();
 
   const { data: accounts } = await serviceSupabase
     .from("accounts")
-    .select("account_number, profiles!inner(full_name)")
+    .select("account_number, user_id")
     .neq("user_id", user.id)
-    .or(`account_number.ilike.%${q}%,profiles.full_name.ilike.%${q}%`)
+    .ilike("account_number", `%${q}%`)
     .limit(10);
 
-  const recipients =
-    accounts?.map((a) => ({
-      account_number: a.account_number,
-      full_name: (a.profiles as unknown as { full_name: string }).full_name,
-    })) ?? [];
+  if (!accounts?.length) {
+    return NextResponse.json({ recipients: [] });
+  }
+
+  const userIds = accounts.map((a) => a.user_id);
+
+  const { data: profiles } = await serviceSupabase
+    .from("profiles")
+    .select("id, full_name")
+    .in("id", userIds);
+
+  const profileMap = new Map(profiles?.map((p) => [p.id, p.full_name]) ?? []);
+
+  const recipients = accounts.map((a) => ({
+    account_number: a.account_number,
+    full_name: profileMap.get(a.user_id) ?? "Unknown",
+  }));
 
   return NextResponse.json({ recipients });
 }
