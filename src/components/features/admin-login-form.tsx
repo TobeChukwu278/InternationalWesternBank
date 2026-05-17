@@ -1,0 +1,62 @@
+"use client";
+
+import { useActionState } from "react";
+import { adminLogin } from "@/lib/actions/admin-login";
+
+export function AdminLoginForm() {
+  const [state, formAction, pending] = useActionState(
+    async (_prev: { error?: string } | null, formData: FormData) => {
+      const result = await adminLogin(formData);
+      return result;
+    },
+    null,
+  );
+
+  return (
+    <div className="w-full max-w-sm">
+      <div className="rounded-iwb-lg bg-white p-8 shadow-iwb-card">
+        <div className="mb-6 text-center">
+          <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-iwb-teal/20">
+            <span className="text-lg font-bold text-iwb-teal">IWB</span>
+          </div>
+          <h1 className="mt-4 text-xl font-semibold text-iwb-navy">Admin Access</h1>
+          <p className="mt-1 text-sm text-iwb-slate">Enter the admin password to continue</p>
+        </div>
+
+        <form action={formAction} className="space-y-4">
+          <div>
+            <label htmlFor="password" className="text-sm font-medium text-iwb-navy">
+              Password
+            </label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autoFocus
+              required
+              className="mt-1.5 block w-full rounded-iwb-md border border-iwb-border bg-white px-4 py-3 text-sm text-iwb-navy placeholder:text-iwb-slate-light focus:border-iwb-teal focus:ring-2 focus:ring-iwb-teal/10 focus:outline-none"
+              placeholder="Enter admin password"
+            />
+          </div>
+
+          {state?.error ? (
+            <p className="flex items-center gap-1.5 rounded-iwb-md bg-iwb-error/5 px-3 py-2 text-sm text-iwb-error">
+              <svg className="size-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16ZM8.28 7.22a.75.75 0 0 0-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 1 0 1.06 1.06L10 11.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L11.06 10l1.72-1.72a.75.75 0 0 0-1.06-1.06L10 8.94 8.28 7.22Z" clipRule="evenodd" />
+              </svg>
+              {state.error}
+            </p>
+          ) : null}
+
+          <button
+            type="submit"
+            disabled={pending}
+            className="w-full rounded-iwb-md bg-iwb-teal px-6 py-3 text-sm font-semibold text-iwb-navy transition-all duration-200 hover:bg-iwb-teal-dark disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {pending ? "Verifying..." : "Access Admin Panel"}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
