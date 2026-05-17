@@ -55,7 +55,7 @@ export function MobileNav() {
           className="flex shrink-0 flex-col items-center gap-0.5 px-3 py-1 text-[10px] font-medium text-iwb-slate transition-colors hover:text-iwb-teal"
         >
           <svg className="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 5v.01M12 12v.01M12 19v.01" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h16M4 18h16" />
           </svg>
           More
         </button>
