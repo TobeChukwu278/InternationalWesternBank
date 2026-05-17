@@ -52,6 +52,7 @@ export default async function DashboardPage() {
       <BalanceCard
         totalBalance={totalBalance}
         accountNumber={account?.account_number ?? "N/A"}
+        trendPercent={null}
       />
 
       <QuickActions />
