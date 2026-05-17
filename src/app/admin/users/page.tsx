@@ -11,7 +11,7 @@ export default async function AdminUsersPage() {
     .order("created_at", { ascending: false });
 
   const flatUsers = (users ?? []).map((profile) => {
-    const acct = Array.isArray(profile.accounts) ? profile.accounts[0] : null;
+    const acct = Array.isArray(profile.accounts) ? profile.accounts[0] : (profile.accounts as Record<string, unknown> | null);
     const subAccounts = ((acct as { sub_accounts?: unknown[] })?.sub_accounts ?? []) as {
       id: string;
       type: string;
