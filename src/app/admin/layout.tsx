@@ -1,24 +1,21 @@
-import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { isAdminSession } from "@/lib/admin-auth";
 import { AdminSidebar } from "@/components/features/admin-sidebar";
+import { AdminLoginForm } from "@/components/features/admin-login-form";
 
 export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const isAdmin = await isAdminSession();
 
-  if (!user) redirect("/login");
-
-  const { data: admin } = await supabase
-    .from("admins")
-    .select("role")
-    .eq("id", user.id)
-    .single();
-
-  if (!admin) redirect("/dashboard");
+  if (!isAdmin) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-iwb-surface px-4">
+        <AdminLoginForm />
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen bg-iwb-surface">
