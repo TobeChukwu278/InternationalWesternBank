@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { ToastProvider } from "@/components/ui/toast";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -8,8 +9,14 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "International Western Bank",
-  description: "Secure global banking at your fingertips",
+  title: {
+    template: "%s | International Western Bank",
+    default: "International Western Bank",
+  },
+  description: "Secure global banking at your fingertips — send money, manage accounts, track transactions.",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
@@ -20,7 +27,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <body className="bg-iwb-surface font-sans text-iwb-navy antialiased">
-        {children}
+        <ToastProvider>
+          {children}
+        </ToastProvider>
       </body>
     </html>
   );

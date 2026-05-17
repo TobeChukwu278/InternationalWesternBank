@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card";
 import { RecipientSearch } from "@/components/features/recipient-search";
 import { sendMoney } from "@/lib/actions/transfer";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/toast";
 
 interface SubAccount {
   id: string;
@@ -22,6 +23,7 @@ interface SendMoneyFormProps {
 
 export function SendMoneyForm({ subAccounts }: SendMoneyFormProps) {
   const router = useRouter();
+  const { showToast } = useToast();
   const [selectedSubId, setSelectedSubId] = useState(
     subAccounts.find((sa) => sa.is_default)?.id ?? subAccounts[0]?.id ?? "",
   );
@@ -31,6 +33,11 @@ export function SendMoneyForm({ subAccounts }: SendMoneyFormProps) {
     async (_prev: { error?: string; success?: boolean } | null, formData: FormData) => {
       const result = await sendMoney(formData);
       if (result.success) {
+        const amt = parseFloat(formData.get("amount") as string);
+        showToast(
+          `Sent $${amt.toFixed(2)} successfully`,
+          "success",
+        );
         router.push("/dashboard");
         return null;
       }

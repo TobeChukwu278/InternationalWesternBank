@@ -1,4 +1,5 @@
 import type { Transaction } from "@/types/database";
+import { EmptyState } from "@/components/ui/empty-state";
 
 const typeConfig: Record<
   string,
@@ -61,14 +62,14 @@ interface RecentTransactionsProps {
 export function RecentTransactions({ transactions }: RecentTransactionsProps) {
   if (!transactions.length) {
     return (
-      <div className="rounded-iwb-lg bg-white p-12 text-center shadow-iwb-card">
-        <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-iwb-surface">
-          <svg className="size-6 text-iwb-slate" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-          </svg>
+      <div className="rounded-iwb-lg bg-white shadow-iwb-card">
+        <div className="flex items-center justify-between border-b border-iwb-border-light px-6 py-4">
+          <h3 className="text-sm font-semibold text-iwb-navy">Recent Transactions</h3>
         </div>
-        <p className="mt-4 text-sm font-medium text-iwb-navy">No transactions yet</p>
-        <p className="mt-1 text-xs text-iwb-slate">Your transactions will appear here</p>
+        <EmptyState
+          title="No transactions yet"
+          description="Your transactions will appear here"
+        />
       </div>
     );
   }
