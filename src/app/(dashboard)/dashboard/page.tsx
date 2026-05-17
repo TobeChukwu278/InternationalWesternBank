@@ -57,7 +57,7 @@ export default async function DashboardPage() {
 
       <QuickActions />
 
-      <RecentTransactions transactions={recentTxs ?? []} />
+      <RecentTransactions transactions={recentTxs ?? []} subAccountIds={subAccountIds} />
     </div>
   );
 }
