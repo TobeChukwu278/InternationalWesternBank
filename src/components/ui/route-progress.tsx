@@ -8,13 +8,11 @@ export function RouteProgress() {
   const [loading, setLoading] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // End loading when pathname changes (navigation completed)
   useEffect(() => {
     setLoading(false);
     if (timerRef.current) clearTimeout(timerRef.current);
   }, [pathname]);
 
-  // Intercept link clicks and form submissions to start loading
   useEffect(() => {
     function handleClick(e: MouseEvent) {
       const anchor = (e.target as HTMLElement).closest("a");
@@ -47,12 +45,16 @@ export function RouteProgress() {
     };
   }, []);
 
+  if (!loading) return null;
+
   return (
-    <div
-      className="fixed left-0 right-0 top-0 z-[200] h-0.5 transition-opacity duration-200"
-      style={{ opacity: loading ? 1 : 0, pointerEvents: "none" }}
-    >
-      <div className="h-full w-full animate-[progress_1.5s_ease-in-out_infinite] bg-gradient-to-r from-transparent via-iwb-teal to-transparent" />
+    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-iwb-navy/20 backdrop-blur-sm">
+      <div className="flex flex-col items-center gap-3">
+        <svg className="size-10 animate-spin text-iwb-teal" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" className="opacity-20" />
+          <path d="M12 2a10 10 0 019.95 9" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+        </svg>
+      </div>
     </div>
   );
 }
