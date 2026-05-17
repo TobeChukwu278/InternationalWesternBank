@@ -27,6 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={inter.variable}>
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
       <body className="bg-iwb-surface font-sans text-iwb-navy antialiased">
         <RouteProgress />
         <ToastProvider>
