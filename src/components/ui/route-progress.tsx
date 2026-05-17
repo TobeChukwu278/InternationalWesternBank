@@ -48,12 +48,37 @@ export function RouteProgress() {
   if (!loading) return null;
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-iwb-navy/20 backdrop-blur-sm">
-      <div className="flex flex-col items-center gap-3">
-        <svg className="size-10 animate-spin text-iwb-teal" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" className="opacity-20" />
-          <path d="M12 2a10 10 0 019.95 9" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-iwb-navy/30 backdrop-blur-sm">
+      <div className="relative flex size-20 items-center justify-center">
+        <svg className="absolute inset-0 size-20 animate-[spin_2s_linear_infinite]" viewBox="0 0 80 80" fill="none">
+          <circle cx="40" cy="40" r="36" stroke="currentColor" strokeWidth="3" className="text-iwb-teal/15" />
+          <circle
+            cx="40" cy="40" r="36"
+            stroke="currentColor"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeDasharray="226"
+            strokeDashoffset="56"
+            className="text-iwb-teal origin-center"
+            style={{ animation: "dash 1.5s ease-in-out infinite" }}
+          />
         </svg>
+        <svg className="absolute size-12 animate-[spin_3s_linear_infinite_reverse]" viewBox="0 0 48 48" fill="none">
+          <circle cx="24" cy="24" r="20" stroke="currentColor" strokeWidth="2" className="text-iwb-teal/10" />
+          <circle
+            cx="24" cy="24" r="20"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeDasharray="125"
+            strokeDashoffset="31"
+            className="text-iwb-navy origin-center"
+            style={{ animation: "dash-reverse 2s ease-in-out infinite" }}
+          />
+        </svg>
+        <span className="relative text-base font-bold tracking-tight text-iwb-teal" style={{ animation: "pulse-logo 1.5s ease-in-out infinite" }}>
+          IWB
+        </span>
       </div>
     </div>
   );
