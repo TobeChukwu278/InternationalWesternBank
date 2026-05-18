@@ -44,6 +44,7 @@ export interface Transaction {
   merchant_name: string | null;
   category: string | null;
   created_at: string;
+  scheduled_date: string | null;
 }
 
 export interface Admin {
