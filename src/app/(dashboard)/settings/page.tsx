@@ -1,7 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { Card } from "@/components/ui/card";
-import { SettingsForm } from "@/components/features/settings-form";
+import { SettingsClient } from "./settings-client";
 
 export default async function SettingsPage() {
   const supabase = await createClient();
@@ -10,35 +9,32 @@ export default async function SettingsPage() {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("full_name")
+    .select("*")
     .eq("id", user.id)
     .single();
 
+  const { data: account } = await supabase
+    .from("accounts")
+    .select("account_number")
+    .eq("user_id", user.id)
+    .single();
+
+  if (!profile) redirect("/login");
+
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold text-iwb-navy">Settings</h1>
-        <p className="mt-1 text-sm text-iwb-slate">Manage your profile</p>
-      </div>
-
-      <Card className="max-w-lg p-6">
-        <h2 className="text-sm font-semibold text-iwb-navy">Profile</h2>
-        <div className="mt-4 space-y-4">
-          <div>
-            <p className="text-xs font-medium text-iwb-slate-light">Email</p>
-            <p className="mt-0.5 text-sm text-iwb-navy">{user.email}</p>
-          </div>
-          <div>
-            <p className="text-xs font-medium text-iwb-slate-light">User ID</p>
-            <p className="mt-0.5 font-mono text-xs text-iwb-slate">{user.id}</p>
-          </div>
-        </div>
-      </Card>
-
-      <Card className="max-w-lg p-6">
-        <h2 className="text-sm font-semibold text-iwb-navy">Edit Name</h2>
-        <SettingsForm currentName={profile?.full_name ?? ""} />
-      </Card>
-    </div>
+    <SettingsClient
+      profile={{
+        full_name: profile.full_name,
+        email: user.email ?? "",
+        notifications_enabled: profile.notifications_enabled ?? true,
+        preferred_currency: profile.preferred_currency ?? "USD",
+        theme: profile.theme ?? "light",
+        created_at: profile.created_at,
+      }}
+      account={{
+        account_number: account?.account_number ?? "N/A",
+      }}
+      userId={user.id}
+    />
   );
 }
