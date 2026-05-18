@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { depositFunds } from "@/lib/actions/deposit";
-import { useToast } from "@/components/ui/toast";
 
 interface SubAccount {
   id: string;
@@ -30,14 +29,13 @@ const currencySymbols: Record<string, string> = {
 
 type Step = "form" | "result";
 type ResultState = {
-  status: "success" | "failure";
+  status: "pending" | "failure";
   reference?: string;
   error?: string;
 } | null;
 
 export function DepositForm({ subAccounts, preferredCurrency }: DepositFormProps) {
   const router = useRouter();
-  const { showToast } = useToast();
   const symbol = currencySymbols[preferredCurrency] ?? "$";
 
   const [step, setStep] = useState<Step>("form");
@@ -48,10 +46,11 @@ export function DepositForm({ subAccounts, preferredCurrency }: DepositFormProps
     subAccounts.find((sa) => sa.is_default)?.id ?? subAccounts[0]?.id ?? "",
   );
   const [amount, setAmount] = useState("");
+  const [externalBank, setExternalBank] = useState("");
   const [description, setDescription] = useState("");
 
   const amountNum = parseFloat(amount);
-  const canSubmit = !isNaN(amountNum) && amountNum > 0;
+  const canSubmit = !isNaN(amountNum) && amountNum > 0 && externalBank.trim().length > 0;
 
   const handleSubmit = useCallback(async () => {
     if (!canSubmit) return;
@@ -60,13 +59,13 @@ export function DepositForm({ subAccounts, preferredCurrency }: DepositFormProps
     const formData = new FormData();
     formData.set("sub_account_id", selectedSubId);
     formData.set("amount", amount);
+    formData.set("external_bank", externalBank);
     formData.set("description", description);
 
     const res = await depositFunds(formData);
 
     if (res.success) {
-      showToast("Deposit successful", "success");
-      setResult({ status: "success", reference: res.reference });
+      setResult({ status: "pending", reference: res.reference });
       setStep("result");
       router.refresh();
     } else {
@@ -75,7 +74,7 @@ export function DepositForm({ subAccounts, preferredCurrency }: DepositFormProps
     }
 
     setSubmitting(false);
-  }, [canSubmit, selectedSubId, amount, description, showToast, router]);
+  }, [canSubmit, selectedSubId, amount, externalBank, description, router]);
 
   function addQuickAmount(val: number) {
     setAmount(String((parseFloat(amount) || 0) + val));
@@ -83,27 +82,40 @@ export function DepositForm({ subAccounts, preferredCurrency }: DepositFormProps
 
   if (step === "result" && result) {
     return (
-      <div className="space-y-6">
-        <div className={`rounded-iwb-xl border-2 ${result.status === "success" ? "border-iwb-teal" : "border-iwb-error"} bg-white p-8 text-center`}>
+      <div className="space-y-6 max-w-lg mx-auto">
+        <div className="rounded-iwb-xl border-2 border-iwb-border bg-white p-8 text-center">
           <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-full bg-iwb-navy">
             <i className="material-icons text-white text-2xl">account_balance</i>
           </div>
 
-          <i className={`material-icons text-5xl mb-3 ${result.status === "success" ? "text-iwb-teal" : "text-iwb-error"}`}>
-            {result.status === "success" ? "check_circle" : "cancel"}
-          </i>
-          <h2 className={`text-lg font-semibold mb-1 ${result.status === "success" ? "text-iwb-teal-dark" : "text-iwb-error"}`}>
-            {result.status === "success" ? "Deposit Successful" : "Deposit Failed"}
-          </h2>
-
-          <p className="text-3xl font-bold text-iwb-navy mt-4">
-            {symbol}{amountNum.toLocaleString("en-US", { minimumFractionDigits: 2 })}
-          </p>
-
-          {result.reference ? (
-            <p className="mt-4 text-xs text-iwb-slate-light">
-              Reference: <span className="font-mono text-iwb-navy">{result.reference}</span>
-            </p>
+          {result.status === "pending" ? (
+            <>
+              <i className="material-icons text-5xl text-iwb-slate mb-3">schedule</i>
+              <h2 className="text-lg font-semibold text-iwb-navy mb-1">Deposit Submitted</h2>
+              <p className="text-3xl font-bold text-iwb-navy mt-4">
+                {symbol}{amountNum.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+              </p>
+              {result.reference ? (
+                <p className="mt-4 text-xs text-iwb-slate-light">
+                  Reference: <span className="font-mono text-iwb-navy">{result.reference}</span>
+                </p>
+              ) : null}
+              <div className="mt-4 rounded-iwb-lg bg-iwb-surface p-4">
+                <p className="text-sm text-iwb-slate">
+                  Your deposit is pending confirmation. You will be notified once confirmed.
+                </p>
+              </div>
+            </>
+          ) : result.status === "failure" ? (
+            <>
+              <i className="material-icons text-5xl text-iwb-error mb-3">cancel</i>
+              <h2 className="text-lg font-semibold text-iwb-error mb-1">Deposit Failed</h2>
+              {result.error ? (
+                <div className="mt-4 rounded-iwb-lg bg-iwb-error/5 border border-iwb-error/20 p-4">
+                  <p className="text-sm text-iwb-error">{result.error}</p>
+                </div>
+              ) : null}
+            </>
           ) : null}
 
           <div className="mt-6 flex gap-3">
@@ -116,35 +128,57 @@ export function DepositForm({ subAccounts, preferredCurrency }: DepositFormProps
               </button>
             ) : null}
             <Link
-              href="/accounts"
-              className="flex-1 rounded-iwb-md border-2 border-iwb-border px-4 py-2.5 text-sm font-semibold text-iwb-navy transition-all hover:bg-iwb-surface text-center"
-            >
-              View in Accounts
-            </Link>
-            <Link
               href="/dashboard"
               className="flex-1 rounded-iwb-md border-2 border-iwb-border px-4 py-2.5 text-sm font-semibold text-iwb-navy transition-all hover:bg-iwb-surface text-center"
             >
-              Dashboard
+              Back to Dashboard
             </Link>
           </div>
-
-          {result.status === "failure" && result.error ? (
-            <div className="mt-4 rounded-iwb-lg bg-iwb-error/5 border border-iwb-error/20 p-4">
-              <p className="text-sm text-iwb-error">{result.error}</p>
-            </div>
-          ) : null}
         </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      <Card className="p-6">
+    <div className="space-y-6 max-w-lg mx-auto">
+      {/* IWB Account Details */}
+      <Card className="p-6 border-l-4 border-l-iwb-teal">
         <div className="flex items-center gap-2 mb-4">
           <i className="material-icons text-iwb-teal">account_balance</i>
-          <h2 className="text-sm font-semibold text-iwb-navy">Deposit Details</h2>
+          <h2 className="text-sm font-semibold text-iwb-navy">Bank Transfer Instructions</h2>
+        </div>
+        <p className="text-xs text-iwb-slate mb-4">
+          Transfer funds from your external bank account to the IWB account below. Your deposit will be credited once confirmed.
+        </p>
+        <div className="space-y-3">
+          <div className="flex justify-between border-b border-iwb-border-light pb-2">
+            <span className="text-xs text-iwb-slate-light">Bank</span>
+            <span className="text-sm font-medium text-iwb-navy">International Western Bank</span>
+          </div>
+          <div className="flex justify-between border-b border-iwb-border-light pb-2">
+            <span className="text-xs text-iwb-slate-light">Account Name</span>
+            <span className="text-sm font-medium text-iwb-navy">IWB Customer Deposits</span>
+          </div>
+          <div className="flex justify-between border-b border-iwb-border-light pb-2">
+            <span className="text-xs text-iwb-slate-light">Account Number</span>
+            <span className="text-sm font-mono font-medium text-iwb-navy">4829-1023-7756-0184</span>
+          </div>
+          <div className="flex justify-between border-b border-iwb-border-light pb-2">
+            <span className="text-xs text-iwb-slate-light">Routing Number</span>
+            <span className="text-sm font-mono font-medium text-iwb-navy">021000021</span>
+          </div>
+          <div className="flex justify-between pb-2">
+            <span className="text-xs text-iwb-slate-light">SWIFT / BIC</span>
+            <span className="text-sm font-mono font-medium text-iwb-navy">IWBKUS33</span>
+          </div>
+        </div>
+      </Card>
+
+      {/* Deposit Form */}
+      <Card className="p-6">
+        <div className="flex items-center gap-2 mb-4">
+          <i className="material-icons text-iwb-teal">compare_arrows</i>
+          <h2 className="text-sm font-semibold text-iwb-navy">Initiate Transfer</h2>
         </div>
 
         <div className="space-y-5">
@@ -154,7 +188,7 @@ export function DepositForm({ subAccounts, preferredCurrency }: DepositFormProps
               <select
                 value={selectedSubId}
                 onChange={(e) => setSelectedSubId(e.target.value)}
-                className="w-full appearance-none rounded-iwb-lg border border-iwb-border bg-white px-4 py-3.5 pr-10 text-sm text-iwb-navy transition-colors hover:border-iwb-teal focus:border-iwb-teal focus:ring-2 focus:ring-iwb-teal/10 focus:outline-none"
+                className="w-full appearance-none rounded-iwb-lg border border-iwb-border bg-white px-4 py-3.5 pr-10 text-sm text-iwb-navy focus:border-iwb-teal focus:ring-2 focus:ring-iwb-teal/10 focus:outline-none"
               >
                 {subAccounts.map((sa) => (
                   <option key={sa.id} value={sa.id}>
@@ -197,12 +231,25 @@ export function DepositForm({ subAccounts, preferredCurrency }: DepositFormProps
           </div>
 
           <div>
-            <label className="text-xs font-medium text-iwb-slate-light uppercase tracking-wider">Description (Optional)</label>
+            <label className="text-xs font-medium text-iwb-slate-light uppercase tracking-wider">
+              Your External Bank <span className="text-iwb-error">*</span>
+            </label>
+            <input
+              type="text"
+              value={externalBank}
+              onChange={(e) => setExternalBank(e.target.value)}
+              placeholder="e.g. Chase, Wells Fargo, Bank of America"
+              className="mt-2 w-full rounded-iwb-lg border border-iwb-border bg-white px-4 py-3 text-sm text-iwb-navy placeholder:text-iwb-slate-light focus:border-iwb-teal focus:ring-2 focus:ring-iwb-teal/10 focus:outline-none"
+            />
+          </div>
+
+          <div>
+            <label className="text-xs font-medium text-iwb-slate-light uppercase tracking-wider">Reference / Note (Optional)</label>
             <input
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="e.g. Birthday money, Freelance payment"
+              placeholder="Add a memo for your records"
               maxLength={200}
               className="mt-2 w-full rounded-iwb-lg border border-iwb-border bg-white px-4 py-3 text-sm text-iwb-navy placeholder:text-iwb-slate-light focus:border-iwb-teal focus:ring-2 focus:ring-iwb-teal/10 focus:outline-none"
             />
@@ -218,12 +265,12 @@ export function DepositForm({ subAccounts, preferredCurrency }: DepositFormProps
         {submitting ? (
           <span className="size-4 animate-spin rounded-full border-2 border-iwb-navy border-t-transparent" />
         ) : null}
-        {submitting ? "Processing..." : `Deposit ${symbol}${amountNum > 0 ? amountNum.toLocaleString("en-US", { minimumFractionDigits: 2 }) : "0.00"}`}
+        {submitting ? "Submitting..." : `Submit Deposit Request`}
       </button>
 
       <p className="flex items-center justify-center gap-1 text-xs text-iwb-slate-light">
         <i className="material-icons text-xs">verified_user</i>
-        Funds are credited instantly to your account
+        Deposits are credited after confirmation
       </p>
     </div>
   );
