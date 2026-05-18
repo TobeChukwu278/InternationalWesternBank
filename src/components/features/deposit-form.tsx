@@ -1,10 +1,8 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Select } from "@/components/ui/select";
+import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { depositFunds } from "@/lib/actions/deposit";
 import { useToast } from "@/components/ui/toast";
@@ -17,80 +15,216 @@ interface SubAccount {
   is_default: boolean;
 }
 
-export function DepositForm({ subAccounts }: { subAccounts: SubAccount[] }) {
+interface DepositFormProps {
+  subAccounts: SubAccount[];
+  preferredCurrency: string;
+}
+
+const QUICK_AMOUNTS = [100, 500, 1000];
+
+const currencySymbols: Record<string, string> = {
+  USD: "$",
+  EUR: "€",
+  GBP: "£",
+};
+
+type Step = "form" | "result";
+type ResultState = {
+  status: "success" | "failure";
+  reference?: string;
+  error?: string;
+} | null;
+
+export function DepositForm({ subAccounts, preferredCurrency }: DepositFormProps) {
   const router = useRouter();
   const { showToast } = useToast();
+  const symbol = currencySymbols[preferredCurrency] ?? "$";
+
+  const [step, setStep] = useState<Step>("form");
+  const [submitting, setSubmitting] = useState(false);
+  const [result, setResult] = useState<ResultState>(null);
+
   const [selectedSubId, setSelectedSubId] = useState(
     subAccounts.find((sa) => sa.is_default)?.id ?? subAccounts[0]?.id ?? "",
   );
   const [amount, setAmount] = useState("");
+  const [description, setDescription] = useState("");
 
-  const [state, formAction, pending] = useActionState(
-    async (_prev: Awaited<ReturnType<typeof depositFunds>> | null, formData: FormData) => {
-      const result = await depositFunds(formData);
-      if (result.success) {
-        showToast(`Deposited $${parseFloat(amount).toFixed(2)} successfully`, "success");
-        setAmount("");
-        return { success: true, reference: result.reference, status: result.status };
-      }
-      return result;
-    },
-    null,
-  );
-
-  const selectedSub = subAccounts.find((sa) => sa.id === selectedSubId);
   const amountNum = parseFloat(amount);
   const canSubmit = !isNaN(amountNum) && amountNum > 0;
 
-  return (
-    <Card className="w-full max-w-lg p-6">
-      <h2 className="text-lg font-semibold text-iwb-navy">Deposit Funds</h2>
-      <p className="mt-1 text-sm text-iwb-slate">Add money to your account</p>
+  const handleSubmit = useCallback(async () => {
+    if (!canSubmit) return;
+    setSubmitting(true);
 
-      <form action={formAction} className="mt-6 space-y-5">
-        <input type="hidden" name="sub_account_id" value={selectedSubId} />
+    const formData = new FormData();
+    formData.set("sub_account_id", selectedSubId);
+    formData.set("amount", amount);
+    formData.set("description", description);
 
-        <Select
-          label="Deposit to"
-          value={selectedSubId}
-          onChange={(e) => setSelectedSubId(e.target.value)}
-        >
-          {subAccounts.map((sa) => (
-            <option key={sa.id} value={sa.id}>
-              {sa.type.charAt(0).toUpperCase() + sa.type.slice(1)} — ${Number(sa.balance).toFixed(2)}
-            </option>
-          ))}
-        </Select>
+    const res = await depositFunds(formData);
 
-        <Input
-          label="Amount (USD)"
-          name="amount"
-          type="number"
-          step="0.01"
-          min="0.01"
-          placeholder="0.00"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          required
-        />
+    if (res.success) {
+      showToast("Deposit successful", "success");
+      setResult({ status: "success", reference: res.reference });
+      setStep("result");
+      router.refresh();
+    } else {
+      setResult({ status: "failure", error: res.error });
+      setStep("result");
+    }
 
-        <Input
-          label="Description (optional)"
-          name="description"
-          type="text"
-          placeholder="e.g. Birthday money, Freelance payment"
-        />
+    setSubmitting(false);
+  }, [canSubmit, selectedSubId, amount, description, showToast, router]);
 
-        {state?.error ? (
-          <p className="flex items-center gap-1.5 rounded-iwb-md bg-iwb-error/5 px-3 py-2 text-sm text-iwb-error">
-            {state.error}
+  function addQuickAmount(val: number) {
+    setAmount(String((parseFloat(amount) || 0) + val));
+  }
+
+  if (step === "result" && result) {
+    return (
+      <div className="space-y-6 max-w-lg">
+        <div className={`rounded-iwb-xl border-2 ${result.status === "success" ? "border-iwb-teal" : "border-iwb-error"} bg-white p-8 text-center`}>
+          <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-full bg-iwb-navy">
+            <i className="material-icons text-white text-2xl">account_balance</i>
+          </div>
+
+          <i className={`material-icons text-5xl mb-3 ${result.status === "success" ? "text-iwb-teal" : "text-iwb-error"}`}>
+            {result.status === "success" ? "check_circle" : "cancel"}
+          </i>
+          <h2 className={`text-lg font-semibold mb-1 ${result.status === "success" ? "text-iwb-teal-dark" : "text-iwb-error"}`}>
+            {result.status === "success" ? "Deposit Successful" : "Deposit Failed"}
+          </h2>
+
+          <p className="text-3xl font-bold text-iwb-navy mt-4">
+            {symbol}{amountNum.toLocaleString("en-US", { minimumFractionDigits: 2 })}
           </p>
-        ) : null}
 
-        <Button type="submit" loading={pending} disabled={!canSubmit} className="w-full">
-          {pending ? "Processing..." : `Deposit $${amountNum > 0 ? amountNum.toFixed(2) : "0.00"}`}
-        </Button>
-      </form>
-    </Card>
+          {result.reference ? (
+            <p className="mt-4 text-xs text-iwb-slate-light">
+              Reference: <span className="font-mono text-iwb-navy">{result.reference}</span>
+            </p>
+          ) : null}
+
+          <div className="mt-6 flex gap-3">
+            {result.status === "failure" ? (
+              <button
+                onClick={() => setStep("form")}
+                className="flex-1 rounded-iwb-md bg-iwb-teal px-4 py-2.5 text-sm font-semibold text-iwb-navy transition-all hover:bg-iwb-teal-dark"
+              >
+                Try Again
+              </button>
+            ) : null}
+            <Link
+              href="/accounts"
+              className="flex-1 rounded-iwb-md border-2 border-iwb-border px-4 py-2.5 text-sm font-semibold text-iwb-navy transition-all hover:bg-iwb-surface text-center"
+            >
+              View in Accounts
+            </Link>
+            <Link
+              href="/dashboard"
+              className="flex-1 rounded-iwb-md border-2 border-iwb-border px-4 py-2.5 text-sm font-semibold text-iwb-navy transition-all hover:bg-iwb-surface text-center"
+            >
+              Dashboard
+            </Link>
+          </div>
+
+          {result.status === "failure" && result.error ? (
+            <div className="mt-4 rounded-iwb-lg bg-iwb-error/5 border border-iwb-error/20 p-4">
+              <p className="text-sm text-iwb-error">{result.error}</p>
+            </div>
+          ) : null}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6 max-w-lg">
+      <Card className="p-6">
+        <div className="flex items-center gap-2 mb-4">
+          <i className="material-icons text-iwb-teal">account_balance</i>
+          <h2 className="text-sm font-semibold text-iwb-navy">Deposit Details</h2>
+        </div>
+
+        <div className="space-y-5">
+          <div>
+            <label className="text-xs font-medium text-iwb-slate-light uppercase tracking-wider">Deposit To</label>
+            <div className="mt-2 relative">
+              <select
+                value={selectedSubId}
+                onChange={(e) => setSelectedSubId(e.target.value)}
+                className="w-full appearance-none rounded-iwb-lg border border-iwb-border bg-white px-4 py-3.5 pr-10 text-sm text-iwb-navy transition-colors hover:border-iwb-teal focus:border-iwb-teal focus:ring-2 focus:ring-iwb-teal/10 focus:outline-none"
+              >
+                {subAccounts.map((sa) => (
+                  <option key={sa.id} value={sa.id}>
+                    {sa.type.charAt(0).toUpperCase() + sa.type.slice(1)} — {symbol}{sa.balance.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                  </option>
+                ))}
+              </select>
+              <i className="material-icons absolute right-3 top-1/2 -translate-y-1/2 text-iwb-slate-light pointer-events-none">expand_more</i>
+            </div>
+          </div>
+
+          <div>
+            <label className="text-xs font-medium text-iwb-slate-light uppercase tracking-wider">Amount</label>
+            <div className="mt-2 relative">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-lg font-semibold text-iwb-navy">
+                {symbol}
+              </span>
+              <input
+                type="number"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                step="0.01"
+                min="0.01"
+                placeholder="0.00"
+                className="w-full rounded-iwb-lg border border-iwb-border bg-white py-3.5 pl-10 pr-4 text-lg font-semibold text-iwb-navy placeholder:text-iwb-slate-light focus:border-iwb-teal focus:ring-2 focus:ring-iwb-teal/10 focus:outline-none"
+              />
+            </div>
+            <div className="mt-2 flex gap-2">
+              {QUICK_AMOUNTS.map((val) => (
+                <button
+                  key={val}
+                  type="button"
+                  onClick={() => addQuickAmount(val)}
+                  className="rounded-iwb-md border border-iwb-border-light px-3 py-1.5 text-xs font-medium text-iwb-slate transition-colors hover:border-iwb-teal hover:text-iwb-teal"
+                >
+                  +{symbol}{val.toLocaleString()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="text-xs font-medium text-iwb-slate-light uppercase tracking-wider">Description (Optional)</label>
+            <input
+              type="text"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="e.g. Birthday money, Freelance payment"
+              maxLength={200}
+              className="mt-2 w-full rounded-iwb-lg border border-iwb-border bg-white px-4 py-3 text-sm text-iwb-navy placeholder:text-iwb-slate-light focus:border-iwb-teal focus:ring-2 focus:ring-iwb-teal/10 focus:outline-none"
+            />
+          </div>
+        </div>
+      </Card>
+
+      <button
+        onClick={handleSubmit}
+        disabled={!canSubmit || submitting}
+        className="w-full rounded-iwb-md bg-iwb-teal px-6 py-3.5 text-sm font-semibold text-iwb-navy transition-all hover:bg-iwb-teal-dark disabled:cursor-not-allowed disabled:opacity-50 flex items-center justify-center gap-2"
+      >
+        {submitting ? (
+          <span className="size-4 animate-spin rounded-full border-2 border-iwb-navy border-t-transparent" />
+        ) : null}
+        {submitting ? "Processing..." : `Deposit ${symbol}${amountNum > 0 ? amountNum.toLocaleString("en-US", { minimumFractionDigits: 2 }) : "0.00"}`}
+      </button>
+
+      <p className="flex items-center justify-center gap-1 text-xs text-iwb-slate-light">
+        <i className="material-icons text-xs">verified_user</i>
+        Funds are credited instantly to your account
+      </p>
+    </div>
   );
 }
