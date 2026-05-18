@@ -24,7 +24,7 @@ export default async function TransactionsPage({ searchParams }: PageProps) {
 
   const { data: account } = await supabase
     .from("accounts")
-    .select("*, sub_accounts(id)")
+    .select("*, sub_accounts(id, balance)")
     .eq("user_id", user.id)
     .single();
 
@@ -94,6 +94,7 @@ export default async function TransactionsPage({ searchParams }: PageProps) {
         initialPage={currentPage}
         searchParams={sp}
         subAccountIds={subAccountIds}
+        accountNumber={account.account_number}
       />
     </div>
   );

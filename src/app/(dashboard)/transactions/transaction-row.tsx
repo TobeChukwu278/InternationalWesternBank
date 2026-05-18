@@ -35,14 +35,19 @@ function formatDate(dateStr: string) {
 export function TransactionRow({
   transaction,
   isIncoming,
+  onSelect,
 }: {
   transaction: Transaction;
   isIncoming: boolean;
+  onSelect?: (tx: Transaction) => void;
 }) {
   const { date, time } = formatDate(transaction.created_at);
 
   return (
-    <div className="grid grid-cols-12 gap-3 px-6 py-3.5 transition-colors hover:bg-iwb-surface/50 items-center">
+    <button
+      onClick={onSelect ? () => onSelect(transaction) : undefined}
+      className="w-full grid grid-cols-12 gap-3 px-6 py-3.5 transition-colors hover:bg-iwb-surface/50 items-center text-left"
+    >
       <div className="col-span-2">
         <p className="text-sm text-iwb-navy">{date}</p>
         <p className="text-xs text-iwb-slate-light">{time}</p>
@@ -74,6 +79,6 @@ export function TransactionRow({
           {isIncoming ? "+" : "-"}${Number(transaction.amount).toLocaleString("en-US", { minimumFractionDigits: 2 })}
         </p>
       </div>
-    </div>
+    </button>
   );
 }

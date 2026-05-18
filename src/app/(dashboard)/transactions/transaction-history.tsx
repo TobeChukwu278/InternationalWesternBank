@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { Transaction } from "@/types/database";
 import { TransactionRow } from "./transaction-row";
+import { TransactionReceipt } from "@/components/features/transaction-receipt";
 
 interface TransactionHistoryProps {
   initialTransactions: Transaction[];
@@ -10,6 +11,7 @@ interface TransactionHistoryProps {
   initialPage: number;
   searchParams: Record<string, string>;
   subAccountIds: string[];
+  accountNumber: string;
 }
 
 export function TransactionHistory({
@@ -18,10 +20,12 @@ export function TransactionHistory({
   initialPage,
   searchParams,
   subAccountIds,
+  accountNumber,
 }: TransactionHistoryProps) {
   const [transactions, setTransactions] = useState(initialTransactions);
   const [page, setPage] = useState(initialPage);
   const [loading, setLoading] = useState(false);
+  const [selectedTx, setSelectedTx] = useState<Transaction | null>(null);
 
   const loadedCount = transactions.length;
   const hasMore = loadedCount < initialTotalCount;
@@ -88,29 +92,59 @@ export function TransactionHistory({
         </div>
       </div>
 
-      <div className="border-b border-iwb-border-light px-6 py-3">
+      <form method="GET" action="/transactions" className="border-b border-iwb-border-light px-6 py-3">
+        {Object.entries(searchParams).map(([k, v]) =>
+          k !== "category" && k !== "status" && k !== "page" ? (
+            <input key={k} type="hidden" name={k} value={v} />
+          ) : null,
+        )}
         <div className="flex flex-wrap items-center gap-2">
           <span className="flex items-center gap-1 rounded-iwb-md border border-iwb-border px-2.5 py-1.5 text-xs text-iwb-slate">
             <i className="material-icons text-sm">calendar_today</i>
             Last 30 Days
             <i className="material-icons text-sm">expand_more</i>
           </span>
-          <span className="flex items-center gap-1 rounded-iwb-md border border-iwb-border px-2.5 py-1.5 text-xs text-iwb-slate">
+          <label className="flex items-center gap-1 rounded-iwb-md border border-iwb-border px-2.5 py-1.5 text-xs text-iwb-slate cursor-pointer hover:bg-iwb-surface transition-colors has-focus-within:border-iwb-teal">
             <i className="material-icons text-sm">category</i>
-            Category
-            <i className="material-icons text-sm">expand_more</i>
-          </span>
-          <span className="flex items-center gap-1 rounded-iwb-md border border-iwb-border px-2.5 py-1.5 text-xs text-iwb-slate">
+            <select
+              name="category"
+              value={searchParams.category ?? ""}
+              onChange={(e) => e.target.form?.requestSubmit()}
+              className="appearance-none bg-transparent text-xs text-iwb-slate focus:outline-none cursor-pointer"
+            >
+              <option value="">Category</option>
+              <option value="shopping">Shopping</option>
+              <option value="dining">Dining</option>
+              <option value="travel">Travel</option>
+              <option value="utilities">Utilities</option>
+              <option value="investment">Investment</option>
+              <option value="deposit">Deposit</option>
+              <option value="transfer">Transfer</option>
+              <option value="withdrawal">Withdrawal</option>
+            </select>
+            <i className="material-icons text-sm pointer-events-none">expand_more</i>
+          </label>
+          <label className="flex items-center gap-1 rounded-iwb-md border border-iwb-border px-2.5 py-1.5 text-xs text-iwb-slate cursor-pointer hover:bg-iwb-surface transition-colors has-focus-within:border-iwb-teal">
             <i className="material-icons text-sm">info</i>
-            Status
-            <i className="material-icons text-sm">expand_more</i>
-          </span>
+            <select
+              name="status"
+              value={searchParams.status ?? ""}
+              onChange={(e) => e.target.form?.requestSubmit()}
+              className="appearance-none bg-transparent text-xs text-iwb-slate focus:outline-none cursor-pointer"
+            >
+              <option value="">Status</option>
+              <option value="completed">Completed</option>
+              <option value="pending">Pending</option>
+              <option value="failed">Failed</option>
+            </select>
+            <i className="material-icons text-sm pointer-events-none">expand_more</i>
+          </label>
           <span className="flex items-center gap-1 rounded-iwb-md border border-iwb-border bg-iwb-surface px-2.5 py-1.5 text-xs text-iwb-slate">
             <i className="material-icons text-sm">filter_list</i>
             Advanced
           </span>
         </div>
-      </div>
+      </form>
 
       {transactions.length === 0 ? (
         <div className="p-12 text-center">
@@ -136,6 +170,7 @@ export function TransactionHistory({
                 key={tx.id}
                 transaction={tx}
                 isIncoming={isIncoming(tx)}
+                onSelect={setSelectedTx}
               />
             ))}
           </div>
@@ -164,6 +199,15 @@ export function TransactionHistory({
           ) : null}
         </div>
       )}
+
+      {selectedTx ? (
+        <TransactionReceipt
+          transaction={selectedTx}
+          isIncoming={isIncoming(selectedTx)}
+          accountNumber={accountNumber}
+          onClose={() => setSelectedTx(null)}
+        />
+      ) : null}
     </div>
   );
 }
