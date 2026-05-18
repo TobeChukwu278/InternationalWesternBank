@@ -9,6 +9,7 @@ import { Card } from "@/components/ui/card";
 import { CopyButton } from "@/components/ui/copy-button";
 import { SettingsForm } from "@/components/features/settings-form";
 import { useToast } from "@/components/ui/toast";
+import { useSettings } from "@/components/features/settings-provider";
 import { updatePreferences, updatePassword } from "@/lib/actions/settings";
 
 interface SettingsClientProps {
@@ -36,6 +37,7 @@ function formatDate(dateStr: string) {
 export function SettingsClient({ profile, account, userId }: SettingsClientProps) {
   const router = useRouter();
   const { showToast } = useToast();
+  const { setTheme, setCurrency } = useSettings();
 
   const [passwordState, passwordAction, passwordPending] = useActionState(
     async (_prev: { error?: string; success?: boolean } | null, formData: FormData) => {
@@ -57,6 +59,8 @@ export function SettingsClient({ profile, account, userId }: SettingsClientProps
     const result = await updatePreferences(formData);
     if (result.success) {
       showToast("Preference updated", "success");
+      if (key === "preferred_currency") setCurrency(value);
+      if (key === "theme") setTheme(value);
       router.refresh();
     } else {
       showToast(result.error ?? "Failed to update", "error");

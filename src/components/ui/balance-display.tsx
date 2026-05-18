@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { useSettings } from "@/components/features/settings-provider";
 
 export function BalanceDisplay({
   amount,
   className = "",
   hidden: controlledHidden,
   onToggle,
-  currency = "USD",
+  currency: explicitCurrency,
 }: {
   amount: number;
   className?: string;
@@ -15,6 +16,8 @@ export function BalanceDisplay({
   onToggle?: () => void;
   currency?: string;
 }) {
+  const { currency: contextCurrency } = useSettings();
+  const currency = explicitCurrency ?? contextCurrency;
   const [localHidden, setLocalHidden] = useState(false);
   const isControlled = controlledHidden !== undefined && onToggle !== undefined;
   const hidden = isControlled ? controlledHidden : localHidden;
