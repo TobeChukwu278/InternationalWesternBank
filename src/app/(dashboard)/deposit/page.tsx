@@ -37,7 +37,7 @@ export default async function DepositPage() {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="mx-auto max-w-lg space-y-6">
       <div>
         <h1 className="text-2xl font-semibold text-iwb-navy">Deposit</h1>
         <p className="mt-1 text-sm text-iwb-slate">Add funds to your account</p>

@@ -83,7 +83,7 @@ export function DepositForm({ subAccounts, preferredCurrency }: DepositFormProps
 
   if (step === "result" && result) {
     return (
-      <div className="space-y-6 max-w-lg">
+      <div className="space-y-6">
         <div className={`rounded-iwb-xl border-2 ${result.status === "success" ? "border-iwb-teal" : "border-iwb-error"} bg-white p-8 text-center`}>
           <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-full bg-iwb-navy">
             <i className="material-icons text-white text-2xl">account_balance</i>
@@ -140,7 +140,7 @@ export function DepositForm({ subAccounts, preferredCurrency }: DepositFormProps
   }
 
   return (
-    <div className="space-y-6 max-w-lg">
+    <div className="space-y-6">
       <Card className="p-6">
         <div className="flex items-center gap-2 mb-4">
           <i className="material-icons text-iwb-teal">account_balance</i>
