@@ -8,6 +8,8 @@ import { SpendingInsights } from "@/components/features/spending-insights";
 import { RecentTransactions } from "@/components/features/recent-transactions";
 import { PromotionCard } from "@/components/features/promotion-card";
 import { convertAmount } from "@/lib/currency";
+import { NotificationBell } from "@/components/features/notification-bell";
+import { getUnreadNotifications } from "@/lib/actions/notifications";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -31,6 +33,8 @@ export default async function DashboardPage() {
     .single();
 
   if (!account) redirect("/login");
+
+  const { notifications, unreadCount } = await getUnreadNotifications(5);
 
   const subAccounts = account.sub_accounts ?? [];
   const rawTotalBalance = subAccounts.reduce(
@@ -108,12 +112,7 @@ export default async function DashboardPage() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <button
-            className="flex size-10 items-center justify-center rounded-full bg-white text-iwb-slate-light shadow-iwb-card transition-colors hover:bg-iwb-surface hover:text-iwb-navy"
-            title="Notifications"
-          >
-            <i className="material-icons">notifications</i>
-          </button>
+          <NotificationBell initialUnreadCount={unreadCount} initialNotifications={notifications} />
           <a
             href="/settings"
             className="flex size-10 items-center justify-center rounded-full bg-white text-iwb-slate-light shadow-iwb-card transition-colors hover:bg-iwb-surface hover:text-iwb-navy"

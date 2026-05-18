@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { TransactionHistory } from "./transaction-history";
+import { getUnreadNotifications } from "@/lib/actions/notifications";
 
 interface PageProps {
   searchParams: Promise<Record<string, string>>;
@@ -60,6 +61,8 @@ export default async function TransactionsPage({ searchParams }: PageProps) {
     .order("created_at", { ascending: false })
     .range(from, from + ITEMS_PER_PAGE - 1);
 
+  const { notifications, unreadCount } = await getUnreadNotifications(5);
+
   // Fetch total balance for the "Total Assets" badge
   const { data: fullAccount } = await supabase
     .from("accounts")
@@ -95,6 +98,8 @@ export default async function TransactionsPage({ searchParams }: PageProps) {
         searchParams={sp}
         subAccountIds={subAccountIds}
         accountNumber={account.account_number}
+        notificationUnreadCount={unreadCount}
+        notificationInitialNotifications={notifications}
       />
     </div>
   );

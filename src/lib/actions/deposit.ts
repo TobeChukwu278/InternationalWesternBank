@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { createServiceClient } from "@/lib/supabase/service";
+import { createNotificationSystem } from "@/lib/actions/notifications";
 
 function generateReference(): string {
   const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
@@ -50,9 +51,18 @@ export async function depositFunds(formData: FormData) {
   const parsed = result as { success: boolean; error?: string };
   if (!parsed.success) return { error: parsed.error ?? "Deposit failed" };
 
+  const reference = generateReference();
+
+  await createNotificationSystem(
+    user.id,
+    "Deposit Successful",
+    `$${amount.toLocaleString("en-US", { minimumFractionDigits: 2 })} was deposited to your account.`,
+    "deposit",
+    reference,
+  );
+
   revalidatePath("/accounts", "layout");
   revalidatePath("/dashboard", "layout");
 
-  const reference = generateReference();
   return { success: true, reference, status: "completed" };
 }

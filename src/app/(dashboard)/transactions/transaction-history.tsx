@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import type { Transaction } from "@/types/database";
+import type { Transaction, Notification } from "@/types/database";
 import { TransactionRow } from "./transaction-row";
 import { TransactionReceipt } from "@/components/features/transaction-receipt";
+import { NotificationBell } from "@/components/features/notification-bell";
 
 interface TransactionHistoryProps {
   initialTransactions: Transaction[];
@@ -12,6 +13,8 @@ interface TransactionHistoryProps {
   searchParams: Record<string, string>;
   subAccountIds: string[];
   accountNumber: string;
+  notificationUnreadCount: number;
+  notificationInitialNotifications: Notification[];
 }
 
 export function TransactionHistory({
@@ -21,6 +24,8 @@ export function TransactionHistory({
   searchParams,
   subAccountIds,
   accountNumber,
+  notificationUnreadCount,
+  notificationInitialNotifications,
 }: TransactionHistoryProps) {
   const [transactions, setTransactions] = useState(initialTransactions);
   const [page, setPage] = useState(initialPage);
@@ -79,9 +84,7 @@ export function TransactionHistory({
               />
             </form>
           </div>
-          <button className="rounded-lg p-1.5 text-iwb-slate-light transition-colors hover:bg-iwb-surface hover:text-iwb-navy" title="Notifications">
-            <i className="material-icons text-xl">notifications</i>
-          </button>
+          <NotificationBell initialUnreadCount={notificationUnreadCount} initialNotifications={notificationInitialNotifications} />
           <a
             href={exportUrl}
             className="flex items-center gap-1.5 rounded-iwb-md border border-iwb-border px-3 py-1.5 text-xs font-medium text-iwb-navy transition-colors hover:bg-iwb-surface"

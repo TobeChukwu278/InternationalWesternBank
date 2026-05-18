@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { createServiceClient } from "@/lib/supabase/service";
+import { createNotificationSystem } from "@/lib/actions/notifications";
 
 function generateReference(): string {
   const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
@@ -40,7 +41,7 @@ export async function sendMoney(formData: FormData) {
   const svc = createServiceClient();
   const { data: recipientAccount } = await svc
     .from("accounts")
-    .select("id")
+    .select("id, user_id")
     .eq("account_number", recipient)
     .single();
 
@@ -56,6 +57,23 @@ export async function sendMoney(formData: FormData) {
   if (!recipientSub) return { error: "Recipient has no active account" };
 
   const reference = generateReference();
+
+  // Get sender and recipient names for notifications
+  const { data: senderProfile } = await svc
+    .from("profiles")
+    .select("full_name")
+    .eq("id", user.id)
+    .single();
+
+  const { data: recipientProfile } = await svc
+    .from("profiles")
+    .select("full_name")
+    .eq("id", recipientAccount.user_id)
+    .single();
+
+  const senderName = (senderProfile as any)?.full_name ?? "You";
+  const recipientName = (recipientProfile as any)?.full_name ?? "Recipient";
+  const formattedAmount = `$${amount.toLocaleString("en-US", { minimumFractionDigits: 2 })}`;
 
   if (scheduledDate) {
     // Scheduled transfer — insert pending record
@@ -76,6 +94,23 @@ export async function sendMoney(formData: FormData) {
 
     if (error) return { error: error.message };
 
+    // Notifications for scheduled transfer
+    await createNotificationSystem(
+      user.id,
+      "Money Sent",
+      `Your transfer of ${formattedAmount} to ${recipientName} has been scheduled.`,
+      "transfer",
+      reference,
+    );
+
+    await createNotificationSystem(
+      recipientAccount.user_id,
+      "Money Received",
+      `You will receive ${formattedAmount} from ${senderName}.`,
+      "transfer",
+      reference,
+    );
+
     revalidatePath("/dashboard", "layout");
     revalidatePath("/transactions", "layout");
 
@@ -93,6 +128,23 @@ export async function sendMoney(formData: FormData) {
 
   if (error) return { error: error.message };
   if (result?.error) return { error: result.error };
+
+  // Notifications for instant transfer
+  await createNotificationSystem(
+    user.id,
+    "Money Sent",
+    `Your transfer of ${formattedAmount} to ${recipientName} was successful.`,
+    "transfer",
+    reference,
+  );
+
+  await createNotificationSystem(
+    recipientAccount.user_id,
+    "Money Received",
+    `You received ${formattedAmount} from ${senderName}.`,
+    "transfer",
+    reference,
+  );
 
   revalidatePath("/dashboard", "layout");
   revalidatePath("/transactions", "layout");
