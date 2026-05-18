@@ -26,12 +26,12 @@ export function DepositForm({ subAccounts }: { subAccounts: SubAccount[] }) {
   const [amount, setAmount] = useState("");
 
   const [state, formAction, pending] = useActionState(
-    async (_prev: { error?: string; success?: boolean } | null, formData: FormData) => {
+    async (_prev: Awaited<ReturnType<typeof depositFunds>> | null, formData: FormData) => {
       const result = await depositFunds(formData);
       if (result.success) {
         showToast(`Deposited $${parseFloat(amount).toFixed(2)} successfully`, "success");
         setAmount("");
-        return { success: true };
+        return { success: true, reference: result.reference, status: result.status };
       }
       return result;
     },

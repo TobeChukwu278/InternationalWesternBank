@@ -4,6 +4,13 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { createServiceClient } from "@/lib/supabase/service";
 
+function generateReference(): string {
+  const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+  let random = "";
+  for (let i = 0; i < 8; i++) random += chars.charAt(Math.floor(Math.random() * chars.length));
+  return `DEP${Date.now()}${random}`;
+}
+
 export async function depositFunds(formData: FormData) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -46,5 +53,6 @@ export async function depositFunds(formData: FormData) {
   revalidatePath("/accounts", "layout");
   revalidatePath("/dashboard", "layout");
 
-  return { success: true };
+  const reference = generateReference();
+  return { success: true, reference, status: "completed" };
 }
