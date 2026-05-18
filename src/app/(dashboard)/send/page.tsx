@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createServiceClient } from "@/lib/supabase/service";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
+import { convertAmount } from "@/lib/currency";
 import { SendForm } from "./send-form";
 
 export default async function SendPage() {
@@ -27,6 +28,15 @@ export default async function SendPage() {
     currency: string;
     is_default: boolean;
   }[];
+
+  const convertedSubAccounts = await Promise.all(
+    subAccounts.map(async (sa) => ({
+      id: sa.id,
+      type: sa.type,
+      balance: await convertAmount(Number(sa.balance), sa.currency, preferredCurrency),
+      is_default: sa.is_default,
+    })),
+  );
 
   const subAccountIds = subAccounts.map((sa) => sa.id);
 
@@ -66,12 +76,7 @@ export default async function SendPage() {
 
   return (
     <SendForm
-      subAccounts={subAccounts.map((sa) => ({
-        id: sa.id,
-        type: sa.type,
-        balance: Number(sa.balance),
-        is_default: sa.is_default,
-      }))}
+      subAccounts={convertedSubAccounts}
       accountNumber={account.account_number}
       recentRecipients={recentRecipients}
       preferredCurrency={preferredCurrency}

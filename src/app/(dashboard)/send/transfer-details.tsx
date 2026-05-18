@@ -58,7 +58,7 @@ export function TransferDetails({
           >
             {subAccounts.map((sa) => (
               <option key={sa.id} value={sa.id}>
-                {sa.type.charAt(0).toUpperCase() + sa.type.slice(1)} — ${sa.balance.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                {sa.type.charAt(0).toUpperCase() + sa.type.slice(1)} — {symbol}{sa.balance.toLocaleString("en-US", { minimumFractionDigits: 2 })}
               </option>
             ))}
           </select>
