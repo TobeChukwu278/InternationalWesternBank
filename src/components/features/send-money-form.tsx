@@ -3,6 +3,7 @@
 import { useActionState, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Select } from "@/components/ui/select";
 import { Card } from "@/components/ui/card";
 import { RecipientSearch } from "@/components/features/recipient-search";
 import { sendMoney } from "@/lib/actions/transfer";
@@ -28,6 +29,7 @@ export function SendMoneyForm({ subAccounts }: SendMoneyFormProps) {
     subAccounts.find((sa) => sa.is_default)?.id ?? subAccounts[0]?.id ?? "",
   );
   const [amount, setAmount] = useState("");
+  const [selectedRecipient, setSelectedRecipient] = useState<{ accountNumber: string; fullName: string } | null>(null);
 
   const [state, formAction, pending] = useActionState(
     async (_prev: { error?: string; success?: boolean } | null, formData: FormData) => {
@@ -57,23 +59,20 @@ export function SendMoneyForm({ subAccounts }: SendMoneyFormProps) {
       <p className="mt-1 text-sm text-iwb-slate">Transfer funds to another account</p>
 
       <form action={formAction} className="mt-6 space-y-5">
-        <RecipientSearch onSelect={() => {}} />
+        <RecipientSearch recentRecipients={[]} selected={selectedRecipient} onSelect={setSelectedRecipient} />
 
-        <div>
-          <label className="text-sm font-medium text-iwb-navy">From</label>
-          <select
-            name="from_sub_account"
-            value={selectedSubId}
-            onChange={(e) => setSelectedSubId(e.target.value)}
-            className="mt-1.5 block w-full rounded-iwb-md border border-iwb-border bg-white px-4 py-3 text-sm text-iwb-navy focus:border-iwb-teal focus:ring-2 focus:ring-iwb-teal/10 focus:outline-none"
-          >
-            {subAccounts.map((sa) => (
-              <option key={sa.id} value={sa.id}>
-                {sa.type.charAt(0).toUpperCase() + sa.type.slice(1)} — ${sa.balance.toFixed(2)}
-              </option>
-            ))}
-          </select>
-        </div>
+        <Select
+          label="From"
+          name="from_sub_account"
+          value={selectedSubId}
+          onChange={(e) => setSelectedSubId(e.target.value)}
+        >
+          {subAccounts.map((sa) => (
+            <option key={sa.id} value={sa.id}>
+              {sa.type.charAt(0).toUpperCase() + sa.type.slice(1)} — ${sa.balance.toFixed(2)}
+            </option>
+          ))}
+        </Select>
 
         <Input
           label="Amount (USD)"
