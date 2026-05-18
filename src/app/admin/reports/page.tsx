@@ -65,21 +65,21 @@ export default async function AdminReportsPage() {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-3">
-        <Card className="p-5">
+        <Card className="p-6">
           <p className="text-xs font-medium uppercase tracking-wider text-iwb-slate-light">Total Deposits</p>
           <p className="mt-1.5 text-2xl font-bold text-iwb-teal">
             ${totalDeposits.toLocaleString("en-US", { minimumFractionDigits: 2 })}
           </p>
           <p className="mt-0.5 text-xs text-iwb-slate">All-time completed</p>
         </Card>
-        <Card className="p-5">
+        <Card className="p-6">
           <p className="text-xs font-medium uppercase tracking-wider text-iwb-slate-light">Total Withdrawals</p>
           <p className="mt-1.5 text-2xl font-bold text-iwb-error">
             ${totalWithdrawals.toLocaleString("en-US", { minimumFractionDigits: 2 })}
           </p>
           <p className="mt-0.5 text-xs text-iwb-slate">All-time completed</p>
         </Card>
-        <Card className="p-5">
+        <Card className="p-6">
           <p className="text-xs font-medium uppercase tracking-wider text-iwb-slate-light">Total Transfers</p>
           <p className="mt-1.5 text-2xl font-bold text-iwb-navy">
             ${totalTransfers.toLocaleString("en-US", { minimumFractionDigits: 2 })}
@@ -89,7 +89,7 @@ export default async function AdminReportsPage() {
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <Card className="p-5">
+        <Card className="p-6">
           <h3 className="mb-4 text-sm font-semibold text-iwb-navy">30-Day Volume</h3>
           {dailyData.length > 0 ? (
             <div className="space-y-2">
@@ -137,7 +137,7 @@ export default async function AdminReportsPage() {
           </div>
         </Card>
 
-        <Card className="p-5">
+        <Card className="p-6">
           <h3 className="mb-4 text-sm font-semibold text-iwb-navy">Top Users by Balance</h3>
           {userBalances.length > 0 ? (
             <div className="space-y-3">

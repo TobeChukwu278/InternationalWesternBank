@@ -16,9 +16,9 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="flex min-h-screen bg-iwb-surface">
+    <div className="flex bg-iwb-surface">
       <Sidebar />
-      <main className="flex-1 pb-20 lg:pb-0">
+      <main className="flex-1 overflow-y-auto pb-20 lg:pb-0" style={{ height: "100dvh" }}>
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
           {children}
         </div>

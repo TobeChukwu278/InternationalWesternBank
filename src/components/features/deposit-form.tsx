@@ -4,6 +4,7 @@ import { useActionState, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Select } from "@/components/ui/select";
 import { Card } from "@/components/ui/card";
 import { depositFunds } from "@/lib/actions/deposit";
 import { useToast } from "@/components/ui/toast";
@@ -49,20 +50,17 @@ export function DepositForm({ subAccounts }: { subAccounts: SubAccount[] }) {
       <form action={formAction} className="mt-6 space-y-5">
         <input type="hidden" name="sub_account_id" value={selectedSubId} />
 
-        <div>
-          <label className="text-sm font-medium text-iwb-navy">Deposit to</label>
-          <select
-            value={selectedSubId}
-            onChange={(e) => setSelectedSubId(e.target.value)}
-            className="mt-1.5 block w-full rounded-iwb-md border border-iwb-border bg-white px-4 py-3 text-sm text-iwb-navy focus:border-iwb-teal focus:ring-2 focus:ring-iwb-teal/10 focus:outline-none"
-          >
-            {subAccounts.map((sa) => (
-              <option key={sa.id} value={sa.id}>
-                {sa.type.charAt(0).toUpperCase() + sa.type.slice(1)} — ${Number(sa.balance).toFixed(2)}
-              </option>
-            ))}
-          </select>
-        </div>
+        <Select
+          label="Deposit to"
+          value={selectedSubId}
+          onChange={(e) => setSelectedSubId(e.target.value)}
+        >
+          {subAccounts.map((sa) => (
+            <option key={sa.id} value={sa.id}>
+              {sa.type.charAt(0).toUpperCase() + sa.type.slice(1)} — ${Number(sa.balance).toFixed(2)}
+            </option>
+          ))}
+        </Select>
 
         <Input
           label="Amount (USD)"

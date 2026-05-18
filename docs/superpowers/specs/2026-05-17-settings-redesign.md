@@ -99,7 +99,9 @@ File: `src/app/(dashboard)/settings/settings-client.tsx`
 - Toggle component is a simple CSS slider, no third-party library
 - Preferences save individually on change (no "Save All" button)
 - Password change uses Supabase's built-in auth.updateUser — no email verification needed
-- Theme preference is stored but not yet applied (no dark mode CSS). Stored for future use.
-- Currency preference is stored but doesn't change display formatting yet. Stored for future use.
+- Theme preference applies dark mode across the entire app via CSS class on `<html>` + dark mode CSS variables
+- Currency preference formats all `BalanceDisplay` components via optional `currency` prop
+- Theme is persisted via DB + cookie; ThemeProvider client component reads cookie and applies `dark` class
+- Cookie inline script in layout prevents flash of wrong theme before React hydrates
 - The Profile section reuses the existing `SettingsForm` component
 - "Member since" uses `profiles.created_at`

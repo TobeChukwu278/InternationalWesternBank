@@ -79,14 +79,7 @@ export default function LoginPage() {
               Sign In
             </Button>
 
-            <div className="flex items-center justify-between text-sm">
-              <Link
-                href="/forgot-password"
-                className="text-iwb-slate hover:text-iwb-navy transition-colors"
-              >
-                Forgot password?
-              </Link>
-            </div>
+
           </form>
 
           <p className="mt-8 text-center text-sm text-iwb-slate">
