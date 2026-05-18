@@ -1,17 +1,22 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 import { BalanceCard } from "@/components/features/balance-card";
 import { QuickActions } from "@/components/features/quick-actions";
 import { AccountCards } from "@/components/features/account-cards";
 import { SpendingInsights } from "@/components/features/spending-insights";
 import { RecentTransactions } from "@/components/features/recent-transactions";
 import { PromotionCard } from "@/components/features/promotion-card";
+import { convertAmount } from "@/lib/currency";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) redirect("/login");
+
+  const cookieStore = await cookies();
+  const preferredCurrency = cookieStore.get("preferred_currency")?.value ?? "USD";
 
   const { data: profile } = await supabase
     .from("profiles")
@@ -28,10 +33,11 @@ export default async function DashboardPage() {
   if (!account) redirect("/login");
 
   const subAccounts = account.sub_accounts ?? [];
-  const totalBalance = subAccounts.reduce(
+  const rawTotalBalance = subAccounts.reduce(
     (sum: number, sa: { balance: number }) => sum + Number(sa.balance),
     0,
   );
+  const totalBalance = await convertAmount(rawTotalBalance, "USD", preferredCurrency);
 
   const subAccountIds = subAccounts.map((sa: { id: string }) => sa.id);
 
@@ -127,12 +133,14 @@ export default async function DashboardPage() {
       <QuickActions />
 
       <AccountCards
-        subAccounts={subAccounts.map((sa: { id: string; type: string; balance: number }) => ({
-          id: sa.id,
-          type: sa.type,
-          balance: Number(sa.balance),
-          accountNumber: account.account_number,
-        }))}
+        subAccounts={await Promise.all(
+          subAccounts.map(async (sa: { id: string; type: string; balance: number }) => ({
+            id: sa.id,
+            type: sa.type,
+            balance: await convertAmount(Number(sa.balance), "USD", preferredCurrency),
+            accountNumber: account.account_number,
+          })),
+        )}
       />
 
       <div className="grid gap-6 lg:grid-cols-2">

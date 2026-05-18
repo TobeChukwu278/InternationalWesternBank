@@ -13,7 +13,7 @@ export async function updatePreferences(formData: FormData) {
   const preferredCurrency = formData.get("preferred_currency") as string;
   const theme = formData.get("theme") as string;
 
-  if (!["USD", "EUR", "GBP", "NGN"].includes(preferredCurrency)) {
+  if (!["USD", "EUR", "GBP"].includes(preferredCurrency)) {
     return { error: "Invalid currency" };
   }
   if (!["light", "dark"].includes(theme)) {
@@ -33,6 +33,7 @@ export async function updatePreferences(formData: FormData) {
 
   revalidatePath("/settings", "layout");
   revalidatePath("/dashboard", "layout");
+  revalidatePath("/accounts", "layout");
 
   return { success: true };
 }

@@ -117,7 +117,6 @@ export function SettingsClient({ profile, account, userId }: SettingsClientProps
               <option value="USD">USD ($)</option>
               <option value="EUR">EUR (€)</option>
               <option value="GBP">GBP (£)</option>
-              <option value="NGN">NGN (₦)</option>
             </select>
           </div>
           <div>
