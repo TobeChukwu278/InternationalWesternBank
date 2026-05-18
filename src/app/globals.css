@@ -85,3 +85,23 @@
   0%, 100% { opacity: 0.6; transform: scale(0.95); }
   50% { opacity: 1; transform: scale(1.05); }
 }
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+.dark {
+  --color-iwb-navy: #e8edf2;
+  --color-iwb-navy-light: #d0d8e0;
+  --color-iwb-teal: #00d4aa;
+  --color-iwb-teal-dark: #00b894;
+  --color-iwb-surface: #0f1722;
+  --color-iwb-surface-dim: #1a2332;
+  --color-iwb-surface-bright: #1a2332;
+  --color-iwb-slate: #8fa5c0;
+  --color-iwb-slate-light: #6b85a0;
+  --color-iwb-error: #ff6b6b;
+  --color-iwb-success: #00d4aa;
+  --color-iwb-border: #2a3a4e;
+  --color-iwb-border-light: #1e2d3d;
+  --shadow-iwb-card: 0px 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-iwb-overlay: 0px 8px 24px rgba(0, 0, 0, 0.5);
+}

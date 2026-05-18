@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ToastProvider } from "@/components/ui/toast";
 import { RouteProgress } from "@/components/ui/route-progress";
+import { SettingsProvider } from "@/components/features/settings-provider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -27,11 +28,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={inter.variable}>
-      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" precedence="default" />
       <body className="bg-iwb-surface font-sans text-iwb-navy antialiased">
+        <script dangerouslySetInnerHTML={{
+          __html: `(function(){var t=document.cookie.match(/(^| )theme=([^;]+)/);if(t&&t[2]==='dark')document.documentElement.classList.add('dark')})()`,
+        }} />
         <RouteProgress />
         <ToastProvider>
-          {children}
+          <SettingsProvider>
+            {children}
+          </SettingsProvider>
         </ToastProvider>
       </body>
     </html>
