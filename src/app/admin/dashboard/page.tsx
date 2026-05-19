@@ -78,7 +78,7 @@ export default async function AdminDashboardPage() {
         </svg>
       ),
       color: "text-iwb-slate",
-      bg: "bg-iwb-surface-dim",
+      bg: "bg-iwb-navy/5",
     },
     {
       label: "Today",
@@ -139,7 +139,7 @@ export default async function AdminDashboardPage() {
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => (
-          <Card key={stat.label} className="p-5 transition-all duration-200 hover:shadow-iwb-overlay">
+          <Card key={stat.label} className="p-6 transition-all duration-200 hover:shadow-iwb-overlay">
             <div className="flex items-start justify-between">
               <div>
                 <p className="text-xs font-medium uppercase tracking-wider text-iwb-slate-light">
@@ -163,7 +163,7 @@ export default async function AdminDashboardPage() {
       </div>
 
       <div className="grid gap-4 lg:grid-cols-3">
-        <Card className="p-5 lg:col-span-2">
+        <Card className="p-6 lg:col-span-2">
           <h3 className="mb-4 text-sm font-semibold text-iwb-navy">Transaction Activity (7 days)</h3>
           {volumeData && volumeData.length > 0 ? (
             <div className="space-y-3">
@@ -215,7 +215,7 @@ export default async function AdminDashboardPage() {
           </div>
         </Card>
 
-        <Card className="p-5">
+        <Card className="p-6">
           <h3 className="mb-4 text-sm font-semibold text-iwb-navy">Recent Activity</h3>
           <div className="space-y-4">
             {recentTxs?.length ? (

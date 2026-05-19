@@ -9,6 +9,9 @@ export interface Profile {
   id: string;
   email: string;
   full_name: string;
+  notifications_enabled: boolean;
+  preferred_currency: string;
+  theme: string;
   created_at: string;
 }
 
@@ -38,6 +41,22 @@ export interface Transaction {
   type: TransactionType;
   reference: string;
   description: string | null;
+  merchant_name: string | null;
+  category: string | null;
+  created_at: string;
+  scheduled_date: string | null;
+}
+
+export type NotificationType = "transfer" | "deposit" | "system";
+
+export interface Notification {
+  id: string;
+  user_id: string;
+  title: string;
+  message: string;
+  type: NotificationType;
+  reference: string | null;
+  is_read: boolean;
   created_at: string;
 }
 

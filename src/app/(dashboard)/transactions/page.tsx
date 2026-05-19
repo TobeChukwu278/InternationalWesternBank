@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { TransactionList } from "@/components/features/transaction-list";
+import { TransactionHistory } from "./transaction-history";
+import { getUnreadNotifications } from "@/lib/actions/notifications";
 
 interface PageProps {
   searchParams: Promise<Record<string, string>>;
@@ -20,10 +21,11 @@ export default async function TransactionsPage({ searchParams }: PageProps) {
   const statusFilter = sp.status || undefined;
   const directionFilter = sp.direction || undefined;
   const searchQuery = sp.search || undefined;
+  const categoryFilter = sp.category || undefined;
 
   const { data: account } = await supabase
     .from("accounts")
-    .select("*, sub_accounts(id)")
+    .select("*, sub_accounts(id, balance)")
     .eq("user_id", user.id)
     .single();
 
@@ -31,7 +33,6 @@ export default async function TransactionsPage({ searchParams }: PageProps) {
 
   const subAccountIds = (account.sub_accounts as { id: string }[]).map((sa) => sa.id);
 
-  // Build query
   let query = supabase
     .from("transactions")
     .select("*", { count: "exact" })
@@ -39,13 +40,9 @@ export default async function TransactionsPage({ searchParams }: PageProps) {
       `from_sub_account_id.in.(${subAccountIds.join(",")}),to_sub_account_id.in.(${subAccountIds.join(",")})`,
     );
 
-  if (typeFilter) {
-    query = query.eq("type", typeFilter);
-  }
-
-  if (statusFilter) {
-    query = query.eq("status", statusFilter);
-  }
+  if (typeFilter) query = query.eq("type", typeFilter);
+  if (statusFilter) query = query.eq("status", statusFilter);
+  if (categoryFilter) query = query.eq("category", categoryFilter);
 
   if (directionFilter === "incoming") {
     query = query.not("to_sub_account_id", "is", null).in("to_sub_account_id", subAccountIds);
@@ -54,7 +51,9 @@ export default async function TransactionsPage({ searchParams }: PageProps) {
   }
 
   if (searchQuery) {
-    query = query.or(`description.ilike.%${searchQuery}%,reference.ilike.%${searchQuery}%`);
+    query = query.or(
+      `merchant_name.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%,reference.ilike.%${searchQuery}%`,
+    );
   }
 
   const from = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -62,21 +61,45 @@ export default async function TransactionsPage({ searchParams }: PageProps) {
     .order("created_at", { ascending: false })
     .range(from, from + ITEMS_PER_PAGE - 1);
 
+  const { notifications, unreadCount } = await getUnreadNotifications(5);
+
+  // Fetch total balance for the "Total Assets" badge
+  const { data: fullAccount } = await supabase
+    .from("accounts")
+    .select("*, sub_accounts(balance)")
+    .eq("user_id", user.id)
+    .single();
+
+  const totalBalance = (fullAccount?.sub_accounts as { balance: number }[] ?? [])
+    .reduce((s, sa) => s + Number(sa.balance), 0);
+
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold text-iwb-navy">Transactions</h1>
-        <p className="mt-1 text-sm text-iwb-slate">
-          View your complete transaction history
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold text-iwb-navy">Transactions</h1>
+          <p className="mt-1 text-sm text-iwb-slate">
+            View your complete transaction history
+          </p>
+        </div>
+        <div className="flex items-center gap-2 rounded-iwb-lg bg-iwb-teal/10 px-4 py-2">
+          <span className="text-2xl font-bold text-iwb-navy">
+            ${totalBalance.toLocaleString("en-US", { minimumFractionDigits: 0 })}
+          </span>
+          <span className="text-xs text-iwb-slate">Total Assets</span>
+        </div>
       </div>
 
-      <TransactionList
-        transactions={transactions ?? []}
-        subAccountIds={subAccountIds}
-        totalCount={count ?? 0}
+      <TransactionHistory
+        key={JSON.stringify(sp)}
+        initialTransactions={transactions ?? []}
+        initialTotalCount={count ?? 0}
+        initialPage={currentPage}
         searchParams={sp}
-        currentPage={currentPage}
+        subAccountIds={subAccountIds}
+        accountNumber={account.account_number}
+        notificationUnreadCount={unreadCount}
+        notificationInitialNotifications={notifications}
       />
     </div>
   );

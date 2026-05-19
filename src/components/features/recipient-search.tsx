@@ -1,105 +1,167 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
-interface Recipient {
+interface SearchResult {
   account_number: string;
   full_name: string;
 }
 
 interface RecipientSearchProps {
-  onSelect: (recipient: Recipient) => void;
+  recentRecipients: { account_number: string; full_name: string }[];
+  onSelect: (recipient: { accountNumber: string; fullName: string }) => void;
+  selected: { accountNumber: string; fullName: string } | null;
 }
 
-export function RecipientSearch({ onSelect }: RecipientSearchProps) {
+export function RecipientSearch({ recentRecipients, onSelect, selected }: RecipientSearchProps) {
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState<Recipient[]>([]);
-  const [selected, setSelected] = useState<Recipient | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+  const [results, setResults] = useState<SearchResult[]>([]);
+  const [searching, setSearching] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [showAddNew, setShowAddNew] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (query.length < 2) {
+      setResults([]);
+      setShowDropdown(false);
+      return;
+    }
+    setSearching(true);
+    const controller = new AbortController();
+    fetch(`/api/recipients?q=${encodeURIComponent(query)}`, { signal: controller.signal })
+      .then((r) => r.json())
+      .then((data) => {
+        setResults(data.recipients ?? []);
+        setShowDropdown(true);
+      })
+      .catch(() => {})
+      .finally(() => setSearching(false));
+    return () => controller.abort();
+  }, [query]);
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        setOpen(false);
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node) &&
+          inputRef.current && !inputRef.current.contains(e.target as Node)) {
+        setShowDropdown(false);
       }
     }
     document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
-  async function handleSearch(value: string) {
-    setQuery(value);
-    setSelected(null);
-
-    if (value.length < 2) {
-      setResults([]);
-      setOpen(false);
-      return;
-    }
-
-    setLoading(true);
-    setOpen(true);
-
-    const res = await fetch(`/api/recipients?q=${encodeURIComponent(value)}`);
-    const data = await res.json();
-    setResults(data.recipients ?? []);
-    setLoading(false);
+  function handleSelect(r: { account_number: string; full_name: string }) {
+    onSelect({ accountNumber: r.account_number, fullName: r.full_name });
+    setQuery("");
+    setShowDropdown(false);
+    setShowAddNew(false);
   }
 
-  function handleSelect(r: Recipient) {
-    setSelected(r);
-    setQuery(r.account_number);
-    setOpen(false);
-    onSelect(r);
+  function handleClear() {
+    onSelect({ accountNumber: "", fullName: "" });
+    setQuery("");
+    setResults([]);
+  }
+
+  if (selected && selected.accountNumber) {
+    return (
+      <div className="flex items-center justify-between rounded-iwb-lg border border-iwb-teal/30 bg-iwb-teal/5 p-4">
+        <div className="flex items-center gap-3">
+          <span className="flex size-10 items-center justify-center rounded-full bg-iwb-teal/10 text-sm font-bold text-iwb-teal">
+            {selected.fullName.charAt(0).toUpperCase()}
+          </span>
+          <div>
+            <p className="text-sm font-medium text-iwb-navy">{selected.fullName}</p>
+            <p className="text-xs text-iwb-slate">**** {selected.accountNumber.slice(-4)}</p>
+          </div>
+        </div>
+        <button onClick={handleClear} className="text-xs text-iwb-slate-light hover:text-iwb-error transition-colors">
+          Change
+        </button>
+      </div>
+    );
   }
 
   return (
-    <div ref={ref} className="relative">
-      <label className="text-sm font-medium text-iwb-navy">Recipient</label>
-      <input
-        type="text"
-        value={query}
-        onChange={(e) => handleSearch(e.target.value)}
-        placeholder="Search by account number or name"
-        className="mt-1.5 block w-full rounded-iwb-md border border-iwb-border bg-white px-4 py-3 text-sm text-iwb-navy placeholder:text-iwb-slate-light focus:border-iwb-teal focus:ring-2 focus:ring-iwb-teal/10 focus:outline-none transition-colors"
-      />
-      <input type="hidden" name="recipient" value={selected?.account_number ?? ""} />
+    <div>
+      {!showAddNew && recentRecipients.length > 0 ? (
+        <div>
+          <p className="text-xs font-medium text-iwb-slate-light uppercase tracking-wider mb-3">Recent Recipients</p>
+          <div className="flex flex-wrap gap-3 mb-4">
+            {recentRecipients.map((r) => (
+              <button
+                key={r.account_number}
+                onClick={() => handleSelect(r)}
+                className="flex items-center gap-2 rounded-iwb-lg border border-iwb-border-light p-3 transition-all hover:border-iwb-teal hover:bg-iwb-teal/5 text-left"
+              >
+                <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-iwb-navy/5 text-xs font-bold text-iwb-slate">
+                  {r.full_name.charAt(0).toUpperCase()}
+                </span>
+                <div>
+                  <p className="text-sm font-medium text-iwb-navy">{r.full_name}</p>
+                  <p className="text-xs text-iwb-slate-light">**** {r.account_number.slice(-4)}</p>
+                </div>
+              </button>
+            ))}
+            <button
+              onClick={() => setShowAddNew(true)}
+              className="flex items-center gap-2 rounded-iwb-lg border border-dashed border-iwb-border p-3 transition-all hover:border-iwb-teal hover:bg-iwb-teal/5 text-left"
+            >
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-iwb-teal/10 text-iwb-teal">
+                <i className="material-icons text-sm">add</i>
+              </span>
+              <div>
+                <p className="text-sm font-medium text-iwb-navy">Add New</p>
+                <p className="text-xs text-iwb-slate-light">Search by account</p>
+              </div>
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="relative">
+          <div className="flex items-center gap-2 rounded-iwb-lg border border-iwb-border bg-white px-4 py-3 focus-within:border-iwb-teal focus-within:ring-2 focus-within:ring-iwb-teal/10 transition-colors">
+            <i className="material-icons text-iwb-slate-light">search</i>
+            <input
+              ref={inputRef}
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search by account number..."
+              className="flex-1 bg-transparent text-sm text-iwb-navy placeholder:text-iwb-slate-light focus:outline-none"
+            />
+            {searching ? (
+              <span className="size-4 animate-spin rounded-full border-2 border-iwb-teal border-t-transparent" />
+            ) : null}
+          </div>
 
-      {open && (
-        <div className="absolute z-10 mt-1 w-full rounded-iwb-md border border-iwb-border-light bg-white shadow-iwb-overlay">
-          {loading ? (
-            <div className="px-4 py-3 text-sm text-iwb-slate">Searching...</div>
-          ) : results.length > 0 ? (
-            <ul>
+          {showDropdown && results.length > 0 ? (
+            <div
+              ref={dropdownRef}
+              className="absolute z-10 mt-1 w-full rounded-iwb-lg bg-white shadow-iwb-overlay border border-iwb-border-light max-h-60 overflow-y-auto"
+            >
               {results.map((r) => (
-                <li
+                <button
                   key={r.account_number}
                   onClick={() => handleSelect(r)}
-                  className="flex cursor-pointer items-center gap-3 px-4 py-3 text-sm transition-colors hover:bg-iwb-surface"
+                  className="flex w-full items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-iwb-surface"
                 >
-                  <span className="flex size-9 items-center justify-center rounded-full bg-iwb-teal/10 text-xs font-bold text-iwb-teal">
-                    {r.full_name.charAt(0)}
+                  <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-iwb-navy/5 text-xs font-bold text-iwb-slate">
+                    {r.full_name.charAt(0).toUpperCase()}
                   </span>
                   <div>
-                    <p className="font-medium text-iwb-navy">{r.full_name}</p>
-                    <p className="text-xs text-iwb-slate">{r.account_number}</p>
+                    <p className="text-sm font-medium text-iwb-navy">{r.full_name}</p>
+                    <p className="text-xs text-iwb-slate-light">{r.account_number}</p>
                   </div>
-                </li>
+                </button>
               ))}
-            </ul>
-          ) : query.length >= 2 ? (
-            <div className="px-4 py-3 text-sm text-iwb-slate">No recipients found</div>
+            </div>
+          ) : showDropdown && query.length >= 2 ? (
+            <div className="absolute z-10 mt-1 w-full rounded-iwb-lg bg-white shadow-iwb-overlay border border-iwb-border-light p-4 text-center text-sm text-iwb-slate">
+              No recipients found
+            </div>
           ) : null}
-        </div>
-      )}
-
-      {selected && (
-        <div className="mt-2 flex items-center gap-2 rounded-iwb-md bg-iwb-teal/5 px-3 py-2">
-          <span className="text-xs text-iwb-teal-dark">
-            Sending to <strong>{selected.full_name}</strong>
-          </span>
         </div>
       )}
     </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { Input } from "@/components/ui/input";
 import { adminLogin } from "@/lib/actions/admin-login";
 
 export function AdminLoginForm() {
@@ -24,20 +25,14 @@ export function AdminLoginForm() {
         </div>
 
         <form action={formAction} className="space-y-4">
-          <div>
-            <label htmlFor="password" className="text-sm font-medium text-iwb-navy">
-              Password
-            </label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              autoFocus
-              required
-              className="mt-1.5 block w-full rounded-iwb-md border border-iwb-border bg-white px-4 py-3 text-sm text-iwb-navy placeholder:text-iwb-slate-light focus:border-iwb-teal focus:ring-2 focus:ring-iwb-teal/10 focus:outline-none"
-              placeholder="Enter admin password"
-            />
-          </div>
+          <Input
+            label="Password"
+            name="password"
+            type="password"
+            autoFocus
+            required
+            placeholder="Enter admin password"
+          />
 
           {state?.error ? (
             <p className="flex items-center gap-1.5 rounded-iwb-md bg-iwb-error/5 px-3 py-2 text-sm text-iwb-error">
