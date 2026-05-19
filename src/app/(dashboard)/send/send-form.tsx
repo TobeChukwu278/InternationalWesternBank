@@ -69,7 +69,7 @@ export function SendForm({ subAccounts, accountNumber, recentRecipients, preferr
     const res = await sendMoney(formData);
 
     if (res.success) {
-      showToast("Money sent successfully", "success");
+      showToast("Transfer submitted for approval", "success");
       setLastReference(res.reference ?? "");
       setResult({
         status: (res.status as "success" | "pending") ?? "success",

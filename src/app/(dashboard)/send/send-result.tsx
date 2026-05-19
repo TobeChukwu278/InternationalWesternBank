@@ -66,7 +66,17 @@ export function SendResult({
 }: SendResultProps) {
   const receiptRef = useRef<HTMLDivElement>(null);
   const [capturing, setCapturing] = useState<string | null>(null);
-  const c = config[status];
+  const isAdminPending = status === "pending" && !scheduledDate;
+  const effectiveConfig = isAdminPending
+    ? {
+        icon: "hourglass_empty" as const,
+        iconColor: "text-iwb-amber" as const,
+        heading: "Pending Approval" as const,
+        headingColor: "text-iwb-navy" as const,
+        borderColor: "border-iwb-amber" as const,
+      }
+    : config[status];
+  const c = effectiveConfig;
   const symbol = currencySymbols[preferredCurrency] ?? "$";
 
   async function captureReceipt(): Promise<HTMLCanvasElement | null> {
@@ -148,10 +158,16 @@ export function SendResult({
                 </span>
               </div>
             ) : null}
-            {status === "pending" ? (
+            {status === "pending" && scheduledDate ? (
               <div className="flex justify-between text-sm">
                 <span className="text-iwb-slate-light">Status</span>
-                <span className="rounded-iwb-full bg-iwb-navy/5 px-2.5 py-0.5 text-xs font-medium text-iwb-slate">Pending</span>
+                <span className="rounded-iwb-full bg-iwb-navy/5 px-2.5 py-0.5 text-xs font-medium text-iwb-slate">Scheduled</span>
+              </div>
+            ) : null}
+            {isAdminPending ? (
+              <div className="flex justify-between text-sm">
+                <span className="text-iwb-slate-light">Status</span>
+                <span className="rounded-iwb-full bg-iwb-amber/10 px-2.5 py-0.5 text-xs font-medium text-iwb-amber">Pending Approval</span>
               </div>
             ) : null}
           </div>
