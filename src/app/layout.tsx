@@ -4,6 +4,7 @@ import "./globals.css";
 import { ToastProvider } from "@/components/ui/toast";
 import { RouteProgress } from "@/components/ui/route-progress";
 import { SettingsProvider } from "@/components/features/settings-provider";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -39,6 +40,7 @@ export default function RootLayout({
             {children}
           </SettingsProvider>
         </ToastProvider>
+        <Analytics />
       </body>
     </html>
   );
