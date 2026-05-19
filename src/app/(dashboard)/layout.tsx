@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { createServiceClient } from "@/lib/supabase/service";
 import { Sidebar } from "@/components/features/sidebar";
 import { MobileNav } from "@/components/features/mobile-nav";
 
@@ -13,6 +14,21 @@ export default async function DashboardLayout({
 
   if (!user) {
     redirect("/login");
+  }
+
+  const svc = createServiceClient();
+  const { data: profile } = await svc
+    .from("profiles")
+    .select("status")
+    .eq("id", user.id)
+    .single();
+
+  if (profile?.status === "pending" || !profile) {
+    redirect("/pending-verification");
+  }
+
+  if (profile?.status === "rejected") {
+    redirect("/pending-verification?rejected=true");
   }
 
   return (
