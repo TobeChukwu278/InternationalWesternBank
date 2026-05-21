@@ -5,6 +5,7 @@ import { ToastProvider } from "@/components/ui/toast";
 import { RouteProgress } from "@/components/ui/route-progress";
 import { SettingsProvider } from "@/components/features/settings-provider";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -41,6 +42,7 @@ export default function RootLayout({
           </SettingsProvider>
         </ToastProvider>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
