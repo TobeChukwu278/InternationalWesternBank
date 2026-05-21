@@ -1,69 +1,52 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { uploadProfilePhoto, uploadKycDocument } from "@/lib/upload";
+import { useRef } from "react";
 
 interface IdentityDocsProps {
-  ssnLastFour: string;
-  onSsnChange: (val: string) => void;
-  onDocumentsChange: (docs: {
-    avatarUrl?: string;
-    idFrontUrl?: string;
-    idBackUrl?: string;
+  avatarFile: File | null;
+  idFrontFile: File | null;
+  idBackFile: File | null;
+  avatarPreview: string | null;
+  idFrontPreview: string | null;
+  idBackPreview: string | null;
+  onFilesChange: (files: {
+    avatarFile?: File;
+    idFrontFile?: File;
+    idBackFile?: File;
+    avatarPreview?: string | null;
+    idFrontPreview?: string | null;
+    idBackPreview?: string | null;
   }) => void;
   onNext: () => void;
   onBack: () => void;
 }
 
-export function IdentityDocs({ ssnLastFour, onSsnChange, onDocumentsChange, onNext, onBack }: IdentityDocsProps) {
-  const [uploading, setUploading] = useState(false);
-  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
-  const [idFrontPreview, setIdFrontPreview] = useState<string | null>(null);
-  const [idBackPreview, setIdBackPreview] = useState<string | null>(null);
-  const [avatarFile, setAvatarFile] = useState<File | null>(null);
-  const [idFrontFile, setIdFrontFile] = useState<File | null>(null);
-  const [idBackFile, setIdBackFile] = useState<File | null>(null);
-
+export function IdentityDocs({
+  avatarFile, idFrontFile, idBackFile,
+  avatarPreview, idFrontPreview, idBackPreview,
+  onFilesChange, onNext, onBack,
+}: IdentityDocsProps) {
   const avatarRef = useRef<HTMLInputElement>(null);
   const idFrontRef = useRef<HTMLInputElement>(null);
   const idBackRef = useRef<HTMLInputElement>(null);
 
   function handleFileSelect(
     file: File | undefined,
-    setPreview: (v: string | null) => void,
-    setFile: (f: File | null) => void,
+    key: "avatarFile" | "idFrontFile" | "idBackFile",
+    previewKey: "avatarPreview" | "idFrontPreview" | "idBackPreview",
   ) {
     if (!file) return;
-    setFile(file);
     const reader = new FileReader();
-    reader.onload = (e) => setPreview(e.target?.result as string);
+    reader.onload = (e) => {
+      onFilesChange({ [key]: file, [previewKey]: e.target?.result as string });
+    };
     reader.readAsDataURL(file);
-  }
-
-  async function handleUploadAndContinue() {
-    if (!idFrontFile || !idBackFile || !avatarFile) return;
-    setUploading(true);
-
-    const tempId = "temp";
-
-    const avatarUrl = await uploadProfilePhoto(avatarFile, tempId);
-    const idFrontUrl = await uploadKycDocument(idFrontFile, tempId, "front");
-    const idBackUrl = await uploadKycDocument(idBackFile, tempId, "back");
-
-    onDocumentsChange({
-      avatarUrl: avatarUrl ?? undefined,
-      idFrontUrl: idFrontUrl ?? undefined,
-      idBackUrl: idBackUrl ?? undefined,
-    });
-
-    setUploading(false);
-    onNext();
   }
 
   const canContinue = avatarFile && idFrontFile && idBackFile;
 
   return (
-    <div className="space-y-6 identity-docs">
+    <div className="space-y-6">
       <div>
         <label className="text-xs font-medium text-iwb-slate-light uppercase tracking-wider mb-3 block">
           Profile Photo <span className="text-iwb-error">*</span>
@@ -90,7 +73,7 @@ export function IdentityDocs({ ssnLastFour, onSsnChange, onDocumentsChange, onNe
             type="file"
             accept="image/*"
             className="hidden"
-            onChange={(e) => handleFileSelect(e.target.files?.[0], setAvatarPreview, setAvatarFile)}
+            onChange={(e) => handleFileSelect(e.target.files?.[0], "avatarFile", "avatarPreview")}
           />
         </div>
       </div>
@@ -121,7 +104,7 @@ export function IdentityDocs({ ssnLastFour, onSsnChange, onDocumentsChange, onNe
             type="file"
             accept="image/*"
             className="hidden"
-            onChange={(e) => handleFileSelect(e.target.files?.[0], setIdFrontPreview, setIdFrontFile)}
+            onChange={(e) => handleFileSelect(e.target.files?.[0], "idFrontFile", "idFrontPreview")}
           />
         </div>
       </div>
@@ -152,23 +135,9 @@ export function IdentityDocs({ ssnLastFour, onSsnChange, onDocumentsChange, onNe
             type="file"
             accept="image/*"
             className="hidden"
-            onChange={(e) => handleFileSelect(e.target.files?.[0], setIdBackPreview, setIdBackFile)}
+            onChange={(e) => handleFileSelect(e.target.files?.[0], "idBackFile", "idBackPreview")}
           />
         </div>
-      </div>
-
-      <div>
-        <label className="text-xs font-medium text-iwb-slate-light uppercase tracking-wider">
-          SSN (Last 4 Digits) <span className="text-iwb-slate-light font-normal">— Optional</span>
-        </label>
-        <input
-          type="text"
-          value={ssnLastFour}
-          onChange={(e) => onSsnChange(e.target.value.replace(/\D/g, "").slice(0, 4))}
-          placeholder="1234"
-          maxLength={4}
-          className="mt-2 w-full rounded-iwb-lg border border-iwb-border bg-white px-4 py-3 text-sm text-iwb-navy placeholder:text-iwb-slate-light focus:border-iwb-teal focus:ring-2 focus:ring-iwb-teal/10 focus:outline-none"
-        />
       </div>
 
       <div className="flex gap-3">
@@ -179,14 +148,11 @@ export function IdentityDocs({ ssnLastFour, onSsnChange, onDocumentsChange, onNe
           Back
         </button>
         <button
-          onClick={handleUploadAndContinue}
-          disabled={!canContinue || uploading}
-          className="flex-1 rounded-iwb-md bg-iwb-teal px-4 py-3 text-sm font-semibold text-iwb-navy transition-all hover:bg-iwb-teal-dark disabled:cursor-not-allowed disabled:opacity-50 flex items-center justify-center gap-2"
+          onClick={onNext}
+          disabled={!canContinue}
+          className="flex-1 rounded-iwb-md bg-iwb-teal px-4 py-3 text-sm font-semibold text-iwb-navy transition-all hover:bg-iwb-teal-dark disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {uploading ? (
-            <span className="size-4 animate-spin rounded-full border-2 border-iwb-navy border-t-transparent" />
-          ) : null}
-          {uploading ? "Uploading..." : "Continue"}
+          Continue
         </button>
       </div>
     </div>

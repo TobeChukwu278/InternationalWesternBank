@@ -69,6 +69,36 @@ export async function signupWithKyc(formData: FormData) {
   return { success: true, userId: authData.user.id };
 }
 
+export async function updateKycDocumentUrls(formData: FormData) {
+  const svc = createServiceClient();
+  const userId = formData.get("user_id") as string;
+  if (!userId) return { error: "Missing user ID" };
+
+  const updates: Record<string, string> = {};
+  for (const field of ["avatar_url", "id_document_front", "id_document_back"] as const) {
+    const val = formData.get(field) as string | null;
+    if (val) updates[field] = val;
+  }
+
+  if (Object.keys(updates).length === 0) return { success: true };
+
+  const { error } = await svc
+    .from("profiles")
+    .update(updates)
+    .eq("id", userId);
+
+  if (error) return { error: error.message };
+  return { success: true };
+}
+
+export async function getDocumentSignedUrl(bucket: string, filePath: string) {
+  const svc = createServiceClient();
+  const { data } = await svc.storage
+    .from(bucket)
+    .createSignedUrl(filePath, 3600);
+  return data?.signedUrl ?? null;
+}
+
 export async function approveKyc(formData: FormData) {
   const isAdmin = await isAdminSession();
   if (!isAdmin) return { error: "Not authorized" };
