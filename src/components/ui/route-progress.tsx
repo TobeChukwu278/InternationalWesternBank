@@ -76,9 +76,7 @@ export function RouteProgress() {
             style={{ animation: "dash-reverse 2s ease-in-out infinite" }}
           />
         </svg>
-        <span className="relative text-base font-bold tracking-tight text-iwb-teal" style={{ animation: "pulse-logo 1.5s ease-in-out infinite" }}>
-          IWB
-        </span>
+        <img src="/logo.png" alt="IWB" className="relative size-8" style={{ animation: "pulse-logo 1.5s ease-in-out infinite" }} />
       </div>
     </div>
   );

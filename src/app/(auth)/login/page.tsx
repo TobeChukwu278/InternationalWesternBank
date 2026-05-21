@@ -20,8 +20,8 @@ export default function LoginPage() {
       <div className="hidden lg:flex lg:w-1/2 bg-iwb-navy items-center justify-center p-12 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_#0a2540,_#001020)]" />
         <div className="relative z-10 max-w-md text-center">
-          <div className="mx-auto mb-6 flex size-16 items-center justify-center rounded-full bg-white/10">
-            <span className="text-2xl font-bold text-iwb-teal">IWB</span>
+          <div className="mx-auto mb-6 flex size-16 items-center justify-center">
+            <img src="/logo.png" alt="IWB" className="size-16" />
           </div>
           <h2 className="text-3xl font-bold text-white">
             International Western Bank
@@ -35,8 +35,8 @@ export default function LoginPage() {
 
       <div className="flex flex-1 items-center justify-center bg-iwb-surface px-4 py-12 lg:px-8">
         <Card className="w-full max-w-sm p-8">
-          <div className="mb-8 text-center lg:hidden">
-            <span className="text-xl font-bold text-iwb-navy">IWB</span>
+          <div className="mb-8 flex justify-center lg:hidden">
+            <img src="/logo.png" alt="IWB" className="h-10" />
           </div>
 
           <h1 className="text-xl font-semibold text-iwb-navy">Welcome back</h1>

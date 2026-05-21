@@ -84,8 +84,8 @@ export function DepositForm({ subAccounts, preferredCurrency }: DepositFormProps
     return (
       <div className="space-y-6 max-w-lg mx-auto">
         <div className="rounded-iwb-xl border-2 border-iwb-border bg-white p-8 text-center">
-          <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-full bg-iwb-navy">
-            <i className="material-icons text-white text-2xl">account_balance</i>
+          <div className="mx-auto mb-4 flex size-14 items-center justify-center">
+            <img src="/logo.png" alt="IWB" className="size-14" />
           </div>
 
           {result.status === "pending" ? (

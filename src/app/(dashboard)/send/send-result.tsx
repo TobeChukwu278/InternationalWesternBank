@@ -122,8 +122,8 @@ export function SendResult({
       <div className={`rounded-iwb-xl border-2 ${c.borderColor} bg-white overflow-hidden`}>
         <div ref={receiptRef} className="p-8" style={{ fontFamily: "Inter, system-ui, sans-serif" }}>
           <div className="text-center border-b border-dashed border-iwb-border-light pb-6">
-            <div className="mx-auto mb-3 flex size-14 items-center justify-center rounded-full bg-iwb-navy">
-              <i className="material-icons text-white text-2xl">account_balance</i>
+            <div className="mx-auto mb-3 flex size-14 items-center justify-center">
+              <img src="/logo.png" alt="IWB" className="size-14" />
             </div>
             <h2 className="text-lg font-bold text-iwb-navy">International Western Bank</h2>
           </div>

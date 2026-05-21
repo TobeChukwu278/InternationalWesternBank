@@ -102,8 +102,8 @@ export function TransactionReceipt({
         >
           {/* Header */}
           <div className="text-center border-b border-dashed border-iwb-border-light pb-6">
-            <div className="mx-auto mb-2 flex size-12 items-center justify-center rounded-full bg-iwb-navy">
-              <i className="material-icons text-white text-xl">account_balance</i>
+            <div className="mx-auto mb-2 flex size-12 items-center justify-center">
+              <img src="/logo.png" alt="IWB" className="size-12" />
             </div>
             <h2 className="text-lg font-bold text-iwb-navy">International Western Bank</h2>
             <p className="text-xs text-iwb-slate-light mt-0.5">Secure Banking Solution</p>

@@ -43,8 +43,8 @@ export async function Sidebar() {
   return (
     <aside className="hidden lg:flex lg:w-[260px] shrink-0 flex-col bg-iwb-navy sticky top-0 h-dvh">
       <div className="flex h-16 items-center gap-3 border-b border-white/10 px-6">
-        <div className="flex size-8 items-center justify-center rounded-full bg-iwb-teal/20">
-          <span className="text-sm font-bold text-iwb-teal">IWB</span>
+        <div className="flex size-8 items-center justify-center">
+          <img src="/logo.png" alt="IWB" className="size-8" />
         </div>
         <span className="font-semibold text-white">International WB</span>
       </div>

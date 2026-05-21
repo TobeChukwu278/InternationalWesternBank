@@ -17,8 +17,8 @@ export function AdminLoginForm() {
     <div className="w-full max-w-sm">
       <div className="rounded-iwb-lg bg-white p-8 shadow-iwb-card">
         <div className="mb-6 text-center">
-          <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-iwb-teal/20">
-            <span className="text-lg font-bold text-iwb-teal">IWB</span>
+          <div className="mx-auto flex size-12 items-center justify-center">
+            <img src="/logo.png" alt="IWB" className="size-12" />
           </div>
           <h1 className="mt-4 text-xl font-semibold text-iwb-navy">Admin Access</h1>
           <p className="mt-1 text-sm text-iwb-slate">Enter the admin password to continue</p>

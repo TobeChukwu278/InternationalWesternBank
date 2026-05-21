@@ -32,8 +32,8 @@ export function PendingContent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-iwb-surface px-4">
       <div className="w-full max-w-md rounded-iwb-xl bg-white p-8 text-center shadow-iwb-card">
-        <div className="mx-auto mb-6 flex size-16 items-center justify-center rounded-full bg-iwb-navy">
-          <i className="material-icons text-white text-3xl">account_balance</i>
+        <div className="mx-auto mb-6 flex size-16 items-center justify-center">
+          <img src="/logo.png" alt="IWB" className="size-16" />
         </div>
         <i className="material-icons text-5xl text-iwb-teal mb-4">how_to_reg</i>
         <h1 className="text-xl font-semibold text-iwb-navy">Registration Submitted</h1>
