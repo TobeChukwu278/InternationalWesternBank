@@ -12,6 +12,21 @@ export interface Profile {
   notifications_enabled: boolean;
   preferred_currency: string;
   theme: string;
+  status: "pending" | "active" | "rejected";
+  kyc_status: "not_submitted" | "pending" | "verified" | "rejected";
+  phone: string | null;
+  date_of_birth: string | null;
+  address_line1: string | null;
+  address_city: string | null;
+  address_state: string | null;
+  address_zip: string | null;
+  avatar_url: string | null;
+  id_document_front: string | null;
+  id_document_back: string | null;
+  ssn_last_four: string | null;
+  reviewed_by: string | null;
+  reviewed_at: string | null;
+  rejection_reason: string | null;
   created_at: string;
 }
 
