@@ -1,5 +1,23 @@
 import { createServiceClient } from "@/lib/supabase/service";
 import { KycActions } from "./kyc-actions";
+import { getDocumentSignedUrl } from "@/lib/actions/kyc";
+
+function extractStoragePath(url: string | null): { bucket: string; path: string } | null {
+  if (!url) return null;
+  try {
+    const u = new URL(url);
+    if (!u.pathname.includes("/storage/v1/object/public/")) return null;
+    const segs = u.pathname.split("/storage/v1/object/public/");
+    if (segs.length < 2) return null;
+    const parts = segs[1]!.split("/");
+    const bucket = parts[0] ?? "";
+    const path = parts.slice(1).join("/");
+    if (!bucket || !path) return null;
+    return { bucket, path } as { bucket: string; path: string };
+  } catch {
+    return null;
+  }
+}
 
 export default async function AdminKycPage() {
   const svc = createServiceClient();
@@ -16,6 +34,22 @@ export default async function AdminKycPage() {
     .in("kyc_status", ["verified", "rejected"])
     .order("updated_at", { ascending: false })
     .limit(20);
+
+  async function getDocumentUrls(url: string | null) {
+    const info = extractStoragePath(url);
+    if (!info) return { href: url, isSigned: false };
+    const signed = await getDocumentSignedUrl(info.bucket, info.path);
+    return { href: signed || url, isSigned: !!signed };
+  }
+
+  const pendingWithDocs = await Promise.all(
+    (pendingUsers ?? []).map(async (user: any) => ({
+      user,
+      frontDoc: await getDocumentUrls(user.id_document_front),
+      backDoc: await getDocumentUrls(user.id_document_back),
+      avatarDoc: await getDocumentUrls(user.avatar_url),
+    }))
+  );
 
   return (
     <div className="space-y-8">
@@ -42,13 +76,13 @@ export default async function AdminKycPage() {
           </div>
         ) : (
           <div className="space-y-4">
-            {(pendingUsers ?? []).map((user: any) => (
+            {pendingWithDocs.map(({ user, frontDoc, backDoc, avatarDoc }) => (
               <div key={user.id} className="rounded-iwb-xl bg-white shadow-iwb-card border border-iwb-border-light overflow-hidden">
                 <div className="p-5">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-3">
-                      {user.avatar_url ? (
-                        <img src={user.avatar_url} alt="" className="size-12 rounded-full object-cover" />
+                      {avatarDoc.href ? (
+                        <img src={avatarDoc.href} alt="" className="size-12 rounded-full object-cover" />
                       ) : (
                         <span className="flex size-12 items-center justify-center rounded-full bg-iwb-navy/5 text-sm font-bold text-iwb-slate">
                           {user.full_name?.charAt(0)?.toUpperCase()}
@@ -80,18 +114,18 @@ export default async function AdminKycPage() {
                     ) : null}
                   </div>
 
-                  {user.id_document_front || user.id_document_back ? (
-                    <div className="mt-4 flex gap-3">
-                      {user.id_document_front ? (
-                        <a href={user.id_document_front} target="_blank" className="flex items-center gap-2 rounded-iwb-md border border-iwb-border-light px-3 py-2 text-xs text-iwb-slate hover:border-iwb-teal hover:text-iwb-teal transition-colors">
-                          <i className="material-icons text-sm">badge</i>
-                          View ID Front
+                  {frontDoc.href || backDoc.href ? (
+                    <div className="mt-4 grid grid-cols-2 gap-3">
+                      {frontDoc.href ? (
+                        <a href={frontDoc.href} target="_blank" className="group relative block aspect-[1.4/1] overflow-hidden rounded-iwb-lg border border-iwb-border-light bg-iwb-surface">
+                          <img src={frontDoc.href} alt="ID Front" className="size-full object-cover transition-transform group-hover:scale-105" />
+                          <span className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent px-2 py-1.5 text-[10px] font-medium text-white">ID Front</span>
                         </a>
                       ) : null}
-                      {user.id_document_back ? (
-                        <a href={user.id_document_back} target="_blank" className="flex items-center gap-2 rounded-iwb-md border border-iwb-border-light px-3 py-2 text-xs text-iwb-slate hover:border-iwb-teal hover:text-iwb-teal transition-colors">
-                          <i className="material-icons text-sm">badge</i>
-                          View ID Back
+                      {backDoc.href ? (
+                        <a href={backDoc.href} target="_blank" className="group relative block aspect-[1.4/1] overflow-hidden rounded-iwb-lg border border-iwb-border-light bg-iwb-surface">
+                          <img src={backDoc.href} alt="ID Back" className="size-full object-cover transition-transform group-hover:scale-105" />
+                          <span className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent px-2 py-1.5 text-[10px] font-medium text-white">ID Back</span>
                         </a>
                       ) : null}
                     </div>

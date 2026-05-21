@@ -13,12 +13,15 @@ export function KycActions({ userId }: KycActionsProps) {
   const [showReject, setShowReject] = useState(false);
   const [rejectReason, setRejectReason] = useState("");
   const [loading, setLoading] = useState(false);
+  const [actionError, setActionError] = useState<string | null>(null);
 
   async function handleApprove() {
     setLoading(true);
+    setActionError(null);
     const formData = new FormData();
     formData.set("user_id", userId);
-    await approveKyc(formData);
+    const res = await approveKyc(formData);
+    if (res.error) setActionError(res.error);
     setLoading(false);
     router.refresh();
   }
@@ -26,16 +29,23 @@ export function KycActions({ userId }: KycActionsProps) {
   async function handleReject() {
     if (!rejectReason.trim()) return;
     setLoading(true);
+    setActionError(null);
     const formData = new FormData();
     formData.set("user_id", userId);
     formData.set("reason", rejectReason);
-    await rejectKyc(formData);
+    const res = await rejectKyc(formData);
+    if (res.error) setActionError(res.error);
     setLoading(false);
     router.refresh();
   }
 
   return (
     <div className="border-t border-iwb-border-light px-5 py-3 bg-iwb-surface">
+      {actionError ? (
+        <div className="mb-3 rounded-iwb-md bg-iwb-error/5 border border-iwb-error/20 px-3 py-2">
+          <p className="text-xs text-iwb-error">{actionError}</p>
+        </div>
+      ) : null}
       {showReject ? (
         <div className="space-y-3">
           <textarea
@@ -54,7 +64,7 @@ export function KycActions({ userId }: KycActionsProps) {
               {loading ? "..." : "Confirm Reject"}
             </button>
             <button
-              onClick={() => { setShowReject(false); setRejectReason(""); }}
+              onClick={() => { setShowReject(false); setRejectReason(""); setActionError(null); }}
               className="rounded-iwb-md border border-iwb-border px-4 py-2 text-xs font-semibold text-iwb-slate"
             >
               Cancel
