@@ -18,7 +18,7 @@ export function ScheduleToggle({ enabled, onToggle, date, onDateChange }: Schedu
           <i className="material-icons text-iwb-slate-light">event_repeat</i>
           <div>
             <p className="text-sm font-medium text-iwb-navy">{t('send.scheduleLater')}</p>
-            <p className="text-xs text-iwb-slate">Send this transfer automatically in the future</p>
+            <p className="text-xs text-iwb-slate">{t("send.scheduleDescription")}</p>
           </div>
         </div>
         <button

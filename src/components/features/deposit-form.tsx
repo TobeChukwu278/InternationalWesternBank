@@ -147,30 +147,30 @@ export function DepositForm({ subAccounts, preferredCurrency }: DepositFormProps
       <Card className="p-6 border-l-4 border-l-iwb-teal">
         <div className="flex items-center gap-2 mb-4">
           <i className="material-icons text-iwb-teal">account_balance</i>
-          <h2 className="text-sm font-semibold text-iwb-navy">Bank Transfer Instructions</h2>
+          <h2 className="text-sm font-semibold text-iwb-navy">{t('deposit.bankTransferInstructions')}</h2>
         </div>
         <p className="text-xs text-iwb-slate mb-4">
-          Transfer funds from your external bank account to the IWB account below. Your deposit will be credited once confirmed.
+          {t('deposit.instructions')}
         </p>
         <div className="space-y-3">
           <div className="flex justify-between border-b border-iwb-border-light pb-2">
-            <span className="text-xs text-iwb-slate-light">Bank</span>
+            <span className="text-xs text-iwb-slate-light">{t('deposit.bank')}</span>
             <span className="text-sm font-medium text-iwb-navy">International Western Bank</span>
           </div>
           <div className="flex justify-between border-b border-iwb-border-light pb-2">
-            <span className="text-xs text-iwb-slate-light">Account Name</span>
+            <span className="text-xs text-iwb-slate-light">{t('deposit.accountName')}</span>
             <span className="text-sm font-medium text-iwb-navy">IWB Customer Deposits</span>
           </div>
           <div className="flex justify-between border-b border-iwb-border-light pb-2">
-            <span className="text-xs text-iwb-slate-light">Account Number</span>
+            <span className="text-xs text-iwb-slate-light">{t('deposit.accountNumber')}</span>
             <span className="text-sm font-mono font-medium text-iwb-navy">4829-1023-7756-0184</span>
           </div>
           <div className="flex justify-between border-b border-iwb-border-light pb-2">
-            <span className="text-xs text-iwb-slate-light">Routing Number</span>
+            <span className="text-xs text-iwb-slate-light">{t('deposit.routingNumber')}</span>
             <span className="text-sm font-mono font-medium text-iwb-navy">021000021</span>
           </div>
           <div className="flex justify-between pb-2">
-            <span className="text-xs text-iwb-slate-light">SWIFT / BIC</span>
+            <span className="text-xs text-iwb-slate-light">{t('deposit.swiftBic')}</span>
             <span className="text-sm font-mono font-medium text-iwb-navy">IWBKUS33</span>
           </div>
         </div>
@@ -180,12 +180,12 @@ export function DepositForm({ subAccounts, preferredCurrency }: DepositFormProps
       <Card className="p-6">
         <div className="flex items-center gap-2 mb-4">
           <i className="material-icons text-iwb-teal">compare_arrows</i>
-          <h2 className="text-sm font-semibold text-iwb-navy">Initiate Transfer</h2>
+          <h2 className="text-sm font-semibold text-iwb-navy">{t('deposit.initiateTransfer')}</h2>
         </div>
 
         <div className="space-y-5">
           <div>
-            <label className="text-xs font-medium text-iwb-slate-light uppercase tracking-wider">Deposit To</label>
+            <label className="text-xs font-medium text-iwb-slate-light uppercase tracking-wider">{t('deposit.depositTo')}</label>
             <div className="mt-2 relative">
               <select
                 value={selectedSubId}
@@ -272,7 +272,7 @@ export function DepositForm({ subAccounts, preferredCurrency }: DepositFormProps
 
       <p className="flex items-center justify-center gap-1 text-xs text-iwb-slate-light">
         <i className="material-icons text-xs">verified_user</i>
-        Deposits are credited after confirmation
+        {t('deposit.creditedNote')}
       </p>
     </div>
   );

@@ -80,7 +80,7 @@ export function RecipientSearch({ recentRecipients, onSelect, selected }: Recipi
           </div>
         </div>
         <button onClick={handleClear} className="text-xs text-iwb-slate-light hover:text-iwb-error transition-colors">
-          Change
+          {t("common.change")}
         </button>
       </div>
     );
@@ -90,7 +90,7 @@ export function RecipientSearch({ recentRecipients, onSelect, selected }: Recipi
     <div>
       {!showAddNew && recentRecipients.length > 0 ? (
         <div>
-          <p className="text-xs font-medium text-iwb-slate-light uppercase tracking-wider mb-3">Recent Recipients</p>
+          <p className="text-xs font-medium text-iwb-slate-light uppercase tracking-wider mb-3">{t("send.recentRecipients")}</p>
           <div className="flex flex-wrap gap-3 mb-4">
             {recentRecipients.map((r) => (
               <button
@@ -115,8 +115,8 @@ export function RecipientSearch({ recentRecipients, onSelect, selected }: Recipi
                 <i className="material-icons text-sm">add</i>
               </span>
               <div>
-                <p className="text-sm font-medium text-iwb-navy">Add New</p>
-                <p className="text-xs text-iwb-slate-light">Search by account</p>
+                <p className="text-sm font-medium text-iwb-navy">{t("send.addNew")}</p>
+                <p className="text-xs text-iwb-slate-light">{t("send.searchByAccount")}</p>
               </div>
             </button>
           </div>

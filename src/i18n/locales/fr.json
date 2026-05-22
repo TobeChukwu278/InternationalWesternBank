@@ -31,7 +31,16 @@
     "hoursAgo": "{{count}}h ago",
     "daysAgoShort": "{{count}}d ago",
     "nameUpdated": "Name updated",
-    "preferenceUpdated": "Preference updated"
+    "preferenceUpdated": "Preference updated",
+    "change": "Modifier",
+    "user": "Utilisateur",
+    "capturing": "Capture en cours...",
+    "generating": "Génération en cours...",
+    "png": "PNG",
+    "pdf": "PDF",
+    "secureBanking": "Secure Banking Solution",
+    "somethingWentWrong": "Quelque chose s'est mal passé",
+    "language": "Langue"
   },
   "nav": {
     "dashboard": "Tableau de bord",
@@ -81,7 +90,9 @@
       "successTitle": "Compte créé !",
       "successMessage": "Votre inscription a été soumise pour vérification.",
       "creatingAccount": "Création de votre compte...",
-      "uploadingDocs": "Téléchargement de vos documents..."
+      "uploadingDocs": "Téléchargement de vos documents...",
+      "photoUploadFailed": "Échec du téléchargement de la photo de profil. Vous pouvez réessayer plus tard dans les paramètres.",
+      "idUploadFailed": "Échec du téléchargement du document d'identité. Un administrateur peut vous aider."
     },
     "pendingVerification": {
       "title": "Vérification en cours",
@@ -205,7 +216,17 @@
     "insufficientFunds": "Fonds insuffisants",
     "failed": "Échec du transfert",
     "scheduled": "Transfert programmé",
-    "scheduledMessage": "Votre transfert a été programmé."
+    "scheduledMessage": "Votre transfert a été programmé.",
+    "submittedForApproval": "Transfert soumis pour approbation",
+    "subtitle": "Déplacez des fonds en toute sécurité sur vos comptes et contacts internationaux.",
+    "transferDetails": "Détails du transfert",
+    "encryptedNote": "Transfert sécurisé chiffré 256 bits",
+    "to": "À",
+    "fees": "Frais : 0,00 $ • Transfert gratuit au sein d'IWB",
+    "scheduleDescription": "Envoyer ce transfert automatiquement à l'avenir",
+    "recentRecipients": "Destinataires récents",
+    "addNew": "Ajouter nouveau",
+    "searchByAccount": "Rechercher par compte"
   },
   "transactions": {
     "title": "Transactions",
@@ -241,7 +262,21 @@
     "receiptMethod": "Mode de paiement",
     "receiptReference": "Référence",
     "downloadReceipt": "Télécharger le reçu",
-    "noTransactions": "Aucune transaction trouvée"
+    "noTransactions": "Aucune transaction trouvée",
+    "subtitle": "Consultez l'historique complet de vos transactions",
+    "totalAssets": "Actif total",
+    "last30Days": "30 derniers jours",
+    "advanced": "Avancé",
+    "noResultsMessage": "Essayez d'ajuster vos filtres ou vos termes de recherche",
+    "showingOf": "Affichage de {{loaded}} sur {{total}} transactions",
+    "loadMore": "Charger plus de transactions",
+    "time": "Heure",
+    "category": "Catégorie",
+    "merchant": "Commerçant",
+    "externalTransfer": "Transfert externe",
+    "note": "Note",
+    "electronicReceipt": "Ceci est un reçu généré électroniquement.",
+    "thankYou": "Merci d'être client d'International Western Bank."
   },
   "deposit": {
     "title": "Dépôt de fonds",
@@ -256,7 +291,17 @@
     "submitting": "Soumission en cours...",
     "success": "Demande de dépôt soumise pour approbation !",
     "pending": "Votre dépôt est en attente d'approbation administrative.",
-    "failed": "Échec du dépôt"
+    "failed": "Échec du dépôt",
+    "bankTransferInstructions": "Instructions de virement bancaire",
+    "instructions": "Transférez des fonds depuis votre compte bancaire externe vers le compte IWB ci-dessous. Votre dépôt sera crédité une fois confirmé.",
+    "bank": "Banque",
+    "accountName": "Nom du compte",
+    "accountNumber": "Numéro de compte",
+    "routingNumber": "Numéro de routage",
+    "swiftBic": "SWIFT / BIC",
+    "initiateTransfer": "Lancer le virement",
+    "depositTo": "Déposer vers",
+    "creditedNote": "Les dépôts sont crédités après confirmation"
   },
   "statements": {
     "title": "Relevés de compte",
@@ -267,7 +312,10 @@
     "generating": "Génération en cours...",
     "download": "Télécharger",
     "noStatement": "Aucun relevé disponible pour cette période",
-    "statementFor": "Relevé de {{account}} - {{month}}"
+    "statementFor": "Relevé de {{account}} - {{month}}",
+    "noTransactions": "Aucune transaction pour le moment. Les relevés apparaîtront ici dès que vous aurez de l'activité.",
+    "transactionCount": "{{count}} transactions",
+    "netChange": "Variation nette"
   },
   "settings": {
     "title": "Paramètres",

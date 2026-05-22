@@ -53,7 +53,7 @@ export function TransferActions({ transactionId }: TransferActionsProps) {
               disabled={loading || !rejectReason.trim()}
               className="flex items-center gap-1.5 rounded-iwb-md bg-iwb-error px-4 py-2 text-xs font-semibold text-white transition-all hover:bg-iwb-error/90 disabled:opacity-50"
             >
-              {loading ? "..." : t("admin.transfers.confirmReject")}
+              {loading ? t("common.loading") : t("admin.transfers.confirmReject")}
             </button>
             <button
               onClick={() => { setShowReject(false); setRejectReason(""); }}

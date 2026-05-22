@@ -175,8 +175,8 @@ export function SendResult({
           </div>
 
           <div className="pt-5 text-center border-t border-dashed border-iwb-border-light mt-5">
-            <p className="text-xs text-iwb-slate-light">Electronically generated receipt</p>
-            <p className="text-xs text-iwb-slate-light mt-0.5">Thank you for banking with IWB</p>
+            <p className="text-xs text-iwb-slate-light">{t("transactions.electronicReceipt")}</p>
+            <p className="text-xs text-iwb-slate-light mt-0.5">{t("transactions.thankYou")}</p>
           </div>
         </div>
 
@@ -192,7 +192,7 @@ export function SendResult({
               ) : (
                 <i className="material-icons text-base">image</i>
               )}
-              {capturing === "png" ? "..." : "PNG"}
+              {capturing === "png" ? t("common.loading") : t("common.png")}
             </button>
             <button
               onClick={downloadPDF}
@@ -204,7 +204,7 @@ export function SendResult({
               ) : (
                 <i className="material-icons text-base">picture_as_pdf</i>
               )}
-              {capturing === "pdf" ? "..." : "PDF"}
+              {capturing === "pdf" ? t("common.loading") : t("common.pdf")}
             </button>
           </div>
         ) : null}

@@ -106,7 +106,7 @@ export function TransactionHistory({
         <div className="flex flex-wrap items-center gap-2">
           <span className="flex items-center gap-1 rounded-iwb-md border border-iwb-border px-2.5 py-1.5 text-xs text-iwb-slate">
             <i className="material-icons text-sm">calendar_today</i>
-            Last 30 Days
+            {t('transactions.last30Days')}
             <i className="material-icons text-sm">expand_more</i>
           </span>
           <label className="flex items-center gap-1 rounded-iwb-md border border-iwb-border px-2.5 py-1.5 text-xs text-iwb-slate cursor-pointer hover:bg-iwb-surface transition-colors has-focus-within:border-iwb-teal">
@@ -146,7 +146,7 @@ export function TransactionHistory({
           </label>
           <span className="flex items-center gap-1 rounded-iwb-md border border-iwb-border bg-iwb-surface px-2.5 py-1.5 text-xs text-iwb-slate">
             <i className="material-icons text-sm">filter_list</i>
-            Advanced
+            {t('transactions.advanced')}
           </span>
         </div>
       </form>
@@ -157,7 +157,7 @@ export function TransactionHistory({
             <i className="material-icons text-2xl text-iwb-slate">receipt_long</i>
           </div>
           <p className="mt-4 text-sm font-medium text-iwb-navy">{t('transactions.noTransactions')}</p>
-          <p className="mt-1 text-xs text-iwb-slate">Try adjusting your filters or search terms</p>
+          <p className="mt-1 text-xs text-iwb-slate">{t('transactions.noResultsMessage')}</p>
         </div>
       ) : (
         <div>
@@ -182,7 +182,7 @@ export function TransactionHistory({
 
           <div className="border-t border-iwb-border-light px-6 py-3">
             <p className="text-xs text-iwb-slate">
-              Showing {loadedCount} of {initialTotalCount} transactions
+              {t('transactions.showingOf', { loaded: String(loadedCount), total: String(initialTotalCount) })}
             </p>
           </div>
 
@@ -198,7 +198,7 @@ export function TransactionHistory({
                 ) : (
                   <i className="material-icons text-base">arrow_downward</i>
                 )}
-                {loading ? t('common.loading') : "Load More Transactions"}
+                {loading ? t('common.loading') : t('transactions.loadMore')}
               </button>
             </div>
           ) : null}

@@ -110,7 +110,7 @@ export function TransactionReceipt({
               <img src="/logo.png" alt="IWB" className="size-12" />
             </div>
             <h2 className="text-lg font-bold text-iwb-navy">International Western Bank</h2>
-            <p className="text-xs text-iwb-slate-light mt-0.5">Secure Banking Solution</p>
+            <p className="text-xs text-iwb-slate-light mt-0.5">{t('common.secureBanking')}</p>
           </div>
 
           {/* Title */}
@@ -131,7 +131,7 @@ export function TransactionReceipt({
               <span className="text-xs text-iwb-navy">{date}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-iwb-slate-light">Time</span>
+              <span className="text-iwb-slate-light">{t('transactions.time')}</span>
               <span className="text-xs text-iwb-navy">{time}</span>
             </div>
           </div>
@@ -157,7 +157,7 @@ export function TransactionReceipt({
             </div>
             {transaction.category ? (
               <div className="flex justify-between text-sm">
-                <span className="text-iwb-slate-light">Category</span>
+                <span className="text-iwb-slate-light">{t('transactions.category')}</span>
                 <span className="text-xs font-medium text-iwb-navy capitalize">
                   {transaction.category.replace("_", " ")}
                 </span>
@@ -165,7 +165,7 @@ export function TransactionReceipt({
             ) : null}
             {transaction.merchant_name ? (
               <div className="flex justify-between text-sm">
-                <span className="text-iwb-slate-light">Merchant</span>
+                <span className="text-iwb-slate-light">{t('transactions.merchant')}</span>
                 <span className="text-xs font-medium text-iwb-navy">{transaction.merchant_name}</span>
               </div>
             ) : null}
@@ -173,8 +173,8 @@ export function TransactionReceipt({
               <span className="text-iwb-slate-light">{isIncoming ? t('transactions.receiptFrom') : t('transactions.receiptTo')}</span>
               <span className="text-xs font-medium text-iwb-navy">
                 {isIncoming
-                  ? transaction.merchant_name || "External Transfer"
-                  : transaction.merchant_name || "External Transfer"}
+                  ? transaction.merchant_name || t('transactions.externalTransfer')
+                  : transaction.merchant_name || t('transactions.externalTransfer')}
               </span>
             </div>
             <div className="flex justify-between text-sm">
@@ -188,7 +188,7 @@ export function TransactionReceipt({
           {/* Description */}
           {transaction.description ? (
             <div className="py-4 border-b border-dashed border-iwb-border-light">
-              <p className="text-[10px] uppercase tracking-wider text-iwb-slate-light mb-1.5">Note</p>
+              <p className="text-[10px] uppercase tracking-wider text-iwb-slate-light mb-1.5">{t('transactions.note')}</p>
               <p className="text-xs text-iwb-navy">{transaction.description}</p>
             </div>
           ) : null}
@@ -196,10 +196,10 @@ export function TransactionReceipt({
           {/* Footer */}
           <div className="pt-6 text-center">
             <p className="text-xs text-iwb-slate-light">
-              This is an electronically generated receipt.
+              {t('transactions.electronicReceipt')}
             </p>
             <p className="text-xs text-iwb-slate-light mt-0.5">
-              Thank you for banking with International Western Bank.
+              {t('transactions.thankYou')}
             </p>
           </div>
         </div>
@@ -216,7 +216,7 @@ export function TransactionReceipt({
             ) : (
               <i className="material-icons text-base">image</i>
             )}
-            {capturing === "png" ? "Capturing..." : "PNG"}
+            {capturing === "png" ? t('common.capturing') : t('common.png')}
           </button>
           <button
             onClick={downloadPDF}
@@ -228,7 +228,7 @@ export function TransactionReceipt({
             ) : (
               <i className="material-icons text-base">picture_as_pdf</i>
             )}
-            {capturing === "pdf" ? "Generating..." : "PDF"}
+            {capturing === "pdf" ? t('common.generating') : t('common.pdf')}
           </button>
           <button
             onClick={onClose}

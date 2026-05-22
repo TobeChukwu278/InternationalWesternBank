@@ -44,7 +44,7 @@ export function SendConfirmation({
 
           <div className="py-4 space-y-3 border-b border-dashed border-iwb-border-light">
             <div className="flex justify-between items-center">
-              <span className="text-xs text-iwb-slate-light">To</span>
+              <span className="text-xs text-iwb-slate-light">{t("send.to")}</span>
               <span className="text-sm font-medium text-iwb-navy">{recipientName} •••• {recipientAccount.slice(-4)}</span>
             </div>
             <div className="flex justify-between items-center">
@@ -68,7 +68,7 @@ export function SendConfirmation({
           <div className="py-3 text-center">
             <p className="text-xs text-iwb-slate">
               <i className="material-icons text-xs align-text-bottom">verified_user</i>{" "}
-              Fees: $0.00 • Free transfer within IWB
+              {t("send.fees")}
             </p>
           </div>
 

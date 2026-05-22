@@ -4,12 +4,12 @@ import { useLocale } from "@/i18n/client";
 import { localeLabels, type Locale } from "@/i18n/config";
 
 export function LanguageSwitcher() {
-  const { locale, setLocale } = useLocale();
+  const { locale, setLocale, t } = useLocale();
 
   return (
     <div className="space-y-3">
       <label className="text-xs font-medium text-iwb-slate-light uppercase tracking-wider">
-        Language / Idioma / Langue
+        {t('common.language')}
       </label>
       <div className="flex flex-wrap gap-2">
         {(Object.entries(localeLabels) as [Locale, string][]).map(([code, label]) => (

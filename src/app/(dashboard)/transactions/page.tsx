@@ -80,14 +80,14 @@ export default async function TransactionsPage({ searchParams }: PageProps) {
         <div>
           <h1 className="text-2xl font-semibold text-iwb-navy">{await t('transactions.title')}</h1>
           <p className="mt-1 text-sm text-iwb-slate">
-            View your complete transaction history
+            {await t('transactions.subtitle')}
           </p>
         </div>
         <div className="flex items-center gap-2 rounded-iwb-lg bg-iwb-teal/10 px-4 py-2">
           <span className="text-2xl font-bold text-iwb-navy">
             ${totalBalance.toLocaleString("en-US", { minimumFractionDigits: 0 })}
           </span>
-          <span className="text-xs text-iwb-slate">Total Assets</span>
+          <span className="text-xs text-iwb-slate">{await t('transactions.totalAssets')}</span>
         </div>
       </div>
 

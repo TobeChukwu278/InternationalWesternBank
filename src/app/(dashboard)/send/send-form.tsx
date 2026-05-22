@@ -72,7 +72,7 @@ export function SendForm({ subAccounts, accountNumber, recentRecipients, preferr
     const res = await sendMoney(formData);
 
     if (res.success) {
-      showToast("Transfer submitted for approval", "success");
+      showToast(t("send.submittedForApproval"), "success");
       setLastReference(res.reference ?? "");
       setResult({
         status: (res.status as "success" | "pending") ?? "success",
@@ -108,7 +108,7 @@ export function SendForm({ subAccounts, accountNumber, recentRecipients, preferr
       <div>
           <h1 className="text-2xl font-semibold text-iwb-navy">{t('send.title')}</h1>
         <p className="mt-1 text-sm text-iwb-slate">
-          Move funds securely across your global accounts and contacts.
+          {t("send.subtitle")}
         </p>
       </div>
 
@@ -127,7 +127,7 @@ export function SendForm({ subAccounts, accountNumber, recentRecipients, preferr
       <Card className="p-6">
         <div className="flex items-center gap-2 mb-4">
           <i className="material-icons text-iwb-teal">swap_horiz</i>
-          <h2 className="text-sm font-semibold text-iwb-navy">Transfer Details</h2>
+          <h2 className="text-sm font-semibold text-iwb-navy">{t("send.transferDetails")}</h2>
         </div>
         <TransferDetails
           subAccounts={subAccounts}
@@ -161,7 +161,7 @@ export function SendForm({ subAccounts, accountNumber, recentRecipients, preferr
         </button>
         <p className="mt-3 flex items-center justify-center gap-1 text-xs text-iwb-slate-light">
           <i className="material-icons text-xs">verified_user</i>
-          Encrypted 256-bit secure transfer
+          {t("send.encryptedNote")}
         </p>
       </div>
 

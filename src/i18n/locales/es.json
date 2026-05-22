@@ -31,7 +31,16 @@
     "hoursAgo": "{{count}}h ago",
     "daysAgoShort": "{{count}}d ago",
     "nameUpdated": "Name updated",
-    "preferenceUpdated": "Preference updated"
+    "preferenceUpdated": "Preference updated",
+    "change": "Cambiar",
+    "user": "Usuario",
+    "capturing": "Capturando...",
+    "generating": "Generando...",
+    "png": "PNG",
+    "pdf": "PDF",
+    "secureBanking": "Secure Banking Solution",
+    "somethingWentWrong": "Algo salió mal",
+    "language": "Idioma"
   },
   "nav": {
     "dashboard": "Panel",
@@ -81,7 +90,9 @@
       "successTitle": "¡Cuenta creada!",
       "successMessage": "Su registro ha sido enviado para verificación.",
       "creatingAccount": "Creando su cuenta...",
-      "uploadingDocs": "Subiendo sus documentos..."
+      "uploadingDocs": "Subiendo sus documentos...",
+      "photoUploadFailed": "Error al subir la foto de perfil. Puede reintentarlo más tarde en configuración.",
+      "idUploadFailed": "Error al subir el documento de identidad. Un administrador puede ayudarle."
     },
     "pendingVerification": {
       "title": "Verificación en Progreso",
@@ -205,7 +216,17 @@
     "insufficientFunds": "Fondos insuficientes",
     "failed": "Transferencia fallida",
     "scheduled": "Transferencia Programada",
-    "scheduledMessage": "Su transferencia ha sido programada."
+    "scheduledMessage": "Su transferencia ha sido programada.",
+    "submittedForApproval": "Transferencia enviada para aprobación",
+    "subtitle": "Mueva fondos de forma segura entre sus cuentas y contactos globales.",
+    "transferDetails": "Detalles de la Transferencia",
+    "encryptedNote": "Transferencia segura cifrada de 256 bits",
+    "to": "Para",
+    "fees": "Comisiones: $0.00 • Transferencia gratuita dentro de IWB",
+    "scheduleDescription": "Enviar esta transferencia automáticamente en el futuro",
+    "recentRecipients": "Destinatarios Recientes",
+    "addNew": "Añadir Nuevo",
+    "searchByAccount": "Buscar por cuenta"
   },
   "transactions": {
     "title": "Transacciones",
@@ -241,7 +262,21 @@
     "receiptMethod": "Método de Pago",
     "receiptReference": "Referencia",
     "downloadReceipt": "Descargar Recibo",
-    "noTransactions": "No se encontraron transacciones"
+    "noTransactions": "No se encontraron transacciones",
+    "subtitle": "Vea su historial completo de transacciones",
+    "totalAssets": "Activos Totales",
+    "last30Days": "Últimos 30 Días",
+    "advanced": "Avanzado",
+    "noResultsMessage": "Intente ajustar sus filtros o términos de búsqueda",
+    "showingOf": "Mostrando {{loaded}} de {{total}} transacciones",
+    "loadMore": "Cargar Más Transacciones",
+    "time": "Hora",
+    "category": "Categoría",
+    "merchant": "Comercio",
+    "externalTransfer": "Transferencia Externa",
+    "note": "Nota",
+    "electronicReceipt": "Este es un recibo generado electrónicamente.",
+    "thankYou": "Gracias por operar con International Western Bank."
   },
   "deposit": {
     "title": "Depositar Fondos",
@@ -256,7 +291,17 @@
     "submitting": "Enviando...",
     "success": "¡Solicitud de depósito enviada para aprobación!",
     "pending": "Su depósito está pendiente de aprobación administrativa.",
-    "failed": "Depósito fallido"
+    "failed": "Depósito fallido",
+    "bankTransferInstructions": "Instrucciones de Transferencia Bancaria",
+    "instructions": "Transfiera fondos desde su cuenta bancaria externa a la cuenta de IWB a continuación. Su depósito será acreditado una vez confirmado.",
+    "bank": "Banco",
+    "accountName": "Nombre de la Cuenta",
+    "accountNumber": "Número de Cuenta",
+    "routingNumber": "Número de Ruta",
+    "swiftBic": "SWIFT / BIC",
+    "initiateTransfer": "Iniciar Transferencia",
+    "depositTo": "Depositar en",
+    "creditedNote": "Los depósitos se acreditan después de la confirmación"
   },
   "statements": {
     "title": "Estados de Cuenta",
@@ -267,7 +312,10 @@
     "generating": "Generando...",
     "download": "Descargar",
     "noStatement": "No hay estado de cuenta disponible para este período",
-    "statementFor": "Estado de cuenta de {{account}} - {{month}}"
+    "statementFor": "Estado de cuenta de {{account}} - {{month}}",
+    "noTransactions": "Aún no hay transacciones. Los estados de cuenta aparecerán aquí cuando tenga actividad.",
+    "transactionCount": "{{count}} transacciones",
+    "netChange": "Cambio neto"
   },
   "settings": {
     "title": "Configuración",

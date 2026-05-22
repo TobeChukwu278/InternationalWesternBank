@@ -90,7 +90,7 @@ export function SettingsClient({ profile, account, userId }: SettingsClientProps
             {(profile.full_name || profile.email).charAt(0).toUpperCase()}
           </span>
           <div>
-            <p className="text-sm font-medium text-iwb-navy">{profile.full_name || "User"}</p>
+            <p className="text-sm font-medium text-iwb-navy">{profile.full_name || t("common.user")}</p>
             <p className="text-xs text-iwb-slate">{profile.email}</p>
             <p className="text-xs text-iwb-slate-light">{t("settings.memberSince", { date: formatDate(profile.created_at) })}</p>
           </div>

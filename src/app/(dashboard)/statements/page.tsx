@@ -26,9 +26,10 @@ export default async function StatementsPage() {
     )
     .order("created_at", { ascending: false });
 
-  const [depositLabel, withdrawalLabel] = await Promise.all([
+  const [depositLabel, withdrawalLabel, netChangeLabel] = await Promise.all([
     t('transactions.deposit'),
     t('transactions.withdrawal'),
+    t('statements.netChange'),
   ]);
 
   const byMonth: Record<string, { deposits: number; withdrawals: number; count: number }> = {};
@@ -44,6 +45,13 @@ export default async function StatementsPage() {
     entry.count++;
   }
 
+  const resolvedMonths = await Promise.all(
+    Object.entries(byMonth).map(async ([month, data]) => {
+      const transactionCountStr = await t('statements.transactionCount', { count: String(data.count) });
+      return { month, data, transactionCountStr };
+    }),
+  );
+
   return (
     <div className="space-y-6">
       <div>
@@ -51,17 +59,17 @@ export default async function StatementsPage() {
         <p className="mt-1 text-sm text-iwb-slate">{await t('statements.subtitle')}</p>
       </div>
 
-      {Object.keys(byMonth).length === 0 ? (
+      {resolvedMonths.length === 0 ? (
         <Card className="p-12 text-center">
-          <p className="text-sm text-iwb-slate">No transactions yet. Statements will appear here once you have activity.</p>
+          <p className="text-sm text-iwb-slate">{await t('statements.noTransactions')}</p>
         </Card>
       ) : (
         <div className="space-y-4">
-          {Object.entries(byMonth).map(([month, data]) => (
+          {resolvedMonths.map(({ month, data, transactionCountStr }) => (
             <Card key={month} className="overflow-hidden">
               <div className="flex items-center justify-between border-b border-iwb-border-light px-6 py-4">
                 <h3 className="text-sm font-semibold text-iwb-navy">{month}</h3>
-                <span className="text-xs text-iwb-slate-light">{data.count} transactions</span>
+                <span className="text-xs text-iwb-slate-light">{transactionCountStr}</span>
               </div>
               <div className="grid grid-cols-2 gap-4 px-6 py-4">
                 <div>
@@ -79,7 +87,7 @@ export default async function StatementsPage() {
               </div>
               <div className="border-t border-iwb-border-light px-6 py-3">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-iwb-slate">Net change</span>
+                  <span className="text-iwb-slate">{netChangeLabel}</span>
                   <span className={`font-semibold ${data.deposits - data.withdrawals >= 0 ? "text-iwb-teal" : "text-iwb-error"}`}>
                     {data.deposits - data.withdrawals >= 0 ? "+" : "-"}$
                     {Math.abs(data.deposits - data.withdrawals).toLocaleString("en-US", { minimumFractionDigits: 2 })}

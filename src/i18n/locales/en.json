@@ -31,7 +31,16 @@
     "hoursAgo": "{{count}}h ago",
     "daysAgoShort": "{{count}}d ago",
     "nameUpdated": "Name updated",
-    "preferenceUpdated": "Preference updated"
+    "preferenceUpdated": "Preference updated",
+    "change": "Change",
+    "user": "User",
+    "capturing": "Capturing...",
+    "generating": "Generating...",
+    "png": "PNG",
+    "pdf": "PDF",
+    "secureBanking": "Secure Banking Solution",
+    "somethingWentWrong": "Something went wrong",
+    "language": "Language / Idioma / Langue"
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -85,7 +94,9 @@
       "subtitle": "Open your account in minutes. Join thousands of satisfied customers worldwide.",
       "fdicInsured": "FDIC insured up to $250,000",
       "encryptedSecurity": "256-bit encrypted security",
-      "support247": "24/7 customer support"
+      "support247": "24/7 customer support",
+    "photoUploadFailed": "Profile photo upload failed. You can retry later in settings.",
+    "idUploadFailed": "ID document upload failed. An admin can assist you."
     },
     "pendingVerification": {
       "title": "Verification in Progress",
@@ -217,7 +228,17 @@
     "insufficientFunds": "Insufficient funds",
     "failed": "Transfer failed",
     "scheduled": "Scheduled Transfer",
-    "scheduledMessage": "Your transfer has been scheduled."
+    "scheduledMessage": "Your transfer has been scheduled.",
+    "submittedForApproval": "Transfer submitted for approval",
+    "subtitle": "Move funds securely across your global accounts and contacts.",
+    "transferDetails": "Transfer Details",
+    "encryptedNote": "Encrypted 256-bit secure transfer",
+    "to": "To",
+    "fees": "Fees: $0.00 • Free transfer within IWB",
+    "scheduleDescription": "Send this transfer automatically in the future",
+    "recentRecipients": "Recent Recipients",
+    "addNew": "Add New",
+    "searchByAccount": "Search by account"
   },
   "transactions": {
     "title": "Transactions",
@@ -253,7 +274,21 @@
     "receiptMethod": "Payment Method",
     "receiptReference": "Reference",
     "downloadReceipt": "Download Receipt",
-    "noTransactions": "No transactions found"
+    "noTransactions": "No transactions found",
+    "subtitle": "View your complete transaction history",
+    "totalAssets": "Total Assets",
+    "last30Days": "Last 30 Days",
+    "advanced": "Advanced",
+    "noResultsMessage": "Try adjusting your filters or search terms",
+    "showingOf": "Showing {{loaded}} of {{total}} transactions",
+    "loadMore": "Load More Transactions",
+    "time": "Time",
+    "category": "Category",
+    "merchant": "Merchant",
+    "externalTransfer": "External Transfer",
+    "note": "Note",
+    "electronicReceipt": "This is an electronically generated receipt.",
+    "thankYou": "Thank you for banking with International Western Bank."
   },
   "deposit": {
     "title": "Deposit Funds",
@@ -268,7 +303,17 @@
     "submitting": "Submitting...",
     "success": "Deposit request submitted for approval!",
     "pending": "Your deposit is pending admin approval.",
-    "failed": "Deposit failed"
+    "failed": "Deposit failed",
+    "bankTransferInstructions": "Bank Transfer Instructions",
+    "instructions": "Transfer funds from your external bank account to the IWB account below. Your deposit will be credited once confirmed.",
+    "bank": "Bank",
+    "accountName": "Account Name",
+    "accountNumber": "Account Number",
+    "routingNumber": "Routing Number",
+    "swiftBic": "SWIFT / BIC",
+    "initiateTransfer": "Initiate Transfer",
+    "depositTo": "Deposit To",
+    "creditedNote": "Deposits are credited after confirmation"
   },
   "statements": {
     "title": "Account Statements",
@@ -279,7 +324,10 @@
     "generating": "Generating...",
     "download": "Download",
     "noStatement": "No statement available for this period",
-    "statementFor": "Statement for {{account}} - {{month}}"
+    "statementFor": "Statement for {{account}} - {{month}}",
+    "noTransactions": "No transactions yet. Statements will appear here once you have activity.",
+    "transactionCount": "{{count}} transactions",
+    "netChange": "Net change"
   },
   "settings": {
     "title": "Settings",
