@@ -81,3 +81,41 @@ export async function debitAccount(formData: FormData) {
 
   return { success: true, transaction_id: parsed.transaction_id };
 }
+
+export async function deleteUser(formData: FormData) {
+  const isAdmin = await isAdminSession();
+  if (!isAdmin) return { error: "Not authorized" };
+
+  const userId = formData.get("user_id") as string;
+  const userEmail = formData.get("user_email") as string;
+
+  if (!userId) return { error: "User ID is required" };
+
+  const serviceSupabase = createServiceClient();
+
+  const { error: updateError } = await serviceSupabase
+    .from("profiles")
+    .update({ deleted_at: new Date().toISOString() })
+    .eq("id", userId);
+
+  if (updateError) {
+    return { error: `Failed to delete user: ${updateError.message}` };
+  }
+
+  const { error: notifError } = await serviceSupabase
+    .from("notifications")
+    .insert({
+      user_id: userId,
+      title: "Account Deleted",
+      message: "Your account has been deleted by an administrator.",
+      type: "system",
+    });
+
+  if (notifError) {
+    console.error("Failed to create notification:", notifError.message);
+  }
+
+  revalidatePath("/admin", "layout");
+
+  return { success: true };
+}
