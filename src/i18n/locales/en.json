@@ -42,7 +42,11 @@
     "adminPanel": "Admin Panel",
     "adminDashboard": "Dashboard",
     "toggleNav": "Toggle navigation",
-    "language": "Language"
+    "language": "Language",
+    "home": "Home",
+    "more": "More",
+    "deposits": "Deposits",
+    "backToApp": "Back to app"
   },
   "auth": {
     "login": {

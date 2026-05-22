@@ -42,7 +42,11 @@
     "adminPanel": "Panneau d'administration",
     "adminDashboard": "Tableau de bord",
     "toggleNav": "Basculer la navigation",
-    "language": "Langue"
+    "language": "Langue",
+    "home": "Accueil",
+    "more": "Plus",
+    "deposits": "Dépôts",
+    "backToApp": "Retour à l'application"
   },
   "auth": {
     "login": {
