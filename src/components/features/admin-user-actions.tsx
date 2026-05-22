@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useState } from "react";
-import { creditAccount, debitAccount } from "@/lib/actions/admin";
+import { creditAccount, debitAccount, deleteUser } from "@/lib/actions/admin";
 import { Modal } from "@/components/ui/modal";
 import { useLocale } from "@/i18n/client";
 
@@ -25,6 +25,10 @@ interface User {
 export function AdminUserActions({ user }: { user: User }) {
   const { t } = useLocale();
   const [open, setOpen] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState(false);
+  const [deleteName, setDeleteName] = useState("");
+  const [deletePending, setDeletePending] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
   const totalBalance = user.sub_accounts.reduce((s, sa) => s + Number(sa.balance), 0);
 
@@ -83,6 +87,81 @@ export function AdminUserActions({ user }: { user: User }) {
             ))}
             {user.sub_accounts.length === 0 && (
               <p className="text-sm text-iwb-slate">{t("admin.users.noSubAccounts")}</p>
+            )}
+          </div>
+
+          {/* Delete User */}
+          <hr className="border-iwb-border-light" />
+          <div className="rounded-iwb-lg border border-iwb-error/20 bg-iwb-error/5 p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <i className="material-icons text-iwb-error text-sm">warning</i>
+              <p className="text-sm font-semibold text-iwb-error">{t("admin.users.deleteUser")}</p>
+            </div>
+            <p className="text-xs text-iwb-slate mb-3">
+              {t("admin.users.deleteWarning")}
+            </p>
+
+            {!deleteConfirm ? (
+              <button
+                onClick={() => setDeleteConfirm(true)}
+                className="rounded-iwb-md bg-iwb-error px-4 py-2 text-xs font-semibold text-white transition-all hover:bg-iwb-error/90"
+              >
+                {t("admin.users.deleteUser")}
+              </button>
+            ) : (
+              <div className="space-y-3">
+                <p className="text-xs text-iwb-slate">
+                  {t("admin.users.deleteConfirm", { name: user.full_name })}
+                </p>
+                <input
+                  type="text"
+                  value={deleteName}
+                  onChange={(e) => setDeleteName(e.target.value)}
+                  placeholder={user.full_name}
+                  className="block w-full rounded-iwb-md border border-iwb-border bg-white px-4 py-2 text-sm text-iwb-navy placeholder:text-iwb-slate-light focus:border-iwb-error focus:ring-2 focus:ring-iwb-error/10 focus:outline-none"
+                />
+                {deleteError ? (
+                  <p className="text-xs text-iwb-error">{deleteError}</p>
+                ) : null}
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={async () => {
+                      if (deleteName.trim() !== user.full_name) {
+                        setDeleteError("Name does not match");
+                        return;
+                      }
+                      setDeletePending(true);
+                      setDeleteError(null);
+                      const formData = new FormData();
+                      formData.set("user_id", user.id);
+                      formData.set("user_email", user.email);
+                      const result = await deleteUser(formData);
+                      setDeletePending(false);
+                      if (result.success) {
+                        setOpen(false);
+                        setDeleteConfirm(false);
+                        setDeleteName("");
+                      } else {
+                        setDeleteError(result.error ?? "Failed to delete user");
+                      }
+                    }}
+                    disabled={deletePending}
+                    className="rounded-iwb-md bg-iwb-error px-4 py-2 text-xs font-semibold text-white transition-all hover:bg-iwb-error/90 disabled:opacity-50"
+                  >
+                    {deletePending ? t("admin.users.processing") : t("admin.users.deleteUser")}
+                  </button>
+                  <button
+                    onClick={() => {
+                      setDeleteConfirm(false);
+                      setDeleteName("");
+                      setDeleteError(null);
+                    }}
+                    className="rounded-iwb-md px-4 py-2 text-xs font-medium text-iwb-slate transition-colors hover:text-iwb-navy"
+                  >
+                    {t("common.cancel")}
+                  </button>
+                </div>
+              </div>
             )}
           </div>
         </div>
