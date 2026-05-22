@@ -380,7 +380,25 @@
     "emptyTitle": "No notifications yet",
     "emptyDescription": "Notifications about your transfers and deposits will appear here",
     "seeAll": "See all notifications",
-    "noNew": "No new notifications"
+    "noNew": "No new notifications",
+    "transfer_received": "Transfer Received",
+    "msg_transfer_received": "You have received a transfer",
+    "transfer_sent": "Transfer Sent",
+    "msg_transfer_sent": "Your transfer has been processed",
+    "deposit_confirmed": "Deposit Confirmed",
+    "msg_deposit_confirmed": "Your deposit has been confirmed",
+    "deposit_rejected": "Deposit Rejected",
+    "msg_deposit_rejected": "Your deposit request was rejected",
+    "kyc_approved": "KYC Approved",
+    "msg_kyc_approved": "Your identity verification has been approved",
+    "kyc_rejected": "KYC Rejected",
+    "msg_kyc_rejected": "Your identity verification was rejected",
+    "account_created": "Account Created",
+    "msg_account_created": "Your account has been created successfully",
+    "transfer_approved": "Transfer Approved",
+    "msg_transfer_approved": "Your transfer has been approved",
+    "transfer_rejected": "Transfer Rejected",
+    "msg_transfer_rejected": "Your transfer request was rejected"
   },
   "admin": {
     "login": {

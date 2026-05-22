@@ -24,6 +24,15 @@ export function NotificationBell({ initialUnreadCount, initialNotifications }: N
   const [notifications, setNotifications] = useState(initialNotifications);
   const ref = useRef<HTMLDivElement>(null);
 
+  function translateNotification(title: string, message: string) {
+    const titleKey = `notifications.${title.toLowerCase().replace(/\s+/g, '_')}`;
+    const messageKey = `notifications.msg_${title.toLowerCase().replace(/\s+/g, '_')}`;
+    return {
+      title: t(titleKey) !== titleKey ? t(titleKey) : title,
+      message: t(messageKey) !== messageKey ? t(messageKey) : message,
+    };
+  }
+
   function timeAgo(dateStr: string): string {
     const seconds = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
     if (seconds < 60) return t("common.justNow");
@@ -89,8 +98,8 @@ export function NotificationBell({ initialUnreadCount, initialNotifications }: N
                     <i className="material-icons text-sm">{typeIcons[n.type] ?? "info"}</i>
                   </span>
                   <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium text-iwb-navy truncate">{n.title}</p>
-                    <p className="text-xs text-iwb-slate line-clamp-2">{n.message}</p>
+                    <p className="text-sm font-medium text-iwb-navy truncate">{translateNotification(n.title, n.message).title}</p>
+                    <p className="text-xs text-iwb-slate line-clamp-2">{translateNotification(n.title, n.message).message}</p>
                     <p className="mt-0.5 text-[11px] text-iwb-slate-light">{timeAgo(n.created_at)}</p>
                   </div>
                 </button>

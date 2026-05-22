@@ -44,6 +44,12 @@ const navItems = [
 export async function AdminSidebar() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
+  const navLabels = await Promise.all(
+    navItems.map((item) => t(`nav.${item.id}`))
+  );
+  const adminPanelLabel = await t("nav.adminPanel");
+  const signOutTitle = await t("nav.signOut");
+  const backToAppLabel = await t("nav.backToApp");
 
   return (
     <aside className="hidden lg:flex lg:w-[260px] shrink-0 flex-col bg-iwb-navy">
@@ -52,13 +58,13 @@ export async function AdminSidebar() {
           <img src="/logo.png" alt="IWB" className="size-8" />
         </div>
         <div>
-          <span className="block text-sm font-semibold text-white">{await t("nav.adminPanel")}</span>
+          <span className="block text-sm font-semibold text-white">{adminPanelLabel}</span>
           <span className="block text-[10px] text-white/40">International WB</span>
         </div>
       </div>
 
       <nav className="flex-1 space-y-0.5 overflow-y-auto px-3 py-4">
-        {navItems.map(async (item) => (
+        {navItems.map((item, i) => (
           <Link
             key={item.href}
             href={item.href}
@@ -67,7 +73,7 @@ export async function AdminSidebar() {
             <svg className="size-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               {iconPaths[item.id]}
             </svg>
-            {await t(`nav.${item.id}`)}
+            {navLabels[i]}
           </Link>
         ))}
       </nav>
@@ -79,13 +85,13 @@ export async function AdminSidebar() {
           </div>
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-medium text-white">{user?.email}</p>
-            <p className="text-[10px] text-iwb-teal/70">{await t("nav.adminPanel")}</p>
+            <p className="text-[10px] text-iwb-teal/70">{adminPanelLabel}</p>
           </div>
           <form action={logout}>
             <button
               type="submit"
               className="rounded-lg p-2 text-white/30 transition-colors hover:bg-white/5 hover:text-white"
-              title={await t("nav.signOut")}
+              title={signOutTitle}
             >
               <svg className="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -100,7 +106,7 @@ export async function AdminSidebar() {
           <svg className="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
-          {await t("nav.backToApp")}
+          {backToAppLabel}
         </Link>
       </div>
     </aside>

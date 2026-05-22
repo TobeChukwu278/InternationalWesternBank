@@ -28,6 +28,15 @@ export function NotificationList({ notifications: initial, total }: Notification
   const { t } = useLocale();
   const [notifications, setNotifications] = useState(initial);
 
+  function translateNotification(title: string, message: string) {
+    const titleKey = `notifications.${title.toLowerCase().replace(/\s+/g, '_')}`;
+    const messageKey = `notifications.msg_${title.toLowerCase().replace(/\s+/g, '_')}`;
+    return {
+      title: t(titleKey) !== titleKey ? t(titleKey) : title,
+      message: t(messageKey) !== messageKey ? t(messageKey) : message,
+    };
+  }
+
   function timeAgo(dateStr: string): string {
     const seconds = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
     if (seconds < 60) return t("common.justNow");
@@ -109,13 +118,13 @@ export function NotificationList({ notifications: initial, total }: Notification
               <div className="min-w-0 flex-1">
                 <div className="flex items-start justify-between gap-2">
                   <p className={`text-sm ${n.is_read ? "text-iwb-navy" : "font-semibold text-iwb-navy"}`}>
-                    {n.title}
+                    {translateNotification(n.title, n.message).title}
                   </p>
                   {!n.is_read ? (
                     <span className="mt-1 size-2 shrink-0 rounded-full bg-iwb-teal" />
                   ) : null}
                 </div>
-                <p className="mt-0.5 text-sm text-iwb-slate">{n.message}</p>
+                <p className="mt-0.5 text-sm text-iwb-slate">{translateNotification(n.title, n.message).message}</p>
                 <p className="mt-1 text-xs text-iwb-slate-light">{timeAgo(n.created_at)}</p>
               </div>
             </button>

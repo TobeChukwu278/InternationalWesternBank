@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from "react";
+import { useRouter } from "next/navigation";
 import { defaultLocale, type Locale } from "./config";
 import { loadDictionary, getNestedValue, interpolate, type Dict } from "./dictionary";
 import { updateLanguage } from "@/lib/actions/settings";
@@ -26,7 +27,7 @@ export function useLocale() {
 function getCookie(name: string): string | null {
   if (typeof document === "undefined") return null;
   const match = document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`));
-  return match ? decodeURIComponent(match[2]) : null;
+  return match && match[2] ? decodeURIComponent(match[2]) : null;
 }
 
 function setCookie(name: string, value: string, days: number) {
@@ -48,6 +49,7 @@ function detectInitialLocale(): Locale {
 }
 
 export function LocaleProvider({ children, initialLocale }: { children: ReactNode; initialLocale: string }) {
+  const router = useRouter();
   const [locale, setLocaleState] = useState<Locale>(
     ["en", "es", "fr"].includes(initialLocale) ? (initialLocale as Locale) : detectInitialLocale(),
   );
@@ -77,7 +79,8 @@ export function LocaleProvider({ children, initialLocale }: { children: ReactNod
     } catch {
       // server update is best-effort; cookie is already set
     }
-  }, []);
+    router.refresh();
+  }, [router]);
 
   return (
     <LocaleContext.Provider value={{ locale, t, setLocale, isLoaded }}>
