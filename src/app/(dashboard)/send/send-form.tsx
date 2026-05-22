@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/card";
+import { useLocale } from "@/i18n/client";
 import { useToast } from "@/components/ui/toast";
 import { RecipientSearch } from "@/components/features/recipient-search";
 import { sendMoney } from "@/lib/actions/transfer";
@@ -47,6 +48,8 @@ export function SendForm({ subAccounts, accountNumber, recentRecipients, preferr
   const [reference, setReference] = useState("");
   const [scheduleEnabled, setScheduleEnabled] = useState(false);
   const [scheduleDate, setScheduleDate] = useState("");
+
+  const { t } = useLocale();
 
   const selectedSub = subAccounts.find((sa) => sa.id === fromAccount);
   const numAmount = parseFloat(amount) || 0;
@@ -103,7 +106,7 @@ export function SendForm({ subAccounts, accountNumber, recentRecipients, preferr
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-iwb-navy">Send Money</h1>
+          <h1 className="text-2xl font-semibold text-iwb-navy">{t('send.title')}</h1>
         <p className="mt-1 text-sm text-iwb-slate">
           Move funds securely across your global accounts and contacts.
         </p>
@@ -112,7 +115,7 @@ export function SendForm({ subAccounts, accountNumber, recentRecipients, preferr
       <Card className="p-6">
         <div className="flex items-center gap-2 mb-4">
           <i className="material-icons text-iwb-teal">person</i>
-          <h2 className="text-sm font-semibold text-iwb-navy">Select Recipient</h2>
+          <h2 className="text-sm font-semibold text-iwb-navy">{t('send.recipient')}</h2>
         </div>
         <RecipientSearch
           recentRecipients={recentRecipients}
@@ -154,7 +157,7 @@ export function SendForm({ subAccounts, accountNumber, recentRecipients, preferr
           disabled={!canSubmit}
           className="w-full rounded-iwb-md bg-iwb-teal px-6 py-3.5 text-sm font-semibold text-iwb-navy transition-all hover:bg-iwb-teal-dark disabled:cursor-not-allowed disabled:opacity-50"
         >
-          Send Money
+          {t('send.title')}
         </button>
         <p className="mt-3 flex items-center justify-center gap-1 text-xs text-iwb-slate-light">
           <i className="material-icons text-xs">verified_user</i>

@@ -1,5 +1,7 @@
 "use client";
 
+import { useLocale } from "@/i18n/client";
+
 interface SubAccountOption {
   id: string;
   type: string;
@@ -38,6 +40,7 @@ export function TransferDetails({
   exceedsBalance,
   preferredCurrency,
 }: TransferDetailsProps) {
+  const { t } = useLocale();
   const symbol = currencySymbols[preferredCurrency] ?? "$";
   const selected = subAccounts.find((sa) => sa.id === fromAccount);
 
@@ -49,7 +52,7 @@ export function TransferDetails({
   return (
     <div className="space-y-5">
       <div>
-        <label className="text-xs font-medium text-iwb-slate-light uppercase tracking-wider">From Account</label>
+        <label className="text-xs font-medium text-iwb-slate-light uppercase tracking-wider">{t('send.fromAccount')}</label>
         <div className="mt-2 relative">
           <select
             value={fromAccount}
@@ -72,7 +75,7 @@ export function TransferDetails({
       </div>
 
       <div>
-        <label className="text-xs font-medium text-iwb-slate-light uppercase tracking-wider">Amount</label>
+        <label className="text-xs font-medium text-iwb-slate-light uppercase tracking-wider">{t('send.amount')}</label>
         <div className="mt-2 relative">
           <span className="absolute left-4 top-1/2 -translate-y-1/2 text-lg font-semibold text-iwb-navy">
             {symbol}
@@ -83,14 +86,14 @@ export function TransferDetails({
             onChange={(e) => onAmountChange(e.target.value)}
             step="0.01"
             min="0.01"
-            placeholder="0.00"
+            placeholder={t('send.amountPlaceholder')}
             className="w-full rounded-iwb-lg border border-iwb-border bg-white py-3.5 pl-10 pr-4 text-lg font-semibold text-iwb-navy placeholder:text-iwb-slate-light focus:border-iwb-teal focus:ring-2 focus:ring-iwb-teal/10 focus:outline-none"
           />
         </div>
         {exceedsBalance ? (
           <p className="mt-1.5 flex items-center gap-1 text-xs text-iwb-error">
             <i className="material-icons text-sm">error</i>
-            Amount exceeds available balance
+            {t('send.insufficientFunds')}
           </p>
         ) : null}
         <div className="mt-2 flex gap-2">
@@ -108,12 +111,12 @@ export function TransferDetails({
       </div>
 
       <div>
-        <label className="text-xs font-medium text-iwb-slate-light uppercase tracking-wider">Reference (Optional)</label>
+        <label className="text-xs font-medium text-iwb-slate-light uppercase tracking-wider">{t('send.description')}</label>
         <input
           type="text"
           value={reference}
           onChange={(e) => onReferenceChange(e.target.value)}
-          placeholder="Add a note or memo..."
+          placeholder={t('send.descriptionPlaceholder')}
           maxLength={200}
           className="mt-2 w-full rounded-iwb-lg border border-iwb-border bg-white px-4 py-3 text-sm text-iwb-navy placeholder:text-iwb-slate-light focus:border-iwb-teal focus:ring-2 focus:ring-iwb-teal/10 focus:outline-none"
         />

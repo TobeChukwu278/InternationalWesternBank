@@ -4,13 +4,16 @@ import { useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import type { Transaction } from "@/types/database";
+import { useLocale } from "@/i18n/client";
 
-const typeLabel: Record<string, string> = {
-  deposit: "Deposit",
-  withdrawal: "Withdrawal",
-  transfer: "Transfer",
-  internal_transfer: "Internal Transfer",
-};
+function getTypeLabel(type: string, t: (key: string) => string): string {
+  const labels: Record<string, string> = {
+    deposit: t('transactions.deposit'),
+    withdrawal: t('transactions.withdrawal'),
+    transfer: t('transactions.transfer'),
+  };
+  return labels[type] ?? type.replace("_", " ");
+}
 
 const statusStyles: Record<string, string> = {
   completed: "bg-iwb-teal/10 text-iwb-teal",
@@ -49,6 +52,7 @@ export function TransactionReceipt({
 }: TransactionReceiptProps) {
   const receiptRef = useRef<HTMLDivElement>(null);
   const [capturing, setCapturing] = useState<string | null>(null);
+  const { t } = useLocale();
   const { date, time } = formatDateTime(transaction.created_at);
 
   async function captureReceipt(): Promise<HTMLCanvasElement | null> {
@@ -112,18 +116,18 @@ export function TransactionReceipt({
           {/* Title */}
           <div className="text-center py-5">
             <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-iwb-slate-light">
-              Payment Receipt
+              {t('transactions.receiptTitle')}
             </p>
           </div>
 
           {/* Reference & Date */}
           <div className="space-y-2 pb-5 border-b border-dashed border-iwb-border-light">
             <div className="flex justify-between text-sm">
-              <span className="text-iwb-slate-light">Receipt No.</span>
+              <span className="text-iwb-slate-light">{t('transactions.receiptId')}</span>
               <span className="font-mono text-xs font-medium text-iwb-navy">{transaction.reference}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-iwb-slate-light">Date</span>
+              <span className="text-iwb-slate-light">{t('transactions.receiptDate')}</span>
               <span className="text-xs text-iwb-navy">{date}</span>
             </div>
             <div className="flex justify-between text-sm">
@@ -134,21 +138,21 @@ export function TransactionReceipt({
 
           {/* Amount */}
           <div className="py-6 text-center border-b border-dashed border-iwb-border-light">
-            <p className="text-[10px] uppercase tracking-wider text-iwb-slate-light mb-1">Amount</p>
+            <p className="text-[10px] uppercase tracking-wider text-iwb-slate-light mb-1">{t('transactions.receiptAmount')}</p>
             <p className={`text-4xl font-bold ${isIncoming ? "text-iwb-teal" : "text-iwb-navy"}`}>
               {isIncoming ? "+" : "-"}${Number(transaction.amount).toLocaleString("en-US", { minimumFractionDigits: 2 })}
             </p>
             <span className={`mt-2 inline-block rounded-iwb-full px-3 py-0.5 text-xs font-medium ${statusStyles[transaction.status]}`}>
-              {transaction.status.charAt(0).toUpperCase() + transaction.status.slice(1)}
+              {t('transactions.' + transaction.status)}
             </span>
           </div>
 
           {/* Details */}
           <div className="py-5 space-y-3 border-b border-dashed border-iwb-border-light">
             <div className="flex justify-between text-sm">
-              <span className="text-iwb-slate-light">Transaction Type</span>
+              <span className="text-iwb-slate-light">{t('transactions.type')}</span>
               <span className="text-xs font-medium text-iwb-navy capitalize">
-                {typeLabel[transaction.type] ?? transaction.type.replace("_", " ")}
+                {getTypeLabel(transaction.type, t)}
               </span>
             </div>
             {transaction.category ? (
@@ -166,7 +170,7 @@ export function TransactionReceipt({
               </div>
             ) : null}
             <div className="flex justify-between text-sm">
-              <span className="text-iwb-slate-light">{isIncoming ? "From" : "To"}</span>
+              <span className="text-iwb-slate-light">{isIncoming ? t('transactions.receiptFrom') : t('transactions.receiptTo')}</span>
               <span className="text-xs font-medium text-iwb-navy">
                 {isIncoming
                   ? transaction.merchant_name || "External Transfer"
@@ -174,7 +178,7 @@ export function TransactionReceipt({
               </span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-iwb-slate-light">{isIncoming ? "To" : "From"}</span>
+              <span className="text-iwb-slate-light">{isIncoming ? t('transactions.receiptTo') : t('transactions.receiptFrom')}</span>
               <span className="text-xs font-medium text-iwb-navy font-mono">
                 ***{accountNumber.slice(-4)}
               </span>
@@ -230,7 +234,7 @@ export function TransactionReceipt({
             onClick={onClose}
             className="flex items-center justify-center rounded-iwb-md bg-iwb-teal px-4 py-2.5 text-sm font-semibold text-iwb-navy transition-all hover:bg-iwb-teal-dark"
           >
-            Close
+            {t('common.close')}
           </button>
         </div>
       </div>

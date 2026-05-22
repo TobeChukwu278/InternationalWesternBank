@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { depositFunds } from "@/lib/actions/deposit";
+import { useLocale } from "@/i18n/client";
 
 interface SubAccount {
   id: string;
@@ -38,6 +39,7 @@ export function DepositForm({ subAccounts, preferredCurrency }: DepositFormProps
   const router = useRouter();
   const symbol = currencySymbols[preferredCurrency] ?? "$";
 
+  const { t } = useLocale();
   const [step, setStep] = useState<Step>("form");
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState<ResultState>(null);
@@ -91,7 +93,7 @@ export function DepositForm({ subAccounts, preferredCurrency }: DepositFormProps
           {result.status === "pending" ? (
             <>
               <i className="material-icons text-5xl text-iwb-slate mb-3">schedule</i>
-              <h2 className="text-lg font-semibold text-iwb-navy mb-1">Deposit Submitted</h2>
+              <h2 className="text-lg font-semibold text-iwb-navy mb-1">{t('deposit.success')}</h2>
               <p className="text-3xl font-bold text-iwb-navy mt-4">
                 {symbol}{amountNum.toLocaleString("en-US", { minimumFractionDigits: 2 })}
               </p>
@@ -102,14 +104,14 @@ export function DepositForm({ subAccounts, preferredCurrency }: DepositFormProps
               ) : null}
               <div className="mt-4 rounded-iwb-lg bg-iwb-surface p-4">
                 <p className="text-sm text-iwb-slate">
-                  Your deposit is pending confirmation. You will be notified once confirmed.
+                  {t('deposit.pending')}
                 </p>
               </div>
             </>
           ) : result.status === "failure" ? (
             <>
               <i className="material-icons text-5xl text-iwb-error mb-3">cancel</i>
-              <h2 className="text-lg font-semibold text-iwb-error mb-1">Deposit Failed</h2>
+              <h2 className="text-lg font-semibold text-iwb-error mb-1">{t('deposit.failed')}</h2>
               {result.error ? (
                 <div className="mt-4 rounded-iwb-lg bg-iwb-error/5 border border-iwb-error/20 p-4">
                   <p className="text-sm text-iwb-error">{result.error}</p>
@@ -124,14 +126,14 @@ export function DepositForm({ subAccounts, preferredCurrency }: DepositFormProps
                 onClick={() => setStep("form")}
                 className="flex-1 rounded-iwb-md bg-iwb-teal px-4 py-2.5 text-sm font-semibold text-iwb-navy transition-all hover:bg-iwb-teal-dark"
               >
-                Try Again
+                {t('common.retry')}
               </button>
             ) : null}
             <Link
               href="/dashboard"
               className="flex-1 rounded-iwb-md border-2 border-iwb-border px-4 py-2.5 text-sm font-semibold text-iwb-navy transition-all hover:bg-iwb-surface text-center"
             >
-              Back to Dashboard
+              {t('common.back')}
             </Link>
           </div>
         </div>
@@ -201,7 +203,7 @@ export function DepositForm({ subAccounts, preferredCurrency }: DepositFormProps
           </div>
 
           <div>
-            <label className="text-xs font-medium text-iwb-slate-light uppercase tracking-wider">Amount</label>
+            <label className="text-xs font-medium text-iwb-slate-light uppercase tracking-wider">{t('deposit.amount')}</label>
             <div className="mt-2 relative">
               <span className="absolute left-4 top-1/2 -translate-y-1/2 text-lg font-semibold text-iwb-navy">
                 {symbol}
@@ -212,7 +214,7 @@ export function DepositForm({ subAccounts, preferredCurrency }: DepositFormProps
                 onChange={(e) => setAmount(e.target.value)}
                 step="0.01"
                 min="0.01"
-                placeholder="0.00"
+                placeholder={t('deposit.amountPlaceholder')}
                 className="w-full rounded-iwb-lg border border-iwb-border bg-white py-3.5 pl-10 pr-4 text-lg font-semibold text-iwb-navy placeholder:text-iwb-slate-light focus:border-iwb-teal focus:ring-2 focus:ring-iwb-teal/10 focus:outline-none"
               />
             </div>
@@ -232,24 +234,24 @@ export function DepositForm({ subAccounts, preferredCurrency }: DepositFormProps
 
           <div>
             <label className="text-xs font-medium text-iwb-slate-light uppercase tracking-wider">
-              Your External Bank <span className="text-iwb-error">*</span>
+              {t('deposit.fromAccount')} <span className="text-iwb-error">*</span>
             </label>
             <input
               type="text"
               value={externalBank}
               onChange={(e) => setExternalBank(e.target.value)}
-              placeholder="e.g. Chase, Wells Fargo, Bank of America"
+              placeholder={t('deposit.accountPlaceholder')}
               className="mt-2 w-full rounded-iwb-lg border border-iwb-border bg-white px-4 py-3 text-sm text-iwb-navy placeholder:text-iwb-slate-light focus:border-iwb-teal focus:ring-2 focus:ring-iwb-teal/10 focus:outline-none"
             />
           </div>
 
           <div>
-            <label className="text-xs font-medium text-iwb-slate-light uppercase tracking-wider">Reference / Note (Optional)</label>
+            <label className="text-xs font-medium text-iwb-slate-light uppercase tracking-wider">{t('deposit.description')}</label>
             <input
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Add a memo for your records"
+              placeholder={t('deposit.descriptionPlaceholder')}
               maxLength={200}
               className="mt-2 w-full rounded-iwb-lg border border-iwb-border bg-white px-4 py-3 text-sm text-iwb-navy placeholder:text-iwb-slate-light focus:border-iwb-teal focus:ring-2 focus:ring-iwb-teal/10 focus:outline-none"
             />
@@ -265,7 +267,7 @@ export function DepositForm({ subAccounts, preferredCurrency }: DepositFormProps
         {submitting ? (
           <span className="size-4 animate-spin rounded-full border-2 border-iwb-navy border-t-transparent" />
         ) : null}
-        {submitting ? "Submitting..." : `Submit Deposit Request`}
+        {submitting ? t('deposit.submitting') : t('deposit.submit')}
       </button>
 
       <p className="flex items-center justify-center gap-1 text-xs text-iwb-slate-light">

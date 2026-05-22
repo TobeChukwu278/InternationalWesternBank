@@ -5,6 +5,7 @@ import type { Transaction, Notification } from "@/types/database";
 import { TransactionRow } from "./transaction-row";
 import { TransactionReceipt } from "@/components/features/transaction-receipt";
 import { NotificationBell } from "@/components/features/notification-bell";
+import { useLocale } from "@/i18n/client";
 
 interface TransactionHistoryProps {
   initialTransactions: Transaction[];
@@ -27,6 +28,7 @@ export function TransactionHistory({
   notificationUnreadCount,
   notificationInitialNotifications,
 }: TransactionHistoryProps) {
+  const { t } = useLocale();
   const [transactions, setTransactions] = useState(initialTransactions);
   const [page, setPage] = useState(initialPage);
   const [loading, setLoading] = useState(false);
@@ -65,7 +67,7 @@ export function TransactionHistory({
   return (
     <div className="rounded-iwb-lg bg-white shadow-iwb-card">
       <div className="flex items-center justify-between border-b border-iwb-border-light px-6 py-4">
-        <h3 className="text-sm font-semibold text-iwb-navy">Transaction History</h3>
+        <h3 className="text-sm font-semibold text-iwb-navy">{t('transactions.allTransactions')}</h3>
         <div className="flex items-center gap-3">
           <div className="relative">
             <i className="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-base text-iwb-slate-light">search</i>
@@ -79,7 +81,7 @@ export function TransactionHistory({
                 name="search"
                 type="search"
                 defaultValue={searchParams.search ?? ""}
-                placeholder="Search transactions..."
+                placeholder={t('common.search')}
                 className="w-64 rounded-iwb-md border border-iwb-border bg-white py-2 pl-10 pr-4 text-sm text-iwb-navy placeholder:text-iwb-slate-light focus:border-iwb-teal focus:ring-2 focus:ring-iwb-teal/10 focus:outline-none"
               />
             </form>
@@ -90,7 +92,7 @@ export function TransactionHistory({
             className="flex items-center gap-1.5 rounded-iwb-md border border-iwb-border px-3 py-1.5 text-xs font-medium text-iwb-navy transition-colors hover:bg-iwb-surface"
           >
             <i className="material-icons text-base">file_download</i>
-            Export CSV
+            {t('transactions.export')}
           </a>
         </div>
       </div>
@@ -115,15 +117,15 @@ export function TransactionHistory({
               onChange={(e) => e.target.form?.requestSubmit()}
               className="appearance-none bg-transparent text-xs text-iwb-slate focus:outline-none cursor-pointer"
             >
-              <option value="">Category</option>
-              <option value="shopping">Shopping</option>
-              <option value="dining">Dining</option>
-              <option value="travel">Travel</option>
-              <option value="utilities">Utilities</option>
-              <option value="investment">Investment</option>
-              <option value="deposit">Deposit</option>
-              <option value="transfer">Transfer</option>
-              <option value="withdrawal">Withdrawal</option>
+              <option value="">{t('transactions.filter')}</option>
+              <option value="shopping">{t('accounts.categoryShopping')}</option>
+              <option value="dining">{t('accounts.categoryDining')}</option>
+              <option value="travel">{t('accounts.categoryTravel')}</option>
+              <option value="utilities">{t('accounts.categoryUtilities')}</option>
+              <option value="investment">{t('accounts.categoryInvestment')}</option>
+              <option value="deposit">{t('transactions.deposit')}</option>
+              <option value="transfer">{t('transactions.transfer')}</option>
+              <option value="withdrawal">{t('transactions.withdrawal')}</option>
             </select>
             <i className="material-icons text-sm pointer-events-none">expand_more</i>
           </label>
@@ -135,10 +137,10 @@ export function TransactionHistory({
               onChange={(e) => e.target.form?.requestSubmit()}
               className="appearance-none bg-transparent text-xs text-iwb-slate focus:outline-none cursor-pointer"
             >
-              <option value="">Status</option>
-              <option value="completed">Completed</option>
-              <option value="pending">Pending</option>
-              <option value="failed">Failed</option>
+              <option value="">{t('common.status')}</option>
+              <option value="completed">{t('transactions.completed')}</option>
+              <option value="pending">{t('transactions.pending')}</option>
+              <option value="failed">{t('transactions.failed')}</option>
             </select>
             <i className="material-icons text-sm pointer-events-none">expand_more</i>
           </label>
@@ -154,17 +156,17 @@ export function TransactionHistory({
           <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-iwb-surface">
             <i className="material-icons text-2xl text-iwb-slate">receipt_long</i>
           </div>
-          <p className="mt-4 text-sm font-medium text-iwb-navy">No transactions found</p>
+          <p className="mt-4 text-sm font-medium text-iwb-navy">{t('transactions.noTransactions')}</p>
           <p className="mt-1 text-xs text-iwb-slate">Try adjusting your filters or search terms</p>
         </div>
       ) : (
         <div>
           <div className="hidden grid-cols-12 gap-3 border-b border-iwb-border-light bg-iwb-surface/50 px-6 py-3 text-xs font-medium uppercase tracking-wider text-iwb-slate-light md:grid">
-            <span className="col-span-2">Date</span>
-            <span className="col-span-3">Merchant</span>
-            <span className="col-span-2">Category</span>
-            <span className="col-span-2">Status</span>
-            <span className="col-span-3 text-right">Amount</span>
+            <span className="col-span-2">{t('transactions.date')}</span>
+            <span className="col-span-3">{t('transactions.description')}</span>
+            <span className="col-span-2">{t('transactions.type')}</span>
+            <span className="col-span-2">{t('common.status')}</span>
+            <span className="col-span-3 text-right">{t('transactions.amount')}</span>
           </div>
 
           <div className="divide-y divide-iwb-border-light">
@@ -196,7 +198,7 @@ export function TransactionHistory({
                 ) : (
                   <i className="material-icons text-base">arrow_downward</i>
                 )}
-                {loading ? "Loading..." : "Load More Transactions"}
+                {loading ? t('common.loading') : "Load More Transactions"}
               </button>
             </div>
           ) : null}

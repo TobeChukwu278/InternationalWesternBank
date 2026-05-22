@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { convertAmount } from "@/lib/currency";
 import { DepositForm } from "@/components/features/deposit-form";
+import { t } from "@/i18n/server";
 
 export default async function DepositPage() {
   const supabase = await createClient();
@@ -39,8 +40,8 @@ export default async function DepositPage() {
   return (
     <div className="mx-auto max-w-lg space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-iwb-navy">Deposit</h1>
-        <p className="mt-1 text-sm text-iwb-slate">Add funds to your account</p>
+        <h1 className="text-2xl font-semibold text-iwb-navy">{await t('deposit.title')}</h1>
+        <p className="mt-1 text-sm text-iwb-slate">{await t('deposit.subtitle')}</p>
       </div>
       <DepositForm subAccounts={convertedSubAccounts} preferredCurrency={preferredCurrency} />
     </div>

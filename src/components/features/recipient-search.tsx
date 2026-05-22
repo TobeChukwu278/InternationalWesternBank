@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useLocale } from "@/i18n/client";
 
 interface SearchResult {
   account_number: string;
@@ -14,6 +15,7 @@ interface RecipientSearchProps {
 }
 
 export function RecipientSearch({ recentRecipients, onSelect, selected }: RecipientSearchProps) {
+  const { t } = useLocale();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
   const [searching, setSearching] = useState(false);
@@ -128,7 +130,7 @@ export function RecipientSearch({ recentRecipients, onSelect, selected }: Recipi
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search by account number..."
+              placeholder={t('send.recipientPlaceholder')}
               className="flex-1 bg-transparent text-sm text-iwb-navy placeholder:text-iwb-slate-light focus:outline-none"
             />
             {searching ? (
@@ -159,7 +161,7 @@ export function RecipientSearch({ recentRecipients, onSelect, selected }: Recipi
             </div>
           ) : showDropdown && query.length >= 2 ? (
             <div className="absolute z-10 mt-1 w-full rounded-iwb-lg bg-white shadow-iwb-overlay border border-iwb-border-light p-4 text-center text-sm text-iwb-slate">
-              No recipients found
+              {t('common.noResults')}
             </div>
           ) : null}
         </div>

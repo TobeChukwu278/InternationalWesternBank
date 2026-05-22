@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { Card } from "@/components/ui/card";
+import { t } from "@/i18n/server";
 
 export default async function StatementsPage() {
   const supabase = await createClient();
@@ -25,6 +26,11 @@ export default async function StatementsPage() {
     )
     .order("created_at", { ascending: false });
 
+  const [depositLabel, withdrawalLabel] = await Promise.all([
+    t('transactions.deposit'),
+    t('transactions.withdrawal'),
+  ]);
+
   const byMonth: Record<string, { deposits: number; withdrawals: number; count: number }> = {};
   for (const tx of transactions ?? []) {
     const month = new Date(tx.created_at).toLocaleDateString("en-US", { month: "long", year: "numeric" });
@@ -41,8 +47,8 @@ export default async function StatementsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-iwb-navy">Statements</h1>
-        <p className="mt-1 text-sm text-iwb-slate">Monthly account summaries</p>
+        <h1 className="text-2xl font-semibold text-iwb-navy">{await t('statements.title')}</h1>
+        <p className="mt-1 text-sm text-iwb-slate">{await t('statements.subtitle')}</p>
       </div>
 
       {Object.keys(byMonth).length === 0 ? (
@@ -59,13 +65,13 @@ export default async function StatementsPage() {
               </div>
               <div className="grid grid-cols-2 gap-4 px-6 py-4">
                 <div>
-                  <p className="text-xs text-iwb-slate-light">Deposits</p>
+                  <p className="text-xs text-iwb-slate-light">{depositLabel}</p>
                   <p className="text-lg font-semibold text-iwb-teal">
                     +${data.deposits.toLocaleString("en-US", { minimumFractionDigits: 2 })}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-iwb-slate-light">Withdrawals</p>
+                  <p className="text-xs text-iwb-slate-light">{withdrawalLabel}</p>
                   <p className="text-lg font-semibold text-iwb-error">
                     -${data.withdrawals.toLocaleString("en-US", { minimumFractionDigits: 2 })}
                   </p>

@@ -1,12 +1,8 @@
+"use client";
+
 import type { Transaction } from "@/types/database";
 import { CategoryIcon } from "@/components/features/category-icon";
-
-const typeLabel: Record<string, string> = {
-  deposit: "Deposit",
-  withdrawal: "Withdrawal",
-  transfer: "Transfer",
-  internal_transfer: "Internal Transfer",
-};
+import { useLocale } from "@/i18n/client";
 
 const statusStyles: Record<string, string> = {
   completed: "bg-iwb-teal/10 text-iwb-teal",
@@ -14,13 +10,13 @@ const statusStyles: Record<string, string> = {
   failed: "bg-iwb-error/10 text-iwb-error",
 };
 
-function formatDate(dateStr: string) {
+function formatDate(dateStr: string, t: (key: string) => string) {
   const date = new Date(dateStr);
   const now = new Date();
   const isToday = date.toDateString() === now.toDateString();
   const isYesterday = new Date(now.getTime() - 86400000).toDateString() === date.toDateString();
 
-  const datePart = isToday ? "Today" : isYesterday ? "Yesterday" : date.toLocaleDateString("en-US", {
+  const datePart = isToday ? t("common.today") : isYesterday ? t("common.yesterday") : date.toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
     year: date.getFullYear() !== now.getFullYear() ? "numeric" : undefined,
@@ -41,7 +37,14 @@ export function TransactionRow({
   isIncoming: boolean;
   onSelect?: (tx: Transaction) => void;
 }) {
-  const { date, time } = formatDate(transaction.created_at);
+  const { t } = useLocale();
+  const { date, time } = formatDate(transaction.created_at, t);
+
+  const statusLabel: Record<string, string> = {
+    completed: t("transactions.completed"),
+    pending: t("transactions.pending"),
+    failed: t("transactions.failed"),
+  };
 
   return (
     <button
@@ -70,7 +73,7 @@ export function TransactionRow({
 
       <div className="col-span-2">
         <span className={`rounded-iwb-full px-2.5 py-0.5 text-xs font-medium ${statusStyles[transaction.status] ?? statusStyles.pending}`}>
-          {transaction.status.charAt(0).toUpperCase() + transaction.status.slice(1)}
+          {statusLabel[transaction.status] ?? transaction.status.charAt(0).toUpperCase() + transaction.status.slice(1)}
         </span>
       </div>
 

@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { TransactionHistory } from "./transaction-history";
 import { getUnreadNotifications } from "@/lib/actions/notifications";
+import { t } from "@/i18n/server";
 
 interface PageProps {
   searchParams: Promise<Record<string, string>>;
@@ -77,7 +78,7 @@ export default async function TransactionsPage({ searchParams }: PageProps) {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-iwb-navy">Transactions</h1>
+          <h1 className="text-2xl font-semibold text-iwb-navy">{await t('transactions.title')}</h1>
           <p className="mt-1 text-sm text-iwb-slate">
             View your complete transaction history
           </p>

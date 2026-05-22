@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import Link from "next/link";
+import { useLocale } from "@/i18n/client";
 
 type ResultStatus = "success" | "failure" | "pending";
 
@@ -26,28 +27,28 @@ const currencySymbols: Record<string, string> = {
 const config: Record<ResultStatus, {
   icon: string;
   iconColor: string;
-  heading: string;
+  headingKey: string;
   headingColor: string;
   borderColor: string;
 }> = {
   success: {
     icon: "check_circle",
     iconColor: "text-iwb-teal",
-    heading: "Money Sent!",
+    headingKey: "send.success",
     headingColor: "text-iwb-teal-dark",
     borderColor: "border-iwb-teal",
   },
   failure: {
     icon: "cancel",
     iconColor: "text-iwb-error",
-    heading: "Transfer Failed",
+    headingKey: "send.failed",
     headingColor: "text-iwb-error",
     borderColor: "border-iwb-error",
   },
   pending: {
     icon: "schedule",
     iconColor: "text-iwb-slate",
-    heading: "Transfer Scheduled",
+    headingKey: "send.scheduled",
     headingColor: "text-iwb-navy",
     borderColor: "border-iwb-border",
   },
@@ -64,6 +65,7 @@ export function SendResult({
   onRetry,
   onClose,
 }: SendResultProps) {
+  const { t } = useLocale();
   const receiptRef = useRef<HTMLDivElement>(null);
   const [capturing, setCapturing] = useState<string | null>(null);
   const isAdminPending = status === "pending" && !scheduledDate;
@@ -71,7 +73,7 @@ export function SendResult({
     ? {
         icon: "hourglass_empty" as const,
         iconColor: "text-iwb-amber" as const,
-        heading: "Pending Approval" as const,
+        headingKey: "send.pendingApproval" as const,
         headingColor: "text-iwb-navy" as const,
         borderColor: "border-iwb-amber" as const,
       }
@@ -130,27 +132,27 @@ export function SendResult({
 
           <div className="py-6 text-center">
             <i className={`material-icons text-5xl ${c.iconColor} mb-2`}>{c.icon}</i>
-            <p className={`text-lg font-semibold ${c.headingColor}`}>{c.heading}</p>
+            <p className={`text-lg font-semibold ${c.headingColor}`}>{t(c.headingKey)}</p>
           </div>
 
           <div className="space-y-3 border-t border-dashed border-iwb-border-light pt-5">
             <div className="flex justify-between text-sm">
-              <span className="text-iwb-slate-light">Amount</span>
+              <span className="text-iwb-slate-light">{t('send.amount')}</span>
               <span className="text-xl font-bold text-iwb-navy">
                 {symbol}{parseFloat(amount).toLocaleString("en-US", { minimumFractionDigits: 2 })}
               </span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-iwb-slate-light">Recipient</span>
+              <span className="text-iwb-slate-light">{t('send.recipient')}</span>
               <span className="text-sm font-medium text-iwb-navy">{recipientName}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-iwb-slate-light">Reference</span>
+              <span className="text-iwb-slate-light">{t('send.description')}</span>
               <span className="font-mono text-xs text-iwb-navy">{reference}</span>
             </div>
             {status === "pending" && scheduledDate ? (
               <div className="flex justify-between text-sm">
-                <span className="text-iwb-slate-light">Scheduled</span>
+                <span className="text-iwb-slate-light">{t('send.scheduleDate')}</span>
                 <span className="text-sm text-iwb-navy">
                   {new Date(scheduledDate).toLocaleDateString("en-US", {
                     month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit",
@@ -160,14 +162,14 @@ export function SendResult({
             ) : null}
             {status === "pending" && scheduledDate ? (
               <div className="flex justify-between text-sm">
-                <span className="text-iwb-slate-light">Status</span>
-                <span className="rounded-iwb-full bg-iwb-navy/5 px-2.5 py-0.5 text-xs font-medium text-iwb-slate">Scheduled</span>
+                <span className="text-iwb-slate-light">{t('common.status')}</span>
+                <span className="rounded-iwb-full bg-iwb-navy/5 px-2.5 py-0.5 text-xs font-medium text-iwb-slate">{t('send.scheduled')}</span>
               </div>
             ) : null}
             {isAdminPending ? (
               <div className="flex justify-between text-sm">
-                <span className="text-iwb-slate-light">Status</span>
-                <span className="rounded-iwb-full bg-iwb-amber/10 px-2.5 py-0.5 text-xs font-medium text-iwb-amber">Pending Approval</span>
+                <span className="text-iwb-slate-light">{t('common.status')}</span>
+                <span className="rounded-iwb-full bg-iwb-amber/10 px-2.5 py-0.5 text-xs font-medium text-iwb-amber">{t('send.pendingApproval')}</span>
               </div>
             ) : null}
           </div>
@@ -214,7 +216,7 @@ export function SendResult({
             onClick={onRetry}
             className="flex-1 rounded-iwb-md bg-iwb-teal px-6 py-3 text-sm font-semibold text-iwb-navy transition-all hover:bg-iwb-teal-dark text-center"
           >
-            Try Again
+            {t('common.retry')}
           </button>
         ) : null}
         <Link
@@ -222,7 +224,7 @@ export function SendResult({
           onClick={onClose}
           className="flex-1 rounded-iwb-md border-2 border-iwb-border px-6 py-3 text-sm font-semibold text-iwb-navy transition-all hover:bg-iwb-surface text-center"
         >
-          Back to Dashboard
+          {t('common.back')}
         </Link>
       </div>
 

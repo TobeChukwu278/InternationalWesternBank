@@ -1,5 +1,7 @@
 "use client";
 
+import { useLocale } from "@/i18n/client";
+
 interface ScheduleToggleProps {
   enabled: boolean;
   onToggle: (enabled: boolean) => void;
@@ -8,13 +10,14 @@ interface ScheduleToggleProps {
 }
 
 export function ScheduleToggle({ enabled, onToggle, date, onDateChange }: ScheduleToggleProps) {
+  const { t } = useLocale();
   return (
     <div className="rounded-iwb-lg border border-iwb-border-light p-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <i className="material-icons text-iwb-slate-light">event_repeat</i>
           <div>
-            <p className="text-sm font-medium text-iwb-navy">Schedule for later</p>
+            <p className="text-sm font-medium text-iwb-navy">{t('send.scheduleLater')}</p>
             <p className="text-xs text-iwb-slate">Send this transfer automatically in the future</p>
           </div>
         </div>
