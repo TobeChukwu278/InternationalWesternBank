@@ -11,6 +11,7 @@ import { SettingsForm } from "@/components/features/settings-form";
 import { useToast } from "@/components/ui/toast";
 import { useSettings } from "@/components/features/settings-provider";
 import { updatePreferences, updatePassword } from "@/lib/actions/settings";
+import { LanguageSwitcher } from "@/components/features/language-switcher";
 
 interface SettingsClientProps {
   profile: {
@@ -131,6 +132,15 @@ export function SettingsClient({ profile, account, userId }: SettingsClientProps
             </select>
           </div>
         </div>
+      </Card>
+
+      {/* Language */}
+      <Card className="p-6">
+        <div className="flex items-center gap-2 mb-6">
+          <i className="material-icons text-iwb-teal">language</i>
+          <h2 className="text-sm font-semibold text-iwb-navy">Language</h2>
+        </div>
+        <LanguageSwitcher />
       </Card>
 
       {/* Security */}
