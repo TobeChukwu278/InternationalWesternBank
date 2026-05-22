@@ -1,23 +1,22 @@
 "use client";
 
-import { createClient } from "@/lib/supabase/client";
+import { uploadStorageFile } from "@/lib/actions/kyc";
 
 export async function uploadProfilePhoto(file: File, userId: string): Promise<string | null> {
-  const supabase = createClient();
-  const ext = file.name.split(".").pop();
+  const ext = file.name.split(".").pop() ?? "jpg";
   const path = `${userId}/profile.${ext}`;
 
-  const { error } = await supabase.storage
-    .from("profile-photos")
-    .upload(path, file, { upsert: true });
+  const formData = new FormData();
+  formData.set("bucket", "profile-photo");
+  formData.set("path", path);
+  formData.set("file", file);
 
-  if (error) return null;
-
-  const { data: urlData } = await supabase.storage
-    .from("profile-photos")
-    .getPublicUrl(path);
-
-  return urlData?.publicUrl ?? null;
+  const res = await uploadStorageFile(formData);
+  if (res.error) {
+    console.error("Profile photo upload failed:", res.error);
+    return null;
+  }
+  return res.url ?? null;
 }
 
 export async function uploadKycDocument(
@@ -25,19 +24,18 @@ export async function uploadKycDocument(
   userId: string,
   side: "front" | "back",
 ): Promise<string | null> {
-  const supabase = createClient();
-  const ext = file.name.split(".").pop();
+  const ext = file.name.split(".").pop() ?? "jpg";
   const path = `${userId}/${side}.${ext}`;
 
-  const { error } = await supabase.storage
-    .from("kyc-documents")
-    .upload(path, file, { upsert: true });
+  const formData = new FormData();
+  formData.set("bucket", "kyc-documents");
+  formData.set("path", path);
+  formData.set("file", file);
 
-  if (error) return null;
-
-  const { data: urlData } = await supabase.storage
-    .from("kyc-documents")
-    .getPublicUrl(path);
-
-  return urlData?.publicUrl ?? null;
+  const res = await uploadStorageFile(formData);
+  if (res.error) {
+    console.error("KYC document upload failed:", res.error);
+    return null;
+  }
+  return res.url ?? null;
 }

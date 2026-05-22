@@ -91,6 +91,32 @@ export async function updateKycDocumentUrls(formData: FormData) {
   return { success: true };
 }
 
+export async function uploadStorageFile(formData: FormData) {
+  const svc = createServiceClient();
+  const bucket = formData.get("bucket") as string;
+  const path = formData.get("path") as string;
+  const file = formData.get("file") as File;
+
+  if (!bucket || !path || !file) return { error: "Missing upload fields" };
+
+  const arrayBuffer = await file.arrayBuffer();
+
+  const { error } = await svc.storage
+    .from(bucket)
+    .upload(path, arrayBuffer, {
+      contentType: file.type,
+      upsert: true,
+    });
+
+  if (error) return { error: error.message };
+
+  const { data: urlData } = await svc.storage
+    .from(bucket)
+    .getPublicUrl(path);
+
+  return { url: urlData?.publicUrl ?? null };
+}
+
 export async function getDocumentSignedUrl(bucket: string, filePath: string) {
   const svc = createServiceClient();
   const { data } = await svc.storage

@@ -90,6 +90,10 @@ export default function SignupPage() {
       await updateKycDocumentUrls(urlForm);
     }
 
+    if (!avatarUrl && avatarFile) setError("Profile photo upload failed. You can retry later in settings.");
+    if (!idFrontUrl && idFrontFile) setError("ID document upload failed. An admin can assist you.");
+    if (!idBackUrl && idBackFile) setError("ID document upload failed. An admin can assist you.");
+
     setStatusMessage("");
     setSubmitting(false);
     router.push("/pending-verification");
