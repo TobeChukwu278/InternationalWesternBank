@@ -1,29 +1,30 @@
 import Link from "next/link";
+import { t } from "@/i18n/server";
 
-const quickActions = [
-  {
-    label: "Send",
-    href: "/send",
-    icon: "send",
-  },
-  {
-    label: "Request",
-    href: "/send?type=request",
-    icon: "request_quote",
-  },
-  {
-    label: "Deposit",
-    href: "/deposit",
-    icon: "camera_alt",
-  },
-];
+export async function QuickActions() {
+  const quickActions = [
+    {
+      label: await t("common.send"),
+      href: "/send",
+      icon: "send",
+    },
+    {
+      label: await t("common.request"),
+      href: "/send?type=request",
+      icon: "request_quote",
+    },
+    {
+      label: await t("nav.deposit"),
+      href: "/deposit",
+      icon: "camera_alt",
+    },
+  ];
 
-export function QuickActions() {
   return (
     <div className="grid grid-cols-3 gap-3">
       {quickActions.map((action) => (
         <Link
-          key={action.label}
+          key={action.href}
           href={action.href}
           className="flex flex-col items-center gap-2 rounded-iwb-lg bg-white p-4 shadow-iwb-card transition-all duration-200 hover:shadow-iwb-overlay hover:-translate-y-0.5"
         >

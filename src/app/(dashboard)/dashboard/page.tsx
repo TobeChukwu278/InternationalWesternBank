@@ -10,6 +10,7 @@ import { PromotionCard } from "@/components/features/promotion-card";
 import { convertAmount } from "@/lib/currency";
 import { NotificationBell } from "@/components/features/notification-bell";
 import { getUnreadNotifications } from "@/lib/actions/notifications";
+import { t } from "@/i18n/server";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -105,10 +106,10 @@ export default async function DashboardPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-semibold text-iwb-navy">
-            Welcome, {profile?.full_name ?? "User"}
+            {await t("dashboard.welcome", { name: profile?.full_name ?? "User" })}
           </h1>
           <p className="mt-1 text-sm text-iwb-slate">
-            Here is your wealth overview today.
+            {await t("dashboard.wealthOverview")}
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -116,7 +117,7 @@ export default async function DashboardPage() {
           <a
             href="/settings"
             className="flex size-10 items-center justify-center rounded-full bg-white text-iwb-slate-light shadow-iwb-card transition-colors hover:bg-iwb-surface hover:text-iwb-navy"
-            title="Settings"
+            title={await t("nav.settings")}
           >
             <i className="material-icons">settings</i>
           </a>

@@ -21,7 +21,17 @@
     "retry": "Réessayer",
     "send": "Envoyer",
     "receive": "Recevoir",
-    "status": "Statut"
+    "status": "Statut",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "daysAgo": "{{count}} days ago",
+    "request": "Request",
+    "justNow": "just now",
+    "minutesAgo": "{{count}}m ago",
+    "hoursAgo": "{{count}}h ago",
+    "daysAgoShort": "{{count}}d ago",
+    "nameUpdated": "Name updated",
+    "preferenceUpdated": "Preference updated"
   },
   "nav": {
     "dashboard": "Tableau de bord",
@@ -138,7 +148,16 @@
     "noTransactions": "Aucune transaction récente",
     "spendingInsights": "Aperçu des dépenses",
     "promotions": "Offres spéciales",
-    "learnMore": "En savoir plus"
+    "learnMore": "En savoir plus",
+    "wealthOverview": "Here is your wealth overview today.",
+    "totalNetWorth": "Total Net Worth",
+    "trendThisMonth": "+{{percent}}% this month",
+    "noTransactionsDesc": "Your transactions will appear here",
+    "noSpending": "No spending this month",
+    "noSpendingDesc": "Your spending breakdown will appear here",
+    "promotionTitle": "International Travel?",
+    "promotionDescription": "Unlock zero FX fees and worldwide lounge access with IWB Premier.",
+    "upgradeNow": "Upgrade Now"
   },
   "accounts": {
     "title": "Vos comptes",
@@ -153,7 +172,16 @@
     "inactive": "Inactif",
     "frozen": "Gelé",
     "noAccounts": "Aucun compte trouvé",
-    "totalAcrossAccounts": "Total sur tous les comptes"
+    "totalAcrossAccounts": "Total sur tous les comptes",
+    "manageAccounts": "Manage your accounts",
+    "default": "Default",
+    "opened": "Opened {{date}}",
+    "categoryShopping": "Shopping",
+    "categoryDining": "Dining",
+    "categoryTravel": "Travel",
+    "categoryUtilities": "Utilities",
+    "categoryInvestment": "Investment",
+    "categoryOther": "Others"
   },
   "send": {
     "title": "Envoyer de l'argent",
@@ -260,7 +288,22 @@
     "updatePassword": "Mettre à jour le mot de passe",
     "passwordUpdated": "Mot de passe mis à jour avec succès",
     "language": "Langue",
-    "languageDescription": "Choisissez votre langue préférée"
+    "languageDescription": "Choisissez votre langue préférée",
+    "manageAccount": "Manage your account settings",
+    "preferences": "Preferences",
+    "emailNotifications": "Email Notifications",
+    "preferredCurrency": "Preferred Currency",
+    "theme": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "security": "Security",
+    "account": "Account",
+    "memberSince": "Member since {{date}}",
+    "memberSinceLabel": "Member Since",
+    "userId": "User ID",
+    "saveChanges": "Save Changes",
+    "nameUpdated": "Name updated",
+    "failedToUpdate": "Failed to update"
   },
   "notifications": {
     "title": "Notifications",
@@ -271,7 +314,13 @@
     "transfer": "Transfert",
     "deposit": "Dépôt",
     "admin": "Administration",
-    "newNotification": "Nouvelle notification"
+    "newNotification": "Nouvelle notification",
+    "total": "{{count}} total",
+    "markAllRead": "Mark all read",
+    "emptyTitle": "No notifications yet",
+    "emptyDescription": "Notifications about your transfers and deposits will appear here",
+    "seeAll": "See all notifications",
+    "noNew": "No new notifications"
   },
   "admin": {
     "login": {

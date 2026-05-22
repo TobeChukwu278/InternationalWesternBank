@@ -21,7 +21,17 @@
     "retry": "Reintentar",
     "send": "Enviar",
     "receive": "Recibir",
-    "status": "Estado"
+    "status": "Estado",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "daysAgo": "{{count}} days ago",
+    "request": "Request",
+    "justNow": "just now",
+    "minutesAgo": "{{count}}m ago",
+    "hoursAgo": "{{count}}h ago",
+    "daysAgoShort": "{{count}}d ago",
+    "nameUpdated": "Name updated",
+    "preferenceUpdated": "Preference updated"
   },
   "nav": {
     "dashboard": "Panel",
@@ -138,7 +148,16 @@
     "noTransactions": "No hay transacciones recientes",
     "spendingInsights": "Información de Gastos",
     "promotions": "Ofertas Especiales",
-    "learnMore": "Más Información"
+    "learnMore": "Más Información",
+    "wealthOverview": "Here is your wealth overview today.",
+    "totalNetWorth": "Total Net Worth",
+    "trendThisMonth": "+{{percent}}% this month",
+    "noTransactionsDesc": "Your transactions will appear here",
+    "noSpending": "No spending this month",
+    "noSpendingDesc": "Your spending breakdown will appear here",
+    "promotionTitle": "International Travel?",
+    "promotionDescription": "Unlock zero FX fees and worldwide lounge access with IWB Premier.",
+    "upgradeNow": "Upgrade Now"
   },
   "accounts": {
     "title": "Sus Cuentas",
@@ -153,7 +172,16 @@
     "inactive": "Inactiva",
     "frozen": "Congelada",
     "noAccounts": "No se encontraron cuentas",
-    "totalAcrossAccounts": "Total en todas las cuentas"
+    "totalAcrossAccounts": "Total en todas las cuentas",
+    "manageAccounts": "Manage your accounts",
+    "default": "Default",
+    "opened": "Opened {{date}}",
+    "categoryShopping": "Shopping",
+    "categoryDining": "Dining",
+    "categoryTravel": "Travel",
+    "categoryUtilities": "Utilities",
+    "categoryInvestment": "Investment",
+    "categoryOther": "Others"
   },
   "send": {
     "title": "Enviar Dinero",
@@ -260,7 +288,22 @@
     "updatePassword": "Actualizar Contraseña",
     "passwordUpdated": "Contraseña actualizada con éxito",
     "language": "Idioma",
-    "languageDescription": "Elija su idioma preferido"
+    "languageDescription": "Elija su idioma preferido",
+    "manageAccount": "Manage your account settings",
+    "preferences": "Preferences",
+    "emailNotifications": "Email Notifications",
+    "preferredCurrency": "Preferred Currency",
+    "theme": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "security": "Security",
+    "account": "Account",
+    "memberSince": "Member since {{date}}",
+    "memberSinceLabel": "Member Since",
+    "userId": "User ID",
+    "saveChanges": "Save Changes",
+    "nameUpdated": "Name updated",
+    "failedToUpdate": "Failed to update"
   },
   "notifications": {
     "title": "Notificaciones",
@@ -271,7 +314,13 @@
     "transfer": "Transferencia",
     "deposit": "Depósito",
     "admin": "Administración",
-    "newNotification": "Nueva notificación"
+    "newNotification": "Nueva notificación",
+    "total": "{{count}} total",
+    "markAllRead": "Mark all read",
+    "emptyTitle": "No notifications yet",
+    "emptyDescription": "Notifications about your transfers and deposits will appear here",
+    "seeAll": "See all notifications",
+    "noNew": "No new notifications"
   },
   "admin": {
     "login": {

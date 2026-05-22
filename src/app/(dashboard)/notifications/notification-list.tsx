@@ -4,22 +4,11 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { markAsRead, markAllAsRead } from "@/lib/actions/notifications";
 import type { Notification } from "@/types/database";
+import { useLocale } from "@/i18n/client";
 
 interface NotificationListProps {
   notifications: Notification[];
   total: number;
-}
-
-function timeAgo(dateStr: string): string {
-  const seconds = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
-  if (seconds < 60) return "just now";
-  const minutes = Math.floor(seconds / 60);
-  if (minutes < 60) return `${minutes}m ago`;
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours}h ago`;
-  const days = Math.floor(hours / 24);
-  if (days < 30) return `${days}d ago`;
-  return new Date(dateStr).toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 
 const typeIcons: Record<string, string> = {
@@ -36,7 +25,20 @@ const typeColors: Record<string, string> = {
 
 export function NotificationList({ notifications: initial, total }: NotificationListProps) {
   const router = useRouter();
+  const { t } = useLocale();
   const [notifications, setNotifications] = useState(initial);
+
+  function timeAgo(dateStr: string): string {
+    const seconds = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
+    if (seconds < 60) return t("common.justNow");
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) return t("common.minutesAgo", { count: String(minutes) });
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return t("common.hoursAgo", { count: String(hours) });
+    const days = Math.floor(hours / 24);
+    if (days < 30) return t("common.daysAgoShort", { count: String(days) });
+    return new Date(dateStr).toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  }
 
   async function handleMarkRead(id: string) {
     await markAsRead(id);
@@ -63,8 +65,8 @@ export function NotificationList({ notifications: initial, total }: Notification
             <i className="material-icons">arrow_back</i>
           </button>
           <div>
-            <h1 className="text-2xl font-semibold text-iwb-navy">Notifications</h1>
-            <p className="text-sm text-iwb-slate">{total} total</p>
+            <h1 className="text-2xl font-semibold text-iwb-navy">{t("notifications.title")}</h1>
+            <p className="text-sm text-iwb-slate">{t("notifications.total", { count: String(total) })}</p>
           </div>
         </div>
         {unreadCount > 0 ? (
@@ -72,7 +74,7 @@ export function NotificationList({ notifications: initial, total }: Notification
             onClick={handleMarkAllRead}
             className="rounded-iwb-md border border-iwb-border px-4 py-2 text-sm font-medium text-iwb-slate transition-colors hover:border-iwb-teal hover:text-iwb-teal"
           >
-            Mark all read
+            {t("notifications.markAllRead")}
           </button>
         ) : null}
       </div>
@@ -80,9 +82,9 @@ export function NotificationList({ notifications: initial, total }: Notification
       {notifications.length === 0 ? (
         <div className="rounded-iwb-xl bg-white p-12 text-center shadow-iwb-card">
           <i className="material-icons text-4xl text-iwb-slate-light mb-3">notifications_none</i>
-          <p className="text-base font-medium text-iwb-navy">No notifications yet</p>
+          <p className="text-base font-medium text-iwb-navy">{t("notifications.emptyTitle")}</p>
           <p className="mt-1 text-sm text-iwb-slate">
-            Notifications about your transfers and deposits will appear here
+            {t("notifications.emptyDescription")}
           </p>
         </div>
       ) : (

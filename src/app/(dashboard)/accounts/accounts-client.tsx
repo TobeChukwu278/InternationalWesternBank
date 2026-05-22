@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { BalanceDisplay } from "@/components/ui/balance-display";
 import { CopyButton } from "@/components/ui/copy-button";
+import { useLocale } from "@/i18n/client";
 
 interface SubAccount {
   id: string;
@@ -23,28 +24,29 @@ export function AccountsClient({
   totalBalance: number;
   subAccounts: SubAccount[];
 }) {
+  const { t } = useLocale();
   const [hidden, setHidden] = useState(false);
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-iwb-navy">Accounts</h1>
-        <p className="mt-1 text-sm text-iwb-slate">Manage your accounts</p>
+        <h1 className="text-2xl font-semibold text-iwb-navy">{t("accounts.title")}</h1>
+        <p className="mt-1 text-sm text-iwb-slate">{t("accounts.manageAccounts")}</p>
       </div>
 
       <Card className="overflow-hidden">
         <div className="bg-gradient-to-br from-iwb-navy to-iwb-navy-light p-6 text-white">
           <div className="flex items-center justify-between">
-            <p className="text-xs font-medium text-white/60">Account Number</p>
+            <p className="text-xs font-medium text-white/60">{t("accounts.accountNumber")}</p>
             <span className="rounded-full bg-white/10 px-3 py-1 text-[10px] font-medium text-white/70">
-              Active
+              {t("accounts.active")}
             </span>
           </div>
           <div className="mt-1 flex items-center gap-2">
             <p className="font-mono text-lg font-semibold tracking-wider">{accountNumber}</p>
             <CopyButton text={accountNumber} />
           </div>
-          <p className="mt-4 text-xs text-white/60">Total Balance</p>
+          <p className="mt-4 text-xs text-white/60">{t("accounts.balance")}</p>
           <BalanceDisplay amount={totalBalance} className="text-3xl font-bold" hidden={hidden} onToggle={() => setHidden(!hidden)} />
         </div>
       </Card>
@@ -65,14 +67,14 @@ export function AccountsClient({
                     {sa.type === "checking" ? "C" : "S"}
                   </span>
                   <div>
-                    <p className="text-sm font-semibold capitalize text-iwb-navy">{sa.type}</p>
+                    <p className="text-sm font-semibold capitalize text-iwb-navy">{sa.type === "checking" ? t("accounts.checking") : t("accounts.savings")}</p>
                     <p className="text-xs text-iwb-slate">{sa.currency}</p>
                   </div>
                 </div>
               </div>
               {sa.is_default ? (
                 <span className="rounded-iwb-full bg-iwb-teal/10 px-2 py-0.5 text-[10px] font-medium text-iwb-teal">
-                  Default
+                  {t("accounts.default")}
                 </span>
               ) : null}
             </div>
@@ -83,7 +85,7 @@ export function AccountsClient({
               onToggle={() => setHidden(!hidden)}
             />
             <p className="mt-0.5 text-xs text-iwb-slate-light">
-              Opened {new Date(sa.created_at).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
+              {t("accounts.opened", { date: new Date(sa.created_at).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }) })}
             </p>
           </Card>
         ))}

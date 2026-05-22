@@ -4,21 +4,11 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { markAsRead } from "@/lib/actions/notifications";
 import type { Notification } from "@/types/database";
+import { useLocale } from "@/i18n/client";
 
 interface NotificationBellProps {
   initialUnreadCount: number;
   initialNotifications: Notification[];
-}
-
-function timeAgo(dateStr: string): string {
-  const seconds = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
-  if (seconds < 60) return "just now";
-  const minutes = Math.floor(seconds / 60);
-  if (minutes < 60) return `${minutes}m ago`;
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours}h ago`;
-  const days = Math.floor(hours / 24);
-  return `${days}d ago`;
 }
 
 const typeIcons: Record<string, string> = {
@@ -28,10 +18,22 @@ const typeIcons: Record<string, string> = {
 };
 
 export function NotificationBell({ initialUnreadCount, initialNotifications }: NotificationBellProps) {
+  const { t } = useLocale();
   const [open, setOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(initialUnreadCount);
   const [notifications, setNotifications] = useState(initialNotifications);
   const ref = useRef<HTMLDivElement>(null);
+
+  function timeAgo(dateStr: string): string {
+    const seconds = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
+    if (seconds < 60) return t("common.justNow");
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) return t("common.minutesAgo", { count: String(minutes) });
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return t("common.hoursAgo", { count: String(hours) });
+    const days = Math.floor(hours / 24);
+    return t("common.daysAgoShort", { count: String(days) });
+  }
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
@@ -54,7 +56,7 @@ export function NotificationBell({ initialUnreadCount, initialNotifications }: N
       <button
         onClick={() => setOpen(!open)}
         className="relative flex size-10 items-center justify-center rounded-full bg-white text-iwb-slate-light shadow-iwb-card transition-colors hover:bg-iwb-surface hover:text-iwb-navy"
-        title="Notifications"
+        title={t("notifications.title")}
       >
         <i className="material-icons">notifications</i>
         {unreadCount > 0 ? (
@@ -67,14 +69,14 @@ export function NotificationBell({ initialUnreadCount, initialNotifications }: N
       {open ? (
         <div className="absolute right-0 top-full z-50 mt-2 w-80 rounded-iwb-lg bg-white shadow-iwb-overlay border border-iwb-border-light overflow-hidden">
           <div className="px-4 py-3 border-b border-iwb-border-light">
-            <p className="text-sm font-semibold text-iwb-navy">Notifications</p>
+            <p className="text-sm font-semibold text-iwb-navy">{t("notifications.title")}</p>
           </div>
 
           <div className="max-h-80 overflow-y-auto">
             {notifications.length === 0 ? (
               <div className="px-4 py-8 text-center">
                 <i className="material-icons text-2xl text-iwb-slate-light mb-2">notifications_none</i>
-                <p className="text-sm text-iwb-slate">No new notifications</p>
+                <p className="text-sm text-iwb-slate">{t("notifications.noNew")}</p>
               </div>
             ) : (
               notifications.map((n) => (
@@ -101,7 +103,7 @@ export function NotificationBell({ initialUnreadCount, initialNotifications }: N
             onClick={() => setOpen(false)}
             className="flex items-center justify-center gap-1 px-4 py-3 text-sm font-medium text-iwb-teal transition-colors hover:bg-iwb-teal/5 border-t border-iwb-border-light"
           >
-            See all notifications
+            {t("notifications.seeAll")}
             <i className="material-icons text-sm">arrow_forward</i>
           </Link>
         </div>

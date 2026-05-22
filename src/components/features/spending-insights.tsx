@@ -1,4 +1,5 @@
 import { EmptyState } from "@/components/ui/empty-state";
+import { t } from "@/i18n/server";
 
 interface SpendingCategory {
   category: string;
@@ -19,23 +20,32 @@ const categoryColors: Record<string, string> = {
   other: "#E0E3E6",
 };
 
-const categoryLabels: Record<string, string> = {
-  shopping: "Shopping",
-  dining: "Dining",
-  travel: "Travel",
-  utilities: "Utilities",
-  investment: "Investment",
-  other: "Others",
+const categoryLabelKeys: Record<string, string> = {
+  shopping: "accounts.categoryShopping",
+  dining: "accounts.categoryDining",
+  travel: "accounts.categoryTravel",
+  utilities: "accounts.categoryUtilities",
+  investment: "accounts.categoryInvestment",
+  other: "accounts.categoryOther",
 };
 
-export function SpendingInsights({ spendingByCategory }: SpendingInsightsProps) {
+export async function SpendingInsights({ spendingByCategory }: SpendingInsightsProps) {
+  const spendingInsights = await t("dashboard.spendingInsights");
+  const noSpending = await t("dashboard.noSpending");
+  const noSpendingDesc = await t("dashboard.noSpendingDesc");
+
+  const categoryLabels: Record<string, string> = {};
+  for (const [key, labelKey] of Object.entries(categoryLabelKeys)) {
+    categoryLabels[key] = await t(labelKey);
+  }
+
   if (spendingByCategory.length === 0) {
     return (
       <div className="rounded-iwb-lg bg-white p-6 shadow-iwb-card">
-        <h3 className="mb-4 text-sm font-semibold text-iwb-navy">Spending Insights</h3>
+        <h3 className="mb-4 text-sm font-semibold text-iwb-navy">{spendingInsights}</h3>
         <EmptyState
-          title="No spending this month"
-          description="Your spending breakdown will appear here"
+          title={noSpending}
+          description={noSpendingDesc}
         />
       </div>
     );
@@ -56,7 +66,7 @@ export function SpendingInsights({ spendingByCategory }: SpendingInsightsProps) 
 
   return (
     <div className="rounded-iwb-lg bg-white p-6 shadow-iwb-card">
-      <h3 className="mb-4 text-sm font-semibold text-iwb-navy">Spending Insights</h3>
+      <h3 className="mb-4 text-sm font-semibold text-iwb-navy">{spendingInsights}</h3>
       <div className="flex items-center gap-6">
         <div
           className="size-28 shrink-0 rounded-full"

@@ -21,7 +21,17 @@
     "retry": "Retry",
     "send": "Send",
     "receive": "Receive",
-    "status": "Status"
+    "status": "Status",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "daysAgo": "{{count}} days ago",
+    "request": "Request",
+    "justNow": "just now",
+    "minutesAgo": "{{count}}m ago",
+    "hoursAgo": "{{count}}h ago",
+    "daysAgoShort": "{{count}}d ago",
+    "nameUpdated": "Name updated",
+    "preferenceUpdated": "Preference updated"
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -150,7 +160,16 @@
     "noTransactions": "No recent transactions",
     "spendingInsights": "Spending Insights",
     "promotions": "Special Offers",
-    "learnMore": "Learn More"
+    "learnMore": "Learn More",
+    "wealthOverview": "Here is your wealth overview today.",
+    "totalNetWorth": "Total Net Worth",
+    "trendThisMonth": "+{{percent}}% this month",
+    "noTransactionsDesc": "Your transactions will appear here",
+    "noSpending": "No spending this month",
+    "noSpendingDesc": "Your spending breakdown will appear here",
+    "promotionTitle": "International Travel?",
+    "promotionDescription": "Unlock zero FX fees and worldwide lounge access with IWB Premier.",
+    "upgradeNow": "Upgrade Now"
   },
   "accounts": {
     "title": "Your Accounts",
@@ -165,7 +184,16 @@
     "inactive": "Inactive",
     "frozen": "Frozen",
     "noAccounts": "No accounts found",
-    "totalAcrossAccounts": "Total across all accounts"
+    "totalAcrossAccounts": "Total across all accounts",
+    "manageAccounts": "Manage your accounts",
+    "default": "Default",
+    "opened": "Opened {{date}}",
+    "categoryShopping": "Shopping",
+    "categoryDining": "Dining",
+    "categoryTravel": "Travel",
+    "categoryUtilities": "Utilities",
+    "categoryInvestment": "Investment",
+    "categoryOther": "Others"
   },
   "send": {
     "title": "Send Money",
@@ -272,7 +300,22 @@
     "updatePassword": "Update Password",
     "passwordUpdated": "Password updated successfully",
     "language": "Language",
-    "languageDescription": "Choose your preferred language"
+    "languageDescription": "Choose your preferred language",
+    "manageAccount": "Manage your account settings",
+    "preferences": "Preferences",
+    "emailNotifications": "Email Notifications",
+    "preferredCurrency": "Preferred Currency",
+    "theme": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "security": "Security",
+    "account": "Account",
+    "memberSince": "Member since {{date}}",
+    "memberSinceLabel": "Member Since",
+    "userId": "User ID",
+    "saveChanges": "Save Changes",
+    "nameUpdated": "Name updated",
+    "failedToUpdate": "Failed to update"
   },
   "notifications": {
     "title": "Notifications",
@@ -283,7 +326,13 @@
     "transfer": "Transfer",
     "deposit": "Deposit",
     "admin": "Admin",
-    "newNotification": "New notification"
+    "newNotification": "New notification",
+    "total": "{{count}} total",
+    "markAllRead": "Mark all read",
+    "emptyTitle": "No notifications yet",
+    "emptyDescription": "Notifications about your transfers and deposits will appear here",
+    "seeAll": "See all notifications",
+    "noNew": "No new notifications"
   },
   "admin": {
     "login": {

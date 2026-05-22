@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BalanceDisplay } from "@/components/ui/balance-display";
+import { t } from "@/i18n/server";
 
 interface SubAccountInfo {
   id: string;
@@ -12,25 +13,25 @@ interface AccountCardsProps {
   subAccounts: SubAccountInfo[];
 }
 
-const typeConfig: Record<string, { label: string; icon: string; color: string }> = {
-  checking: { label: "Checking", icon: "account_balance", color: "bg-iwb-navy/10 text-iwb-navy" },
-  savings: { label: "Savings", icon: "savings", color: "bg-iwb-teal/10 text-iwb-teal" },
-};
-
 function maskAccountNumber(accountNumber: string): string {
   return "*" + accountNumber.slice(-4);
 }
 
-export function AccountCards({ subAccounts }: AccountCardsProps) {
+export async function AccountCards({ subAccounts }: AccountCardsProps) {
+  const typeConfig: Record<string, { label: string; icon: string; color: string }> = {
+    checking: { label: await t("accounts.checking"), icon: "account_balance", color: "bg-iwb-navy/10 text-iwb-navy" },
+    savings: { label: await t("accounts.savings"), icon: "savings", color: "bg-iwb-teal/10 text-iwb-teal" },
+  };
+
   return (
     <div className="rounded-iwb-lg bg-white p-6 shadow-iwb-card">
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-iwb-navy">Accounts</h3>
+        <h3 className="text-sm font-semibold text-iwb-navy">{await t("nav.accounts")}</h3>
         <Link
           href="/accounts"
           className="text-xs font-medium text-iwb-teal transition-colors hover:text-iwb-teal-dark"
         >
-          View All
+          {await t("dashboard.viewAll")}
         </Link>
       </div>
       <div className="space-y-3">
