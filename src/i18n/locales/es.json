@@ -92,7 +92,11 @@
       "creatingAccount": "Creando su cuenta...",
       "uploadingDocs": "Subiendo sus documentos...",
       "photoUploadFailed": "Error al subir la foto de perfil. Puede reintentarlo más tarde en configuración.",
-      "idUploadFailed": "Error al subir el documento de identidad. Un administrador puede ayudarle."
+      "idUploadFailed": "Error al subir el documento de identidad. Un administrador puede ayudarle.",
+      "subtitle": "Abra su cuenta en minutos. Únase a miles de clientes satisfechos en todo el mundo.",
+      "fdicInsured": "Asegurado por la FDIC hasta $250,000",
+      "encryptedSecurity": "Seguridad cifrada de 256 bits",
+      "support247": "Atención al cliente 24/7"
     },
     "pendingVerification": {
       "title": "Verificación en Progreso",
@@ -101,7 +105,11 @@
       "rejectedMessage": "La verificación de su cuenta no fue aprobada.",
       "reason": "Motivo",
       "contactSupport": "Por favor, contacte al soporte para más información.",
-      "signedOut": "Ha cerrado sesión."
+      "signedOut": "Ha cerrado sesión.",
+      "submittedTitle": "Registro Enviado",
+      "submittedMessage": "Gracias por registrarse. Su solicitud está siendo revisada.",
+      "reviewTime": "Tiempo de revisión típico: 1-2 días hábiles",
+      "notifiedWhenApproved": "Recibirá una notificación una vez aprobado"
     }
   },
   "personalInfo": {
@@ -148,7 +156,11 @@
     "and": "y",
     "privacyPolicy": "Política de Privacidad",
     "submit": "Enviar Solicitud",
-    "submitting": "Enviando..."
+    "submitting": "Enviando...",
+    "photo": "Foto",
+    "idFront": "ID Anverso",
+    "idBack": "ID Reverso",
+    "ssn": "SSN (últimos 4)"
   },
   "dashboard": {
     "welcome": "Bienvenido de nuevo, {{name}}",
@@ -357,14 +369,13 @@
     "title": "Notificaciones",
     "noNotifications": "Aún no hay notificaciones",
     "markRead": "Marcar como leída",
-    "markAllRead": "Marcar todo como leído",
+    "markAllRead": "Mark all read",
     "system": "Sistema",
     "transfer": "Transferencia",
     "deposit": "Depósito",
     "admin": "Administración",
     "newNotification": "Nueva notificación",
     "total": "{{count}} total",
-    "markAllRead": "Mark all read",
     "emptyTitle": "No notifications yet",
     "emptyDescription": "Notifications about your transfers and deposits will appear here",
     "seeAll": "See all notifications",
@@ -387,7 +398,14 @@
       "pendingKyc": "KYC Pendiente",
       "recentActivity": "Actividad Reciente",
       "totalDeposits": "Total de Depósitos",
-      "totalTransfers": "Total de Transferencias"
+      "totalTransfers": "Total de Transferencias",
+      "totalAccounts": "Total de Cuentas",
+      "totalTransactions": "Transacciones",
+      "sevenDayVolume": "Volumen 7d",
+      "sevenDayVolumeLabel": "Volumen de 7 Días",
+      "depositsSevenDay": "Depósitos (7d)",
+      "transactionActivity": "Actividad de Transacciones (7 días)",
+      "noActivitySevenDays": "Sin actividad en los últimos 7 días"
     },
     "users": {
       "title": "Gestión de Usuarios",
@@ -401,7 +419,32 @@
       "reason": "Motivo",
       "submit": "Enviar",
       "success": "Cuenta actualizada con éxito",
-      "failed": "Operación fallida"
+      "failed": "Operación fallida",
+      "registeredCount": "{{count}} usuario registrado",
+      "registeredCountPlural": "{{count}} usuarios registrados",
+      "totalLabel": "Total",
+      "nameCol": "Usuario",
+      "accountCol": "Cuenta",
+      "balanceCol": "Saldo",
+      "subAccountsCol": "Subcuentas",
+      "joinedCol": "Registrado",
+      "actionsCol": "Acciones",
+      "noUsersYet": "Aún no hay usuarios",
+      "noUsersDesc": "Los usuarios aparecerán aquí cuando se registren",
+      "manage": "Gestionar",
+      "email": "Correo Electrónico",
+      "accountNum": "Cuenta",
+      "joined": "Registrado",
+      "totalBalance": "Saldo Total",
+      "noSubAccounts": "Sin subcuentas",
+      "currentBalance": "Saldo Actual",
+      "description": "Descripción",
+      "fundingReason": "Motivo del depósito",
+      "withdrawalReason": "Motivo del retiro",
+      "processing": "Procesando...",
+      "creditAction": "Acreditar {{type}}",
+      "debitAction": "Debitar {{type}}",
+      "defaultBadge": "Por Defecto"
     },
     "kyc": {
       "title": "Verificaciones KYC",
@@ -422,7 +465,9 @@
       "rejectReason": "Motivo del rechazo...",
       "confirmReject": "Confirmar Rechazo",
       "cancel": "Cancelar",
-      "submitted": "Enviado"
+      "submitted": "Enviado",
+      "idFront": "ID Anverso",
+      "idBack": "ID Reverso"
     },
     "transfers": {
       "title": "Aprobaciones de Transferencias",
@@ -440,7 +485,12 @@
       "confirmReject": "Confirmar Rechazo",
       "cancel": "Cancelar",
       "history": "Historial de Transferencias",
-      "noHistory": "Aún no hay transferencias procesadas"
+      "noHistory": "Aún no hay transferencias procesadas",
+      "allProcessed": "Todas las solicitudes de depósito han sido procesadas",
+      "reference": "Referencia:",
+      "scheduled": "Programado:",
+      "memo": "Memo:",
+      "processing": "Procesando..."
     },
     "deposits": {
       "title": "Solicitudes de Depósito",
@@ -458,7 +508,12 @@
       "confirmReject": "Confirmar Rechazo",
       "cancel": "Cancelar",
       "history": "Historial de Depósitos",
-      "noHistory": "Aún no hay depósitos procesados"
+      "noHistory": "Aún no hay depósitos procesados",
+      "confirmLabel": "Confirmar",
+      "rejectLabel": "Rechazar",
+      "reference": "Referencia:",
+      "details": "Detalles:",
+      "allProcessed": "Todas las solicitudes de depósito han sido procesadas"
     },
     "activity": {
       "title": "Registro de Actividad",
@@ -467,7 +522,13 @@
       "user": "Usuario",
       "action": "Acción",
       "details": "Detalles",
-      "date": "Fecha"
+      "date": "Fecha",
+      "actionCount": "{{count}} acción administrativa registrada",
+      "actionCountPlural": "{{count}} acciones administrativas registradas",
+      "credit": "Crédito",
+      "debit": "Débito",
+      "noAdminActivity": "Aún no hay actividad administrativa",
+      "noAdminActivityDesc": "Las acciones de crédito/débito administrativas aparecerán aquí"
     },
     "reports": {
       "title": "Informes",
@@ -479,7 +540,43 @@
       "pendingKyc": "Verificaciones KYC Pendientes",
       "userGrowth": "Crecimiento de Usuarios (Últimos 30 Días)",
       "exportReport": "Exportar Informe",
-      "exporting": "Exportando..."
+      "exporting": "Exportando...",
+      "totalWithdrawals": "Total de Retiros",
+      "allTimeCompleted": "Completadas históricamente",
+      "completedTransactions": "{{count}} transacciones completadas",
+      "volume30Day": "Volumen de 30 Días",
+      "noData30Days": "Sin datos en los últimos 30 días",
+      "legendDeposits": "Depósitos",
+      "legendTransfers": "Transferencias",
+      "legendWithdrawals": "Retiros",
+      "topUsersByBalance": "Usuarios Principales por Saldo",
+      "noUsersBalances": "Aún no hay usuarios con saldos"
+    },
+    "transactions": {
+      "count": "{{count}} transacción en la plataforma",
+      "countPlural": "{{count}} transacciones en la plataforma",
+      "allTypes": "Todos los Tipos",
+      "deposits": "Depósitos",
+      "transfers": "Transferencias",
+      "withdrawals": "Retiros",
+      "internal": "Interno",
+      "allStatus": "Todos los Estados",
+      "completed": "Completada",
+      "pending": "Pendiente",
+      "failed": "Fallida",
+      "searchPlaceholder": "Buscar por referencia, descripción, remitente o destinatario...",
+      "date": "Fecha",
+      "type": "Tipo",
+      "sender": "Remitente",
+      "recipient": "Destinatario",
+      "amount": "Monto",
+      "status": "Estado",
+      "ref": "Ref",
+      "page": "Página {{current}} de {{total}}",
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "noTransactionsFound": "No se encontraron transacciones",
+      "noTransactionsHint": "Intente ajustar sus filtros o términos de búsqueda"
     }
   },
   "adminCommon": {

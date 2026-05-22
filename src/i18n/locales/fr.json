@@ -92,7 +92,11 @@
       "creatingAccount": "Création de votre compte...",
       "uploadingDocs": "Téléchargement de vos documents...",
       "photoUploadFailed": "Échec du téléchargement de la photo de profil. Vous pouvez réessayer plus tard dans les paramètres.",
-      "idUploadFailed": "Échec du téléchargement du document d'identité. Un administrateur peut vous aider."
+      "idUploadFailed": "Échec du téléchargement du document d'identité. Un administrateur peut vous aider.",
+      "subtitle": "Ouvrez votre compte en quelques minutes. Rejoignez des milliers de clients satisfaits dans le monde entier.",
+      "fdicInsured": "Assuré FDIC jusqu'à 250 000 $",
+      "encryptedSecurity": "Sécurité chiffrée 256 bits",
+      "support247": "Support client 24h/24 et 7j/7"
     },
     "pendingVerification": {
       "title": "Vérification en cours",
@@ -101,7 +105,11 @@
       "rejectedMessage": "La vérification de votre compte n'a pas été approuvée.",
       "reason": "Motif",
       "contactSupport": "Veuillez contacter le support pour plus d'informations.",
-      "signedOut": "Vous avez été déconnecté."
+      "signedOut": "Vous avez été déconnecté.",
+      "submittedTitle": "Inscription soumise",
+      "submittedMessage": "Merci de vous être inscrit. Votre demande est en cours d'examen.",
+      "reviewTime": "Délai d'examen typique : 1 à 2 jours ouvrés",
+      "notifiedWhenApproved": "Vous serez informé une fois approuvé"
     }
   },
   "personalInfo": {
@@ -148,7 +156,11 @@
     "and": "et",
     "privacyPolicy": "Politique de confidentialité",
     "submit": "Soumettre la demande",
-    "submitting": "Soumission en cours..."
+    "submitting": "Soumission en cours...",
+    "photo": "Photo",
+    "idFront": "Pièce d'identité Recto",
+    "idBack": "Pièce d'identité Verso",
+    "ssn": "SSN (4 derniers)"
   },
   "dashboard": {
     "welcome": "Bon retour, {{name}}",
@@ -357,14 +369,13 @@
     "title": "Notifications",
     "noNotifications": "Aucune notification pour l'instant",
     "markRead": "Marquer comme lue",
-    "markAllRead": "Tout marquer comme lu",
+    "markAllRead": "Mark all read",
     "system": "Système",
     "transfer": "Transfert",
     "deposit": "Dépôt",
     "admin": "Administration",
     "newNotification": "Nouvelle notification",
     "total": "{{count}} total",
-    "markAllRead": "Mark all read",
     "emptyTitle": "No notifications yet",
     "emptyDescription": "Notifications about your transfers and deposits will appear here",
     "seeAll": "See all notifications",
@@ -387,7 +398,14 @@
       "pendingKyc": "KYC en attente",
       "recentActivity": "Activité récente",
       "totalDeposits": "Total des dépôts",
-      "totalTransfers": "Total des transferts"
+      "totalTransfers": "Total des transferts",
+      "totalAccounts": "Total des comptes",
+      "totalTransactions": "Transactions",
+      "sevenDayVolume": "Volume 7j",
+      "sevenDayVolumeLabel": "Volume sur 7 jours",
+      "depositsSevenDay": "Dépôts (7j)",
+      "transactionActivity": "Activité des transactions (7 jours)",
+      "noActivitySevenDays": "Aucune activité au cours des 7 derniers jours"
     },
     "users": {
       "title": "Gestion des utilisateurs",
@@ -401,7 +419,32 @@
       "reason": "Motif",
       "submit": "Soumettre",
       "success": "Compte mis à jour avec succès",
-      "failed": "Opération échouée"
+      "failed": "Opération échouée",
+      "registeredCount": "{{count}} utilisateur inscrit",
+      "registeredCountPlural": "{{count}} utilisateurs inscrits",
+      "totalLabel": "Total",
+      "nameCol": "Utilisateur",
+      "accountCol": "Compte",
+      "balanceCol": "Solde",
+      "subAccountsCol": "Sous-comptes",
+      "joinedCol": "Inscription",
+      "actionsCol": "Actions",
+      "noUsersYet": "Pas encore d'utilisateurs",
+      "noUsersDesc": "Les utilisateurs apparaîtront ici une fois inscrits",
+      "manage": "Gérer",
+      "email": "E-mail",
+      "accountNum": "Compte",
+      "joined": "Inscrit",
+      "totalBalance": "Solde total",
+      "noSubAccounts": "Aucun sous-compte",
+      "currentBalance": "Solde actuel",
+      "description": "Description",
+      "fundingReason": "Motif du financement",
+      "withdrawalReason": "Motif du retrait",
+      "processing": "Traitement en cours...",
+      "creditAction": "Créditer {{type}}",
+      "debitAction": "Débiter {{type}}",
+      "defaultBadge": "Par défaut"
     },
     "kyc": {
       "title": "Vérifications KYC",
@@ -422,7 +465,9 @@
       "rejectReason": "Motif du rejet...",
       "confirmReject": "Confirmer le rejet",
       "cancel": "Annuler",
-      "submitted": "Soumis"
+      "submitted": "Soumis",
+      "idFront": "Pièce d'identité Recto",
+      "idBack": "Pièce d'identité Verso"
     },
     "transfers": {
       "title": "Approbations de transferts",
@@ -440,7 +485,12 @@
       "confirmReject": "Confirmer le rejet",
       "cancel": "Annuler",
       "history": "Historique des transferts",
-      "noHistory": "Aucun transfert traité pour l'instant"
+      "noHistory": "Aucun transfert traité pour l'instant",
+      "allProcessed": "Toutes les demandes de dépôt ont été traitées",
+      "reference": "Référence :",
+      "scheduled": "Programmé :",
+      "memo": "Mémo :",
+      "processing": "Traitement en cours..."
     },
     "deposits": {
       "title": "Demandes de dépôt",
@@ -458,7 +508,12 @@
       "confirmReject": "Confirmer le rejet",
       "cancel": "Annuler",
       "history": "Historique des dépôts",
-      "noHistory": "Aucun dépôt traité pour l'instant"
+      "noHistory": "Aucun dépôt traité pour l'instant",
+      "confirmLabel": "Confirmer",
+      "rejectLabel": "Rejeter",
+      "reference": "Référence :",
+      "details": "Détails :",
+      "allProcessed": "Toutes les demandes de dépôt ont été traitées"
     },
     "activity": {
       "title": "Journal d'activité",
@@ -467,7 +522,13 @@
       "user": "Utilisateur",
       "action": "Action",
       "details": "Détails",
-      "date": "Date"
+      "date": "Date",
+      "actionCount": "{{count}} action administrative enregistrée",
+      "actionCountPlural": "{{count}} actions administratives enregistrées",
+      "credit": "Crédit",
+      "debit": "Débit",
+      "noAdminActivity": "Aucune activité administrative pour l'instant",
+      "noAdminActivityDesc": "Les actions de crédit/débit administratives apparaîtront ici"
     },
     "reports": {
       "title": "Rapports",
@@ -479,7 +540,43 @@
       "pendingKyc": "Vérifications KYC en attente",
       "userGrowth": "Croissance des utilisateurs (30 derniers jours)",
       "exportReport": "Exporter le rapport",
-      "exporting": "Exportation en cours..."
+      "exporting": "Exportation en cours...",
+      "totalWithdrawals": "Total des retraits",
+      "allTimeCompleted": "Historique complet",
+      "completedTransactions": "{{count}} transactions effectuées",
+      "volume30Day": "Volume sur 30 jours",
+      "noData30Days": "Aucune donnée pour les 30 derniers jours",
+      "legendDeposits": "Dépôts",
+      "legendTransfers": "Transferts",
+      "legendWithdrawals": "Retraits",
+      "topUsersByBalance": "Meilleurs utilisateurs par solde",
+      "noUsersBalances": "Aucun utilisateur avec solde pour l'instant"
+    },
+    "transactions": {
+      "count": "{{count}} transaction sur la plateforme",
+      "countPlural": "{{count}} transactions sur la plateforme",
+      "allTypes": "Tous les types",
+      "deposits": "Dépôts",
+      "transfers": "Transferts",
+      "withdrawals": "Retraits",
+      "internal": "Interne",
+      "allStatus": "Tous les statuts",
+      "completed": "Effectuée",
+      "pending": "En attente",
+      "failed": "Échouée",
+      "searchPlaceholder": "Rechercher par référence, description, expéditeur ou destinataire...",
+      "date": "Date",
+      "type": "Type",
+      "sender": "Expéditeur",
+      "recipient": "Destinataire",
+      "amount": "Montant",
+      "status": "Statut",
+      "ref": "Réf",
+      "page": "Page {{current}} sur {{total}}",
+      "previous": "Précédent",
+      "next": "Suivant",
+      "noTransactionsFound": "Aucune transaction trouvée",
+      "noTransactionsHint": "Essayez d'ajuster vos filtres ou termes de recherche"
     }
   },
   "adminCommon": {
