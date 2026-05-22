@@ -126,35 +126,39 @@ export async function getDocumentSignedUrl(bucket: string, filePath: string) {
 }
 
 export async function approveKyc(formData: FormData) {
-  const isAdmin = await isAdminSession();
-  if (!isAdmin) return { error: "Not authorized" };
+  try {
+    const isAdmin = await isAdminSession();
+    if (!isAdmin) return { error: "Not authorized" };
 
-  const userId = formData.get("user_id") as string;
-  if (!userId) return { error: "Missing user ID" };
+    const userId = formData.get("user_id") as string;
+    if (!userId) return { error: "Missing user ID" };
 
-  const svc = createServiceClient();
+    const svc = createServiceClient();
 
-  const { error } = await svc
-    .from("profiles")
-    .update({
-      status: "active",
-      kyc_status: "verified",
-      reviewed_at: new Date().toISOString(),
-      rejection_reason: null,
-    })
-    .eq("id", userId);
+    const { error } = await svc
+      .from("profiles")
+      .update({
+        status: "active",
+        kyc_status: "verified",
+        reviewed_at: new Date().toISOString(),
+        rejection_reason: null,
+      })
+      .eq("id", userId);
 
-  if (error) return { error: error.message };
+    if (error) return { error: error.message };
 
-  await createNotificationSystem(
-    userId,
-    "Account Approved",
-    "Your account has been verified and approved. You can now access all IWB banking services.",
-    "system",
-  );
+    await createNotificationSystem(
+      userId,
+      "Account Approved",
+      "Your account has been verified and approved. You can now access all IWB banking services.",
+      "system",
+    );
 
-  revalidatePath("/admin", "layout");
-  return { success: true };
+    revalidatePath("/admin", "layout");
+    return { success: true };
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : "Unknown error" };
+  }
 }
 
 export async function rejectKyc(formData: FormData) {
