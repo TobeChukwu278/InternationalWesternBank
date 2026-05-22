@@ -397,7 +397,9 @@
     "transfer_approved": "Transferencia Aprobada",
     "msg_transfer_approved": "Su transferencia ha sido aprobada",
     "transfer_rejected": "Transferencia Rechazada",
-    "msg_transfer_rejected": "Su solicitud de transferencia fue rechazada"
+    "msg_transfer_rejected": "Su solicitud de transferencia fue rechazada",
+    "account_deleted": "Cuenta Eliminada",
+    "msg_account_deleted": "Su cuenta ha sido eliminada por un administrador."
   },
   "admin": {
     "login": {
@@ -462,7 +464,12 @@
       "processing": "Procesando...",
       "creditAction": "Acreditar {{type}}",
       "debitAction": "Debitar {{type}}",
-      "defaultBadge": "Por Defecto"
+      "defaultBadge": "Por Defecto",
+      "deleteUser": "Eliminar Usuario",
+      "deleteWarning": "Esta acción no se puede deshacer. El usuario perderá acceso a su cuenta.",
+      "deleteConfirm": "Escriba {{name}} para confirmar",
+      "deleteConfirmed": "Usuario eliminado exitosamente",
+      "accountDisabled": "Esta cuenta ha sido deshabilitada."
     },
     "kyc": {
       "title": "Verificaciones KYC",

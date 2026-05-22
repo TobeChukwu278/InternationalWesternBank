@@ -398,7 +398,9 @@
     "transfer_approved": "Transfer Approved",
     "msg_transfer_approved": "Your transfer has been approved",
     "transfer_rejected": "Transfer Rejected",
-    "msg_transfer_rejected": "Your transfer request was rejected"
+    "msg_transfer_rejected": "Your transfer request was rejected",
+    "account_deleted": "Account Deleted",
+    "msg_account_deleted": "Your account has been deleted by an administrator."
   },
   "admin": {
     "login": {
@@ -463,7 +465,12 @@
       "processing": "Processing...",
       "creditAction": "Credit {{type}}",
       "debitAction": "Debit {{type}}",
-      "defaultBadge": "Default"
+      "defaultBadge": "Default",
+      "deleteUser": "Delete User",
+      "deleteWarning": "This action cannot be undone. The user will lose access to their account.",
+      "deleteConfirm": "Type {{name}} to confirm",
+      "deleteConfirmed": "User deleted successfully",
+      "accountDisabled": "This account has been disabled."
     },
     "kyc": {
       "title": "KYC Verifications",

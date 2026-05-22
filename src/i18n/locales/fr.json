@@ -397,7 +397,9 @@
     "transfer_approved": "Transfert Approuvé",
     "msg_transfer_approved": "Votre transfert a été approuvé",
     "transfer_rejected": "Transfert Rejeté",
-    "msg_transfer_rejected": "Votre demande de transfert a été rejetée"
+    "msg_transfer_rejected": "Votre demande de transfert a été rejetée",
+    "account_deleted": "Compte Supprimé",
+    "msg_account_deleted": "Votre compte a été supprimé par un administrateur."
   },
   "admin": {
     "login": {
@@ -462,7 +464,12 @@
       "processing": "Traitement en cours...",
       "creditAction": "Créditer {{type}}",
       "debitAction": "Débiter {{type}}",
-      "defaultBadge": "Par défaut"
+      "defaultBadge": "Par défaut",
+      "deleteUser": "Supprimer l'utilisateur",
+      "deleteWarning": "Cette action est irréversible. L'utilisateur perdra l'accès à son compte.",
+      "deleteConfirm": "Tapez {{name}} pour confirmer",
+      "deleteConfirmed": "Utilisateur supprimé avec succès",
+      "accountDisabled": "Ce compte a été désactivé."
     },
     "kyc": {
       "title": "Vérifications KYC",
