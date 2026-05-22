@@ -7,7 +7,7 @@ export async function uploadProfilePhoto(file: File, userId: string): Promise<st
   const path = `${userId}/profile.${ext}`;
 
   const formData = new FormData();
-  formData.set("bucket", "profile-photo");
+  formData.set("bucket", "profile-photos");
   formData.set("path", path);
   formData.set("file", file);
 
