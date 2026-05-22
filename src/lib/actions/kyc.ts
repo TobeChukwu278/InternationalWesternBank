@@ -108,15 +108,17 @@ export async function approveKyc(formData: FormData) {
 
   const svc = createServiceClient();
 
-  const { data: admin } = await svc.from("admins").select("id").limit(1).single();
-  if (!admin) return { error: "Admin not found" };
+  const { createClient } = await import("@/lib/supabase/server");
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const reviewerId = user?.id ?? "00000000-0000-0000-0000-000000000000";
 
   const { error } = await svc
     .from("profiles")
     .update({
       status: "active",
       kyc_status: "verified",
-      reviewed_by: admin.id,
+      reviewed_by: reviewerId,
       reviewed_at: new Date().toISOString(),
       rejection_reason: null,
     })
@@ -146,15 +148,17 @@ export async function rejectKyc(formData: FormData) {
 
   const svc = createServiceClient();
 
-  const { data: admin } = await svc.from("admins").select("id").limit(1).single();
-  if (!admin) return { error: "Admin not found" };
+  const { createClient } = await import("@/lib/supabase/server");
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const reviewerId = user?.id ?? "00000000-0000-0000-0000-000000000000";
 
   const { error } = await svc
     .from("profiles")
     .update({
       status: "rejected",
       kyc_status: "rejected",
-      reviewed_by: admin.id,
+      reviewed_by: reviewerId,
       reviewed_at: new Date().toISOString(),
       rejection_reason: reason,
     })
