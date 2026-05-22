@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import { useLocale } from "@/i18n/client";
 
 interface IdentityDocsProps {
   avatarFile: File | null;
@@ -26,6 +27,7 @@ export function IdentityDocs({
   avatarPreview, idFrontPreview, idBackPreview,
   onFilesChange, onNext, onBack,
 }: IdentityDocsProps) {
+  const { t } = useLocale();
   const avatarRef = useRef<HTMLInputElement>(null);
   const idFrontRef = useRef<HTMLInputElement>(null);
   const idBackRef = useRef<HTMLInputElement>(null);
@@ -49,7 +51,7 @@ export function IdentityDocs({
     <div className="space-y-6">
       <div>
         <label className="text-xs font-medium text-iwb-slate-light uppercase tracking-wider mb-3 block">
-          Profile Photo <span className="text-iwb-error">*</span>
+          {t("identityDocs.profilePhoto")} <span className="text-iwb-error">*</span>
         </label>
         <div
           onClick={() => avatarRef.current?.click()}
@@ -64,9 +66,9 @@ export function IdentityDocs({
           )}
           <div>
             <p className="text-sm font-medium text-iwb-navy">
-              {avatarFile ? avatarFile.name : "Upload profile photo"}
+              {avatarFile ? avatarFile.name : t("identityDocs.uploadPhoto")}
             </p>
-            <p className="text-xs text-iwb-slate-light">JPG or PNG recommended</p>
+            <p className="text-xs text-iwb-slate-light">{t("identityDocs.profilePhotoHelp")}</p>
           </div>
           <input
             ref={avatarRef}
@@ -80,7 +82,7 @@ export function IdentityDocs({
 
       <div>
         <label className="text-xs font-medium text-iwb-slate-light uppercase tracking-wider mb-3 block">
-          Driver's License / State ID — Front <span className="text-iwb-error">*</span>
+          {t("identityDocs.idFront")} <span className="text-iwb-error">*</span>
         </label>
         <div
           onClick={() => idFrontRef.current?.click()}
@@ -95,9 +97,9 @@ export function IdentityDocs({
           )}
           <div>
             <p className="text-sm font-medium text-iwb-navy">
-              {idFrontFile ? idFrontFile.name : "Upload front of ID"}
+              {idFrontFile ? idFrontFile.name : t("identityDocs.uploadFront")}
             </p>
-            <p className="text-xs text-iwb-slate-light">Clear photo, all details visible</p>
+            <p className="text-xs text-iwb-slate-light">{t("identityDocs.idFrontHelp")}</p>
           </div>
           <input
             ref={idFrontRef}
@@ -111,7 +113,7 @@ export function IdentityDocs({
 
       <div>
         <label className="text-xs font-medium text-iwb-slate-light uppercase tracking-wider mb-3 block">
-          Driver's License / State ID — Back <span className="text-iwb-error">*</span>
+          {t("identityDocs.idBack")} <span className="text-iwb-error">*</span>
         </label>
         <div
           onClick={() => idBackRef.current?.click()}
@@ -126,9 +128,9 @@ export function IdentityDocs({
           )}
           <div>
             <p className="text-sm font-medium text-iwb-navy">
-              {idBackFile ? idBackFile.name : "Upload back of ID"}
+              {idBackFile ? idBackFile.name : t("identityDocs.uploadBack")}
             </p>
-            <p className="text-xs text-iwb-slate-light">Clear photo, barcode visible</p>
+            <p className="text-xs text-iwb-slate-light">{t("identityDocs.idBackHelp")}</p>
           </div>
           <input
             ref={idBackRef}
@@ -145,14 +147,14 @@ export function IdentityDocs({
           onClick={onBack}
           className="flex-1 rounded-iwb-md border-2 border-iwb-border px-4 py-3 text-sm font-semibold text-iwb-navy transition-all hover:bg-iwb-surface"
         >
-          Back
+          {t("common.back")}
         </button>
         <button
           onClick={onNext}
           disabled={!canContinue}
           className="flex-1 rounded-iwb-md bg-iwb-teal px-4 py-3 text-sm font-semibold text-iwb-navy transition-all hover:bg-iwb-teal-dark disabled:cursor-not-allowed disabled:opacity-50"
         >
-          Continue
+          {t("common.continue")}
         </button>
       </div>
     </div>

@@ -1,8 +1,10 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
+import { useLocale } from "@/i18n/client";
 
 export function PendingContent() {
+  const { t } = useLocale();
   const searchParams = useSearchParams();
   const rejected = searchParams.get("rejected") === "true";
 
@@ -13,12 +15,12 @@ export function PendingContent() {
           <div className="mx-auto mb-6 flex size-16 items-center justify-center rounded-full bg-iwb-error/10">
             <i className="material-icons text-4xl text-iwb-error">cancel</i>
           </div>
-          <h1 className="text-xl font-semibold text-iwb-navy">Account Rejected</h1>
+          <h1 className="text-xl font-semibold text-iwb-navy">{t("auth.pendingVerification.rejectedTitle")}</h1>
           <p className="mt-2 text-sm text-iwb-slate">
-            Unfortunately, your account registration could not be approved at this time.
+            {t("auth.pendingVerification.rejectedMessage")}
           </p>
           <p className="mt-4 text-xs text-iwb-slate-light">
-            Please contact support for more information.
+            {t("auth.pendingVerification.contactSupport")}
           </p>
           <div className="mt-6 border-t border-iwb-border-light pt-6 text-xs text-iwb-slate-light space-y-1">
             <p>International Western Bank</p>
@@ -36,18 +38,18 @@ export function PendingContent() {
           <img src="/logo.png" alt="IWB" className="size-16" />
         </div>
         <i className="material-icons text-5xl text-iwb-teal mb-4">how_to_reg</i>
-        <h1 className="text-xl font-semibold text-iwb-navy">Registration Submitted</h1>
+        <h1 className="text-xl font-semibold text-iwb-navy">{t("auth.pendingVerification.submittedTitle")}</h1>
         <p className="mt-2 text-sm text-iwb-slate">
-          Thank you for registering. Your application is being reviewed.
+          {t("auth.pendingVerification.submittedMessage")}
         </p>
         <div className="mt-6 rounded-iwb-lg bg-iwb-surface p-4 text-left space-y-2">
           <div className="flex items-center gap-2 text-sm">
             <i className="material-icons text-iwb-teal text-sm">schedule</i>
-            <span className="text-iwb-slate">Typical review time: 1-2 business days</span>
+            <span className="text-iwb-slate">{t("auth.pendingVerification.reviewTime")}</span>
           </div>
           <div className="flex items-center gap-2 text-sm">
             <i className="material-icons text-iwb-teal text-sm">notifications</i>
-            <span className="text-iwb-slate">You'll be notified once approved</span>
+            <span className="text-iwb-slate">{t("auth.pendingVerification.notifiedWhenApproved")}</span>
           </div>
         </div>
         <div className="mt-6 border-t border-iwb-border-light pt-6 text-xs text-iwb-slate-light space-y-1">

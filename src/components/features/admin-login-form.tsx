@@ -3,8 +3,10 @@
 import { useActionState } from "react";
 import { Input } from "@/components/ui/input";
 import { adminLogin } from "@/lib/actions/admin-login";
+import { useLocale } from "@/i18n/client";
 
 export function AdminLoginForm() {
+  const { t } = useLocale();
   const [state, formAction, pending] = useActionState(
     async (_prev: { error?: string } | null, formData: FormData) => {
       const result = await adminLogin(formData);
@@ -20,18 +22,18 @@ export function AdminLoginForm() {
           <div className="mx-auto flex size-12 items-center justify-center">
             <img src="/logo.png" alt="IWB" className="size-12" />
           </div>
-          <h1 className="mt-4 text-xl font-semibold text-iwb-navy">Admin Access</h1>
-          <p className="mt-1 text-sm text-iwb-slate">Enter the admin password to continue</p>
+          <h1 className="mt-4 text-xl font-semibold text-iwb-navy">{t("admin.login.title")}</h1>
+          <p className="mt-1 text-sm text-iwb-slate">{t("admin.login.subtitle")}</p>
         </div>
 
         <form action={formAction} className="space-y-4">
           <Input
-            label="Password"
+            label={t("admin.login.passwordLabel")}
             name="password"
             type="password"
             autoFocus
             required
-            placeholder="Enter admin password"
+            placeholder={t("admin.login.passwordPlaceholder")}
           />
 
           {state?.error ? (
@@ -48,7 +50,7 @@ export function AdminLoginForm() {
             disabled={pending}
             className="w-full rounded-iwb-md bg-iwb-teal px-6 py-3 text-sm font-semibold text-iwb-navy transition-all duration-200 hover:bg-iwb-teal-dark disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {pending ? "Verifying..." : "Access Admin Panel"}
+            {pending ? t("admin.login.verifying") : t("admin.login.submit")}
           </button>
         </form>
       </div>

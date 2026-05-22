@@ -8,6 +8,7 @@ import { uploadProfilePhoto, uploadKycDocument } from "@/lib/upload";
 import { PersonalInfo } from "./steps/personal-info";
 import { IdentityDocs } from "./steps/identity-docs";
 import { ReviewSubmit } from "./steps/review-submit";
+import { useLocale } from "@/i18n/client";
 
 interface PersonalInfoData {
   full_name: string;
@@ -21,9 +22,9 @@ interface PersonalInfoData {
   address_zip: string;
 }
 
-const steps = ["Personal Info", "Identity", "Review"];
-
 export default function SignupPage() {
+  const { t } = useLocale();
+  const steps = [t("auth.signup.personalInfo"), t("auth.signup.identity"), t("auth.signup.review")];
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(0);
   const [submitting, setSubmitting] = useState(false);
@@ -50,7 +51,7 @@ export default function SignupPage() {
   async function handleSubmit() {
     setSubmitting(true);
     setError(null);
-    setStatusMessage("Creating your account...");
+    setStatusMessage(t("auth.signup.creatingAccount"));
 
     const formData = new FormData();
     formData.set("full_name", personalInfo.full_name);
@@ -75,7 +76,7 @@ export default function SignupPage() {
 
     const userId = res.userId!;
 
-    setStatusMessage("Uploading your documents...");
+    setStatusMessage(t("auth.signup.uploadingDocs"));
 
     const avatarUrl = avatarFile ? await uploadProfilePhoto(avatarFile, userId) : null;
     const idFrontUrl = idFrontFile ? await uploadKycDocument(idFrontFile, userId, "front") : null;
@@ -105,7 +106,7 @@ export default function SignupPage() {
         <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm">
           <div className="flex flex-col items-center gap-4 rounded-iwb-xl bg-white p-8 shadow-iwb-overlay">
             <span className="size-10 animate-spin rounded-full border-4 border-iwb-teal border-t-transparent" />
-            <p className="text-sm font-medium text-iwb-navy">{statusMessage || "Processing..."}</p>
+            <p className="text-sm font-medium text-iwb-navy">{statusMessage || t("common.loading")}</p>
           </div>
         </div>
       ) : null}
@@ -118,20 +119,20 @@ export default function SignupPage() {
           </div>
           <h2 className="text-3xl font-bold text-white">International Western Bank</h2>
           <p className="mt-3 text-lg text-iwb-slate-light">
-            Open your account in minutes. Join thousands of satisfied customers worldwide.
+            {t("auth.signup.subtitle")}
           </p>
           <div className="mt-8 space-y-3 text-left">
             <div className="flex items-center gap-3 text-white/70">
               <i className="material-icons text-iwb-teal text-sm">verified</i>
-              <span className="text-sm">FDIC insured up to $250,000</span>
+              <span className="text-sm">{t("auth.signup.fdicInsured")}</span>
             </div>
             <div className="flex items-center gap-3 text-white/70">
               <i className="material-icons text-iwb-teal text-sm">security</i>
-              <span className="text-sm">256-bit encrypted security</span>
+              <span className="text-sm">{t("auth.signup.encryptedSecurity")}</span>
             </div>
             <div className="flex items-center gap-3 text-white/70">
               <i className="material-icons text-iwb-teal text-sm">support_agent</i>
-              <span className="text-sm">24/7 customer support</span>
+              <span className="text-sm">{t("auth.signup.support247")}</span>
             </div>
           </div>
         </div>
@@ -143,9 +144,9 @@ export default function SignupPage() {
             <img src="/logo.png" alt="IWB" className="h-10" />
           </div>
 
-          <h1 className="text-xl font-semibold text-iwb-navy">Create account</h1>
+          <h1 className="text-xl font-semibold text-iwb-navy">{t("auth.signup.title")}</h1>
           <p className="mt-1 text-sm text-iwb-slate">
-            Step {currentStep + 1} of 3: {steps[currentStep]}
+            {t("auth.signup.step", { current: String(currentStep + 1), name: steps[currentStep] ?? "" })}
           </p>
 
           <div className="mt-6 flex gap-2">

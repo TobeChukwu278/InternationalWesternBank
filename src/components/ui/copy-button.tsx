@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { useLocale } from "@/i18n/client";
 
 export function CopyButton({ text }: { text: string }) {
+  const { t } = useLocale();
   const [copied, setCopied] = useState(false);
 
   async function handleCopy() {
@@ -27,7 +29,7 @@ export function CopyButton({ text }: { text: string }) {
     <button
       onClick={handleCopy}
       className="inline-flex items-center gap-1.5 transition-colors hover:opacity-80"
-      title="Click to copy"
+      title={copied ? t("common.copied") : t("common.copy")}
     >
       {copied ? (
         <svg className="size-4 text-iwb-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24">

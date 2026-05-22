@@ -71,7 +71,11 @@
       "successTitle": "Account created!",
       "successMessage": "Your registration has been submitted for verification.",
       "creatingAccount": "Creating your account...",
-      "uploadingDocs": "Uploading your documents..."
+      "uploadingDocs": "Uploading your documents...",
+      "subtitle": "Open your account in minutes. Join thousands of satisfied customers worldwide.",
+      "fdicInsured": "FDIC insured up to $250,000",
+      "encryptedSecurity": "256-bit encrypted security",
+      "support247": "24/7 customer support"
     },
     "pendingVerification": {
       "title": "Verification in Progress",
@@ -80,7 +84,11 @@
       "rejectedMessage": "Your account verification was not approved.",
       "reason": "Reason",
       "contactSupport": "Please contact support for more information.",
-      "signedOut": "You have been signed out."
+      "signedOut": "You have been signed out.",
+      "submittedTitle": "Registration Submitted",
+      "submittedMessage": "Thank you for registering. Your application is being reviewed.",
+      "reviewTime": "Typical review time: 1-2 business days",
+      "notifiedWhenApproved": "You'll be notified once approved"
     }
   },
   "personalInfo": {
@@ -127,7 +135,11 @@
     "and": "and",
     "privacyPolicy": "Privacy Policy",
     "submit": "Submit Application",
-    "submitting": "Submitting..."
+    "submitting": "Submitting...",
+    "photo": "Photo",
+    "idFront": "ID Front",
+    "idBack": "ID Back",
+    "ssn": "SSN (last 4)"
   },
   "dashboard": {
     "welcome": "Welcome back, {{name}}",

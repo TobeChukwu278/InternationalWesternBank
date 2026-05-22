@@ -6,8 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { login } from "@/lib/actions/auth";
+import { useLocale } from "@/i18n/client";
 
 export default function LoginPage() {
+  const { t } = useLocale();
   const [state, formAction, pending] = useActionState(
     async (_prev: { error?: string } | null, formData: FormData) => {
       return login(formData);
@@ -39,26 +41,26 @@ export default function LoginPage() {
             <img src="/logo.png" alt="IWB" className="h-10" />
           </div>
 
-          <h1 className="text-xl font-semibold text-iwb-navy">Welcome back</h1>
+          <h1 className="text-xl font-semibold text-iwb-navy">{t("auth.login.title")}</h1>
           <p className="mt-1 text-sm text-iwb-slate">
-            Sign in to your account
+            {t("auth.login.subtitle")}
           </p>
 
           <form action={formAction} className="mt-8 space-y-5">
             <Input
-              label="Email"
+              label={t("auth.login.emailLabel")}
               name="email"
               type="email"
               autoComplete="email"
-              placeholder="Enter your email"
+              placeholder={t("auth.login.emailPlaceholder")}
               required
             />
             <Input
-              label="Password"
+              label={t("auth.login.passwordLabel")}
               name="password"
               type="password"
               autoComplete="current-password"
-              placeholder="Enter your password"
+              placeholder={t("auth.login.passwordPlaceholder")}
               required
             />
 
@@ -76,19 +78,19 @@ export default function LoginPage() {
             ) : null}
 
             <Button type="submit" loading={pending} className="w-full">
-              Sign In
+              {t("auth.login.signIn")}
             </Button>
 
 
           </form>
 
           <p className="mt-8 text-center text-sm text-iwb-slate">
-            Don&apos;t have an account?{" "}
+            {t("auth.login.noAccount")}{" "}
             <Link
               href="/signup"
               className="font-semibold text-iwb-navy hover:text-iwb-teal transition-colors"
             >
-              Create one
+              {t("auth.login.createAccount")}
             </Link>
           </p>
         </Card>
