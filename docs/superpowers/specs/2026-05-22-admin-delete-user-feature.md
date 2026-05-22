@@ -31,6 +31,14 @@ if (profile?.deleted_at) {
 }
 ```
 
+## Signup Block — Custom Error for Deleted Accounts
+**File:** `src/lib/actions/auth.ts`
+
+Before calling `supabase.auth.signUp()`, use the service client to check if the email belongs to a deleted profile:
+1. Query `profiles` with `.eq("email", email).not("deleted_at", "is", null).maybeSingle()`
+2. If found, return `{ error: "Cannot register with this email." }` — avoids revealing that the account was deleted
+3. If not found, proceed with normal `supabase.auth.signUp()`
+
 ## Admin UI — Query Change
 **File:** `src/app/admin/users/page.tsx`
 
