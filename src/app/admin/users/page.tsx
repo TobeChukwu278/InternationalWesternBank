@@ -9,6 +9,7 @@ export default async function AdminUsersPage() {
   const { data: users } = await supabase
     .from("profiles")
     .select("*, accounts!inner(*, sub_accounts(*))")
+    .is("deleted_at", null)
     .order("created_at", { ascending: false });
 
   const flatUsers = (users ?? []).map((profile) => {
