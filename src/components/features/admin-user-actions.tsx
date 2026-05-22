@@ -3,6 +3,7 @@
 import { useActionState, useState } from "react";
 import { creditAccount, debitAccount } from "@/lib/actions/admin";
 import { Modal } from "@/components/ui/modal";
+import { useLocale } from "@/i18n/client";
 
 interface SubAccount {
   id: string;
@@ -22,6 +23,7 @@ interface User {
 }
 
 export function AdminUserActions({ user }: { user: User }) {
+  const { t } = useLocale();
   const [open, setOpen] = useState(false);
 
   const totalBalance = user.sub_accounts.reduce((s, sa) => s + Number(sa.balance), 0);
@@ -36,7 +38,7 @@ export function AdminUserActions({ user }: { user: User }) {
           onClick={() => setOpen(true)}
           className="rounded-iwb-md bg-iwb-navy px-3 py-1.5 text-xs font-medium text-white transition-all hover:bg-iwb-navy-light"
         >
-          Manage
+          {t("admin.users.manage")}
         </button>
       </div>
 
@@ -45,15 +47,15 @@ export function AdminUserActions({ user }: { user: User }) {
           <div className="rounded-iwb-lg bg-iwb-surface p-4">
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
-                <p className="text-xs text-iwb-slate-light">Email</p>
+                <p className="text-xs text-iwb-slate-light">{t("admin.users.email")}</p>
                 <p className="font-medium text-iwb-navy">{user.email}</p>
               </div>
               <div>
-                <p className="text-xs text-iwb-slate-light">Account</p>
+                <p className="text-xs text-iwb-slate-light">{t("admin.users.accountNum")}</p>
                 <p className="font-mono font-medium text-iwb-navy">{user.account_number}</p>
               </div>
               <div>
-                <p className="text-xs text-iwb-slate-light">Joined</p>
+                <p className="text-xs text-iwb-slate-light">{t("admin.users.joined")}</p>
                 <p className="font-medium text-iwb-navy">
                   {new Date(user.created_at).toLocaleDateString("en-US", {
                     month: "short",
@@ -63,7 +65,7 @@ export function AdminUserActions({ user }: { user: User }) {
                 </p>
               </div>
               <div>
-                <p className="text-xs text-iwb-slate-light">Total Balance</p>
+                <p className="text-xs text-iwb-slate-light">{t("admin.users.totalBalance")}</p>
                 <p className="font-semibold text-iwb-navy">
                   ${totalBalance.toLocaleString("en-US", { minimumFractionDigits: 2 })}
                 </p>
@@ -72,7 +74,7 @@ export function AdminUserActions({ user }: { user: User }) {
           </div>
 
           <p className="text-xs font-medium uppercase tracking-wider text-iwb-slate-light">
-            Sub-accounts
+            {t("admin.users.subAccountsCol")}
           </p>
 
           <div className="space-y-3">
@@ -80,7 +82,7 @@ export function AdminUserActions({ user }: { user: User }) {
               <SubAccountCard key={sa.id} subAccount={sa} userName={user.full_name} />
             ))}
             {user.sub_accounts.length === 0 && (
-              <p className="text-sm text-iwb-slate">No sub-accounts</p>
+              <p className="text-sm text-iwb-slate">{t("admin.users.noSubAccounts")}</p>
             )}
           </div>
         </div>
@@ -96,6 +98,7 @@ function SubAccountCard({
   subAccount: SubAccount;
   userName: string;
 }) {
+  const { t } = useLocale();
   const [mode, setMode] = useState<"credit" | "debit" | null>(null);
 
   if (mode) {
@@ -129,7 +132,7 @@ function SubAccountCard({
             {subAccount.type}
             {subAccount.is_default ? (
               <span className="ml-1.5 rounded-iwb-full bg-iwb-teal/10 px-1.5 py-0.5 text-[10px] font-medium text-iwb-teal">
-                Default
+                {t("admin.users.defaultBadge")}
               </span>
             ) : null}
           </p>
@@ -143,13 +146,13 @@ function SubAccountCard({
           onClick={() => setMode("credit")}
           className="rounded-iwb-md bg-iwb-teal/10 px-3 py-1.5 text-xs font-semibold text-iwb-teal transition-colors hover:bg-iwb-teal/20"
         >
-          Credit
+          {t("admin.users.credit")}
         </button>
         <button
           onClick={() => setMode("debit")}
           className="rounded-iwb-md bg-iwb-error/10 px-3 py-1.5 text-xs font-semibold text-iwb-error transition-colors hover:bg-iwb-error/20"
         >
-          Debit
+          {t("admin.users.debit")}
         </button>
       </div>
     </div>
@@ -171,8 +174,9 @@ function AdminActionForm({
   userName: string;
   onCancel: () => void;
 }) {
+  const { t } = useLocale();
   const action = mode === "credit" ? creditAccount : debitAccount;
-  const actionLabel = mode === "credit" ? "Credit" : "Debit";
+  const actionLabel = mode === "credit" ? t("admin.users.credit") : t("admin.users.debit");
 
   const [state, formAction, pending] = useActionState(
     async (_prev: { error?: string; success?: boolean } | null, formData: FormData) => {
@@ -199,7 +203,7 @@ function AdminActionForm({
 
       <div className="space-y-3">
         <div>
-          <label className="text-xs font-medium text-iwb-slate">Current Balance</label>
+          <label className="text-xs font-medium text-iwb-slate">{t("admin.users.currentBalance")}</label>
           <p className="text-lg font-semibold text-iwb-navy">
             ${balance.toLocaleString("en-US", { minimumFractionDigits: 2 })}
           </p>
@@ -207,7 +211,7 @@ function AdminActionForm({
 
         <div>
           <label htmlFor="amount" className="text-xs font-medium text-iwb-slate">
-            Amount
+            {t("admin.users.amount")}
           </label>
           <div className="relative mt-1">
             <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-iwb-slate-light">
@@ -229,13 +233,13 @@ function AdminActionForm({
 
         <div>
           <label htmlFor="description" className="text-xs font-medium text-iwb-slate">
-            Description
+            {t("admin.users.description")}
           </label>
           <input
             id="description"
             name="description"
             type="text"
-            placeholder={mode === "credit" ? "Funding reason" : "Withdrawal reason"}
+            placeholder={mode === "credit" ? t("admin.users.fundingReason") : t("admin.users.withdrawalReason")}
             className="mt-1 block w-full rounded-iwb-md border border-iwb-border bg-white px-4 py-2.5 text-sm text-iwb-navy placeholder:text-iwb-slate-light focus:border-iwb-teal focus:ring-2 focus:ring-iwb-teal/10 focus:outline-none"
           />
         </div>
@@ -259,14 +263,14 @@ function AdminActionForm({
                 : "bg-iwb-error hover:bg-iwb-error/90"
             }`}
           >
-            {pending ? "Processing..." : `${actionLabel} $${subAccountType}`}
+            {pending ? t("admin.users.processing") : `${actionLabel} $${subAccountType}`}
           </button>
           <button
             type="button"
             onClick={onCancel}
             className="rounded-iwb-md px-4 py-2.5 text-sm font-medium text-iwb-slate transition-colors hover:text-iwb-navy"
           >
-            Cancel
+            {t("common.cancel")}
           </button>
         </div>
       </div>

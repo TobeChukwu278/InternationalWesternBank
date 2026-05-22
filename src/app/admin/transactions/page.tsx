@@ -1,5 +1,6 @@
 import { createServiceClient } from "@/lib/supabase/service";
 import { Card } from "@/components/ui/card";
+import { t } from "@/i18n/server";
 
 interface PageProps {
   searchParams: Promise<Record<string, string>>;
@@ -35,6 +36,48 @@ export default async function AdminTransactionsPage({ searchParams }: PageProps)
   const totalPages = Math.ceil((count ?? 0) / ITEMS_PER_PAGE);
   const currentType = sp.type ?? "";
   const currentStatus = sp.status ?? "";
+
+  const [
+    allTypesLabel,
+    depositsLabel,
+    transfersLabel,
+    withdrawalsLabel,
+    internalLabel,
+    allStatusLabel,
+    completedLabel,
+    pendingLabel,
+    failedLabel,
+    searchPlaceholder,
+    dateCol,
+    typeCol,
+    senderCol,
+    recipientCol,
+    amountCol,
+    statusCol,
+    refCol,
+    noTransactionsFound,
+    noTransactionsHint,
+  ] = await Promise.all([
+    t("admin.transactions.allTypes"),
+    t("admin.transactions.deposits"),
+    t("admin.transactions.transfers"),
+    t("admin.transactions.withdrawals"),
+    t("admin.transactions.internal"),
+    t("admin.transactions.allStatus"),
+    t("admin.transactions.completed"),
+    t("admin.transactions.pending"),
+    t("admin.transactions.failed"),
+    t("admin.transactions.searchPlaceholder"),
+    t("admin.transactions.date"),
+    t("admin.transactions.type"),
+    t("admin.transactions.sender"),
+    t("admin.transactions.recipient"),
+    t("admin.transactions.amount"),
+    t("admin.transactions.status"),
+    t("admin.transactions.ref"),
+    t("admin.transactions.noTransactionsFound"),
+    t("admin.transactions.noTransactionsHint"),
+  ]);
 
   function buildUrl(updates: Record<string, string>) {
     const params = new URLSearchParams();
@@ -87,9 +130,9 @@ export default async function AdminTransactionsPage({ searchParams }: PageProps)
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-iwb-navy">Transactions</h1>
+          <h1 className="text-2xl font-semibold text-iwb-navy">{await t("nav.transactions")}</h1>
           <p className="mt-1 text-sm text-iwb-slate">
-            {count ?? 0} transaction{(count ?? 0) !== 1 ? "s" : ""} on the platform
+            {(count ?? 0) === 1 ? await t("admin.transactions.count", { count: String(count ?? 0) }) : await t("admin.transactions.countPlural", { count: String(count ?? 0) })}
           </p>
         </div>
       </div>
@@ -97,18 +140,18 @@ export default async function AdminTransactionsPage({ searchParams }: PageProps)
       <Card>
         <div className="border-b border-iwb-border-light px-6 py-4">
           <div className="flex flex-wrap items-center gap-2">
-            <Pill label="All Types" value="" current={currentType} param="type" />
-            <Pill label="Deposits" value="deposit" current={currentType} param="type" />
-            <Pill label="Transfers" value="transfer" current={currentType} param="type" />
-            <Pill label="Withdrawals" value="withdrawal" current={currentType} param="type" />
-            <Pill label="Internal" value="internal_transfer" current={currentType} param="type" />
+            <Pill label={allTypesLabel} value="" current={currentType} param="type" />
+            <Pill label={depositsLabel} value="deposit" current={currentType} param="type" />
+            <Pill label={transfersLabel} value="transfer" current={currentType} param="type" />
+            <Pill label={withdrawalsLabel} value="withdrawal" current={currentType} param="type" />
+            <Pill label={internalLabel} value="internal_transfer" current={currentType} param="type" />
 
             <span className="mx-2 h-5 w-px bg-iwb-border-light" />
 
-            <Pill label="All Status" value="" current={currentStatus} param="status" />
-            <Pill label="Completed" value="completed" current={currentStatus} param="status" />
-            <Pill label="Pending" value="pending" current={currentStatus} param="status" />
-            <Pill label="Failed" value="failed" current={currentStatus} param="status" />
+            <Pill label={allStatusLabel} value="" current={currentStatus} param="status" />
+            <Pill label={completedLabel} value="completed" current={currentStatus} param="status" />
+            <Pill label={pendingLabel} value="pending" current={currentStatus} param="status" />
+            <Pill label={failedLabel} value="failed" current={currentStatus} param="status" />
           </div>
 
           <form method="GET" action="/admin/transactions" className="relative mt-4">
@@ -122,7 +165,7 @@ export default async function AdminTransactionsPage({ searchParams }: PageProps)
               name="search"
               type="search"
               defaultValue={searchQuery ?? ""}
-              placeholder="Search by reference, description, sender or recipient..."
+              placeholder={searchPlaceholder}
               className="w-full rounded-iwb-md border border-iwb-border bg-white py-2.5 pl-10 pr-4 text-sm text-iwb-navy placeholder:text-iwb-slate-light focus:border-iwb-teal focus:ring-2 focus:ring-iwb-teal/10 focus:outline-none"
             />
             {(typeFilter || statusFilter) ? (
@@ -137,13 +180,13 @@ export default async function AdminTransactionsPage({ searchParams }: PageProps)
         {txs && txs.length > 0 ? (
           <div>
             <div className="hidden border-b border-iwb-border-light px-6 py-3 text-xs font-medium uppercase tracking-wider text-iwb-slate-light md:grid md:grid-cols-12 md:gap-3">
-              <span className="col-span-2">Date</span>
-              <span className="col-span-2">Type</span>
-              <span className="col-span-2">Sender</span>
-              <span className="col-span-2">Recipient</span>
-              <span className="col-span-2">Amount</span>
-              <span className="col-span-1">Status</span>
-              <span className="col-span-1">Ref</span>
+              <span className="col-span-2">{dateCol}</span>
+              <span className="col-span-2">{typeCol}</span>
+              <span className="col-span-2">{senderCol}</span>
+              <span className="col-span-2">{recipientCol}</span>
+              <span className="col-span-2">{amountCol}</span>
+              <span className="col-span-1">{statusCol}</span>
+              <span className="col-span-1">{refCol}</span>
             </div>
             <div className="divide-y divide-iwb-border-light">
               {txs.map((tx) => (
@@ -188,7 +231,7 @@ export default async function AdminTransactionsPage({ searchParams }: PageProps)
             {totalPages > 1 && (
               <div className="flex items-center justify-between border-t border-iwb-border-light px-6 py-4">
                 <p className="text-xs text-iwb-slate">
-                  Page {currentPage} of {totalPages}
+                  {await t("admin.transactions.page", { current: String(currentPage), total: String(totalPages) })}
                 </p>
                 <div className="flex items-center gap-1">
                   {currentPage > 1 ? (
@@ -196,7 +239,7 @@ export default async function AdminTransactionsPage({ searchParams }: PageProps)
                       href={buildUrl({ page: String(currentPage - 1) })}
                       className="rounded-iwb-md px-3 py-1.5 text-sm font-medium text-iwb-navy transition-colors hover:bg-iwb-surface"
                     >
-                      Previous
+                      {await t("admin.transactions.previous")}
                     </a>
                   ) : null}
                   {Array.from({ length: totalPages }, (_, i) => i + 1)
@@ -228,7 +271,7 @@ export default async function AdminTransactionsPage({ searchParams }: PageProps)
                       href={buildUrl({ page: String(currentPage + 1) })}
                       className="rounded-iwb-md px-3 py-1.5 text-sm font-medium text-iwb-navy transition-colors hover:bg-iwb-surface"
                     >
-                      Next
+                      {await t("admin.transactions.next")}
                     </a>
                   ) : null}
                 </div>
@@ -242,8 +285,8 @@ export default async function AdminTransactionsPage({ searchParams }: PageProps)
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
               </svg>
             </div>
-            <p className="text-sm font-medium text-iwb-navy">No transactions found</p>
-            <p className="text-xs text-iwb-slate">Try adjusting your filters or search terms</p>
+            <p className="text-sm font-medium text-iwb-navy">{noTransactionsFound}</p>
+            <p className="text-xs text-iwb-slate">{noTransactionsHint}</p>
           </div>
         )}
       </Card>

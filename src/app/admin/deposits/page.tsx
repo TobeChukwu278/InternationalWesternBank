@@ -1,5 +1,6 @@
 import { createServiceClient } from "@/lib/supabase/service";
 import { DepositActions } from "./deposit-actions";
+import { t } from "@/i18n/server";
 
 export default async function AdminDepositsPage() {
   const svc = createServiceClient();
@@ -29,17 +30,41 @@ export default async function AdminDepositsPage() {
     .order("created_at", { ascending: false })
     .limit(20);
 
+  const [
+    depositsTitle,
+    depositsSubtitle,
+    pendingReviewLabel,
+    noPendingLabel,
+    allProcessedLabel,
+    referenceLabel,
+    dateLabel,
+    detailsLabel,
+    historyLabel,
+    noHistoryLabel,
+  ] = await Promise.all([
+    t("admin.deposits.title"),
+    t("admin.deposits.subtitle"),
+    t("admin.deposits.pendingReview"),
+    t("admin.deposits.noPending"),
+    t("admin.deposits.allProcessed"),
+    t("admin.deposits.reference"),
+    t("admin.deposits.date"),
+    t("admin.deposits.details"),
+    t("admin.deposits.history"),
+    t("admin.deposits.noHistory"),
+  ]);
+
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-semibold text-iwb-navy">Deposits</h1>
-        <p className="mt-1 text-sm text-iwb-slate">Manage pending deposit requests</p>
+        <h1 className="text-2xl font-semibold text-iwb-navy">{depositsTitle}</h1>
+        <p className="mt-1 text-sm text-iwb-slate">{depositsSubtitle}</p>
       </div>
 
       {/* Pending Deposits */}
       <div>
         <h2 className="text-lg font-semibold text-iwb-navy mb-4">
-          Pending Confirmations
+          {pendingReviewLabel}
           {pendingItems.length > 0 ? (
             <span className="ml-2 rounded-iwb-full bg-iwb-error/10 px-2.5 py-0.5 text-xs font-medium text-iwb-error">
               {pendingItems.length}
@@ -50,8 +75,8 @@ export default async function AdminDepositsPage() {
         {pendingItems.length === 0 ? (
           <div className="rounded-iwb-xl bg-white p-12 text-center shadow-iwb-card">
             <i className="material-icons text-4xl text-iwb-slate-light mb-3">check_circle</i>
-            <p className="text-base font-medium text-iwb-navy">No pending deposits</p>
-            <p className="mt-1 text-sm text-iwb-slate">All deposit requests have been processed</p>
+            <p className="text-base font-medium text-iwb-navy">{noPendingLabel}</p>
+            <p className="mt-1 text-sm text-iwb-slate">{allProcessedLabel}</p>
           </div>
         ) : (
           <div className="space-y-3">
@@ -80,11 +105,11 @@ export default async function AdminDepositsPage() {
 
                   <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
                     <div>
-                      <span className="text-iwb-slate-light">Reference:</span>
+                      <span className="text-iwb-slate-light">{referenceLabel}</span>
                       <span className="ml-1 font-mono text-iwb-navy">{item.reference}</span>
                     </div>
                     <div>
-                      <span className="text-iwb-slate-light">Date:</span>
+                      <span className="text-iwb-slate-light">{dateLabel}</span>
                       <span className="ml-1 text-iwb-navy">
                         {new Date(item.createdAt).toLocaleDateString("en-US", {
                           month: "short", day: "numeric", hour: "numeric", minute: "2-digit",
@@ -92,7 +117,7 @@ export default async function AdminDepositsPage() {
                       </span>
                     </div>
                     <div className="col-span-2">
-                      <span className="text-iwb-slate-light">Details:</span>
+                      <span className="text-iwb-slate-light">{detailsLabel}</span>
                       <span className="ml-1 text-iwb-navy">{item.description}</span>
                     </div>
                   </div>
@@ -107,9 +132,9 @@ export default async function AdminDepositsPage() {
 
       {/* Recent History */}
       <div>
-        <h2 className="text-lg font-semibold text-iwb-navy mb-4">Recent History</h2>
+        <h2 className="text-lg font-semibold text-iwb-navy mb-4">{historyLabel}</h2>
         {(completedDeposits ?? []).length === 0 ? (
-          <p className="text-sm text-iwb-slate">No completed or rejected deposits yet</p>
+          <p className="text-sm text-iwb-slate">{noHistoryLabel}</p>
         ) : (
           <div className="rounded-iwb-xl bg-white shadow-iwb-card overflow-hidden">
             <div className="divide-y divide-iwb-border-light">

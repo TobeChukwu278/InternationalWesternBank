@@ -1,5 +1,6 @@
 import { createServiceClient } from "@/lib/supabase/service";
 import { Card } from "@/components/ui/card";
+import { t } from "@/i18n/server";
 
 export default async function AdminDashboardPage() {
   const supabase = createServiceClient();
@@ -41,9 +42,37 @@ export default async function AdminDashboardPage() {
     .filter((t) => t.type === "deposit")
     .reduce((s, t) => s + Number(t.amount), 0);
 
+  const [
+    totalUsersLabel,
+    totalAccountsLabel,
+    transactionsLabel,
+    todayLabel,
+    sevenDayVolumeLabel,
+    depositsSevenDayLabel,
+    sevenDayVolumeShort,
+    dashboardTitle,
+    transactionActivityLabel,
+    noActivityLabel,
+    recentActivityLabel,
+    noTransactionsLabel,
+  ] = await Promise.all([
+    t("admin.dashboard.totalUsers"),
+    t("admin.dashboard.totalAccounts"),
+    t("admin.dashboard.totalTransactions"),
+    t("common.today"),
+    t("admin.dashboard.sevenDayVolumeLabel"),
+    t("admin.dashboard.depositsSevenDay"),
+    t("admin.dashboard.sevenDayVolume"),
+    t("nav.adminDashboard"),
+    t("admin.dashboard.transactionActivity"),
+    t("admin.dashboard.noActivitySevenDays"),
+    t("admin.dashboard.recentActivity"),
+    t("transactions.noTransactions"),
+  ]);
+
   const stats = [
     {
-      label: "Total Users",
+      label: totalUsersLabel,
       value: userCount ?? 0,
       change: null,
       icon: (
@@ -55,7 +84,7 @@ export default async function AdminDashboardPage() {
       bg: "bg-iwb-navy/5",
     },
     {
-      label: "Total Accounts",
+      label: totalAccountsLabel,
       value: accountCount ?? 0,
       change: null,
       icon: (
@@ -67,10 +96,10 @@ export default async function AdminDashboardPage() {
       bg: "bg-iwb-teal/10",
     },
     {
-      label: "Transactions",
+      label: transactionsLabel,
       value: transactionCount ?? 0,
       change: completedCount != null && transactionCount != null && transactionCount > 0
-        ? `${Math.round((completedCount / transactionCount) * 100)}% completed`
+        ? `${Math.round((completedCount / transactionCount) * 100)}% ${await t("admin.transactions.completed")}`
         : null,
       icon: (
         <svg className="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -81,7 +110,7 @@ export default async function AdminDashboardPage() {
       bg: "bg-iwb-navy/5",
     },
     {
-      label: "Today",
+      label: todayLabel,
       value: todayTxCount ?? 0,
       change: null,
       icon: (
@@ -96,12 +125,12 @@ export default async function AdminDashboardPage() {
 
   const volumeStats = [
     {
-      label: "7-Day Volume",
+      label: sevenDayVolumeLabel,
       value: totalVolume,
       icon: null,
     },
     {
-      label: "Deposits (7d)",
+      label: depositsSevenDayLabel,
       value: depositVolume,
       icon: null,
     },
@@ -126,14 +155,14 @@ export default async function AdminDashboardPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-iwb-navy">Dashboard</h1>
+          <h1 className="text-2xl font-semibold text-iwb-navy">{dashboardTitle}</h1>
           <p className="mt-1 text-sm text-iwb-slate">{today}</p>
         </div>
         <div className="flex items-center gap-2 rounded-iwb-lg bg-iwb-teal/10 px-4 py-2">
           <span className="text-lg font-bold text-iwb-navy">
             ${totalVolume.toLocaleString("en-US", { minimumFractionDigits: 0 })}
           </span>
-          <span className="text-xs text-iwb-slate">7d volume</span>
+          <span className="text-xs text-iwb-slate">{sevenDayVolumeShort}</span>
         </div>
       </div>
 
@@ -164,7 +193,7 @@ export default async function AdminDashboardPage() {
 
       <div className="grid gap-4 lg:grid-cols-3">
         <Card className="p-6 lg:col-span-2">
-          <h3 className="mb-4 text-sm font-semibold text-iwb-navy">Transaction Activity (7 days)</h3>
+          <h3 className="mb-4 text-sm font-semibold text-iwb-navy">{transactionActivityLabel}</h3>
           {volumeData && volumeData.length > 0 ? (
             <div className="space-y-3">
               {Object.entries(typeCounts).map(([type, count]) => {
@@ -200,7 +229,7 @@ export default async function AdminDashboardPage() {
               })}
             </div>
           ) : (
-            <p className="py-8 text-center text-sm text-iwb-slate">No activity in the last 7 days</p>
+            <p className="py-8 text-center text-sm text-iwb-slate">{noActivityLabel}</p>
           )}
 
           <div className="mt-5 grid grid-cols-2 gap-4 border-t border-iwb-border-light pt-5">
@@ -216,7 +245,7 @@ export default async function AdminDashboardPage() {
         </Card>
 
         <Card className="p-6">
-          <h3 className="mb-4 text-sm font-semibold text-iwb-navy">Recent Activity</h3>
+          <h3 className="mb-4 text-sm font-semibold text-iwb-navy">{recentActivityLabel}</h3>
           <div className="space-y-4">
             {recentTxs?.length ? (
               recentTxs.map((tx, i) => (
@@ -270,7 +299,7 @@ export default async function AdminDashboardPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                   </svg>
                 </div>
-                <p className="mt-3 text-sm text-iwb-slate">No transactions yet</p>
+                <p className="mt-3 text-sm text-iwb-slate">{noTransactionsLabel}</p>
               </div>
             )}
           </div>

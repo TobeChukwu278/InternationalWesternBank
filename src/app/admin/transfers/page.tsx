@@ -1,5 +1,6 @@
 import { createServiceClient } from "@/lib/supabase/service";
 import { TransferActions } from "./transfer-actions";
+import { t } from "@/i18n/server";
 
 export default async function AdminTransfersPage() {
   const svc = createServiceClient();
@@ -30,16 +31,42 @@ export default async function AdminTransfersPage() {
     .order("created_at", { ascending: false })
     .limit(20);
 
+  const [
+    transfersTitle,
+    transfersSubtitle,
+    pendingReviewLabel,
+    noPendingLabel,
+    allProcessedLabel,
+    referenceLabel,
+    dateLabel,
+    scheduledLabel,
+    memoLabel,
+    historyLabel,
+    noHistoryLabel,
+  ] = await Promise.all([
+    t("admin.transfers.title"),
+    t("admin.transfers.subtitle"),
+    t("admin.transfers.pendingReview"),
+    t("admin.transfers.noPending"),
+    t("admin.transfers.allProcessed"),
+    t("admin.transfers.reference"),
+    t("admin.transfers.date"),
+    t("admin.transfers.scheduled"),
+    t("admin.transfers.memo"),
+    t("admin.transfers.history"),
+    t("admin.transfers.noHistory"),
+  ]);
+
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-semibold text-iwb-navy">Transfers</h1>
-        <p className="mt-1 text-sm text-iwb-slate">Approve or reject pending transfers</p>
+        <h1 className="text-2xl font-semibold text-iwb-navy">{transfersTitle}</h1>
+        <p className="mt-1 text-sm text-iwb-slate">{transfersSubtitle}</p>
       </div>
 
       <div>
         <h2 className="text-lg font-semibold text-iwb-navy mb-4">
-          Pending Approvals
+          {pendingReviewLabel}
           {pendingItems.length > 0 ? (
             <span className="ml-2 rounded-iwb-full bg-iwb-error/10 px-2.5 py-0.5 text-xs font-medium text-iwb-error">
               {pendingItems.length}
@@ -50,8 +77,8 @@ export default async function AdminTransfersPage() {
         {pendingItems.length === 0 ? (
           <div className="rounded-iwb-xl bg-white p-12 text-center shadow-iwb-card">
             <i className="material-icons text-4xl text-iwb-slate-light mb-3">check_circle</i>
-            <p className="text-base font-medium text-iwb-navy">No pending transfers</p>
-            <p className="mt-1 text-sm text-iwb-slate">All transfers have been processed</p>
+            <p className="text-base font-medium text-iwb-navy">{noPendingLabel}</p>
+            <p className="mt-1 text-sm text-iwb-slate">{allProcessedLabel}</p>
           </div>
         ) : (
           <div className="space-y-3">
@@ -80,11 +107,11 @@ export default async function AdminTransfersPage() {
 
                   <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
                     <div>
-                      <span className="text-iwb-slate-light">Reference:</span>
+                      <span className="text-iwb-slate-light">{referenceLabel}</span>
                       <span className="ml-1 font-mono text-iwb-navy">{item.reference}</span>
                     </div>
                     <div>
-                      <span className="text-iwb-slate-light">Date:</span>
+                      <span className="text-iwb-slate-light">{dateLabel}</span>
                       <span className="ml-1 text-iwb-navy">
                         {new Date(item.createdAt).toLocaleDateString("en-US", {
                           month: "short", day: "numeric", hour: "numeric", minute: "2-digit",
@@ -93,7 +120,7 @@ export default async function AdminTransfersPage() {
                     </div>
                     {item.scheduledDate ? (
                       <div>
-                        <span className="text-iwb-slate-light">Scheduled:</span>
+                        <span className="text-iwb-slate-light">{scheduledLabel}</span>
                         <span className="ml-1 text-iwb-navy">
                           {new Date(item.scheduledDate).toLocaleDateString("en-US", {
                             month: "short", day: "numeric",
@@ -102,7 +129,7 @@ export default async function AdminTransfersPage() {
                       </div>
                     ) : null}
                     <div className="col-span-2">
-                      <span className="text-iwb-slate-light">Memo:</span>
+                      <span className="text-iwb-slate-light">{memoLabel}</span>
                       <span className="ml-1 text-iwb-navy">{item.description || "—"}</span>
                     </div>
                   </div>
@@ -116,9 +143,9 @@ export default async function AdminTransfersPage() {
       </div>
 
       <div>
-        <h2 className="text-lg font-semibold text-iwb-navy mb-4">Recent History</h2>
+        <h2 className="text-lg font-semibold text-iwb-navy mb-4">{historyLabel}</h2>
         {(completedTransfers ?? []).length === 0 ? (
-          <p className="text-sm text-iwb-slate">No completed or rejected transfers yet</p>
+          <p className="text-sm text-iwb-slate">{noHistoryLabel}</p>
         ) : (
           <div className="rounded-iwb-xl bg-white shadow-iwb-card overflow-hidden">
             <div className="divide-y divide-iwb-border-light">

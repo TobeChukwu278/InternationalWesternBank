@@ -1,6 +1,7 @@
 import { createServiceClient } from "@/lib/supabase/service";
 import { KycActions } from "./kyc-actions";
 import { getDocumentSignedUrl } from "@/lib/actions/kyc";
+import { t } from "@/i18n/server";
 
 function extractStoragePath(url: string | null): { bucket: string; path: string } | null {
   if (!url) return null;
@@ -51,16 +52,48 @@ export default async function AdminKycPage() {
     }))
   );
 
+  const [
+    kycTitle,
+    kycSubtitle,
+    pendingReviewLabel,
+    noPendingLabel,
+    allReviewedLabel,
+    phoneLabel,
+    dobLabel,
+    addressLabel,
+    ssnLabel,
+    idFrontLabel,
+    idBackLabel,
+    submittedLabel,
+    historyLabel,
+    noHistoryLabel,
+  ] = await Promise.all([
+    t("admin.kyc.title"),
+    t("admin.kyc.subtitle"),
+    t("admin.kyc.pendingReview"),
+    t("admin.kyc.noPending"),
+    t("admin.kyc.allReviewed"),
+    t("admin.kyc.phone"),
+    t("admin.kyc.dob"),
+    t("admin.kyc.address"),
+    t("admin.kyc.ssn"),
+    t("admin.kyc.idFront"),
+    t("admin.kyc.idBack"),
+    t("admin.kyc.submitted"),
+    t("admin.kyc.history"),
+    t("admin.kyc.noHistory"),
+  ]);
+
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-semibold text-iwb-navy">KYC Verifications</h1>
-        <p className="mt-1 text-sm text-iwb-slate">Review and verify new account registrations</p>
+        <h1 className="text-2xl font-semibold text-iwb-navy">{kycTitle}</h1>
+        <p className="mt-1 text-sm text-iwb-slate">{kycSubtitle}</p>
       </div>
 
       <div>
         <h2 className="text-lg font-semibold text-iwb-navy mb-4">
-          Pending Review
+          {pendingReviewLabel}
           {(pendingUsers ?? []).length > 0 ? (
             <span className="ml-2 rounded-iwb-full bg-iwb-error/10 px-2.5 py-0.5 text-xs font-medium text-iwb-error">
               {(pendingUsers ?? []).length}
@@ -71,8 +104,8 @@ export default async function AdminKycPage() {
         {(pendingUsers ?? []).length === 0 ? (
           <div className="rounded-iwb-xl bg-white p-12 text-center shadow-iwb-card">
             <i className="material-icons text-4xl text-iwb-slate-light mb-3">check_circle</i>
-            <p className="text-base font-medium text-iwb-navy">No pending verifications</p>
-            <p className="mt-1 text-sm text-iwb-slate">All registrations have been reviewed</p>
+            <p className="text-base font-medium text-iwb-navy">{noPendingLabel}</p>
+            <p className="mt-1 text-sm text-iwb-slate">{allReviewedLabel}</p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -92,7 +125,7 @@ export default async function AdminKycPage() {
                         <p className="text-sm font-semibold text-iwb-navy">{user.full_name}</p>
                         <p className="text-xs text-iwb-slate-light">{user.email}</p>
                         <p className="text-xs text-iwb-slate-light mt-0.5">
-                          Submitted {new Date(user.created_at).toLocaleDateString("en-US", {
+                          {submittedLabel} {new Date(user.created_at).toLocaleDateString("en-US", {
                             month: "short", day: "numeric", hour: "numeric", minute: "2-digit",
                           })}
                         </p>
@@ -101,16 +134,16 @@ export default async function AdminKycPage() {
                   </div>
 
                   <div className="mt-4 grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
-                    <div><span className="text-iwb-slate-light">Phone:</span> <span className="text-iwb-navy">{user.phone ?? "—"}</span></div>
-                    <div><span className="text-iwb-slate-light">DOB:</span> <span className="text-iwb-navy">{user.date_of_birth ?? "—"}</span></div>
+                    <div><span className="text-iwb-slate-light">{phoneLabel}:</span> <span className="text-iwb-navy">{user.phone ?? "—"}</span></div>
+                    <div><span className="text-iwb-slate-light">{dobLabel}:</span> <span className="text-iwb-navy">{user.date_of_birth ?? "—"}</span></div>
                     <div className="col-span-2">
-                      <span className="text-iwb-slate-light">Address:</span>{" "}
+                      <span className="text-iwb-slate-light">{addressLabel}:</span>{" "}
                       <span className="text-iwb-navy">
                         {[user.address_line1, user.address_city, user.address_state, user.address_zip].filter(Boolean).join(", ") || "—"}
                       </span>
                     </div>
                     {user.ssn_last_four ? (
-                      <div><span className="text-iwb-slate-light">SSN (last 4):</span> <span className="text-iwb-navy">••••{user.ssn_last_four}</span></div>
+                      <div><span className="text-iwb-slate-light">{ssnLabel}:</span> <span className="text-iwb-navy">••••{user.ssn_last_four}</span></div>
                     ) : null}
                   </div>
 
@@ -118,14 +151,14 @@ export default async function AdminKycPage() {
                     <div className="mt-4 grid grid-cols-2 gap-3">
                       {frontDoc.href ? (
                         <a href={frontDoc.href} target="_blank" className="group relative block aspect-[1.4/1] overflow-hidden rounded-iwb-lg border border-iwb-border-light bg-iwb-surface">
-                          <img src={frontDoc.href} alt="ID Front" className="size-full object-cover transition-transform group-hover:scale-105" />
-                          <span className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent px-2 py-1.5 text-[10px] font-medium text-white">ID Front</span>
+                          <img src={frontDoc.href} alt={idFrontLabel} className="size-full object-cover transition-transform group-hover:scale-105" />
+                          <span className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent px-2 py-1.5 text-[10px] font-medium text-white">{idFrontLabel}</span>
                         </a>
                       ) : null}
                       {backDoc.href ? (
                         <a href={backDoc.href} target="_blank" className="group relative block aspect-[1.4/1] overflow-hidden rounded-iwb-lg border border-iwb-border-light bg-iwb-surface">
-                          <img src={backDoc.href} alt="ID Back" className="size-full object-cover transition-transform group-hover:scale-105" />
-                          <span className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent px-2 py-1.5 text-[10px] font-medium text-white">ID Back</span>
+                          <img src={backDoc.href} alt={idBackLabel} className="size-full object-cover transition-transform group-hover:scale-105" />
+                          <span className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent px-2 py-1.5 text-[10px] font-medium text-white">{idBackLabel}</span>
                         </a>
                       ) : null}
                     </div>
@@ -140,9 +173,9 @@ export default async function AdminKycPage() {
       </div>
 
       <div>
-        <h2 className="text-lg font-semibold text-iwb-navy mb-4">History</h2>
+        <h2 className="text-lg font-semibold text-iwb-navy mb-4">{historyLabel}</h2>
         {(allUsers ?? []).length === 0 ? (
-          <p className="text-sm text-iwb-slate">No verified or rejected users yet</p>
+          <p className="text-sm text-iwb-slate">{noHistoryLabel}</p>
         ) : (
           <div className="rounded-iwb-xl bg-white shadow-iwb-card overflow-hidden">
             <div className="divide-y divide-iwb-border-light">

@@ -3,12 +3,14 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { approveTransfer, rejectTransfer } from "@/lib/actions/transfer";
+import { useLocale } from "@/i18n/client";
 
 interface TransferActionsProps {
   transactionId: string;
 }
 
 export function TransferActions({ transactionId }: TransferActionsProps) {
+  const { t } = useLocale();
   const router = useRouter();
   const [showReject, setShowReject] = useState(false);
   const [rejectReason, setRejectReason] = useState("");
@@ -41,7 +43,7 @@ export function TransferActions({ transactionId }: TransferActionsProps) {
           <textarea
             value={rejectReason}
             onChange={(e) => setRejectReason(e.target.value)}
-            placeholder="Reason for rejection..."
+            placeholder={t("admin.transfers.reason")}
             rows={2}
             className="w-full rounded-iwb-md border border-iwb-border bg-white px-3 py-2 text-sm text-iwb-navy placeholder:text-iwb-slate-light focus:border-iwb-error focus:outline-none"
           />
@@ -51,13 +53,13 @@ export function TransferActions({ transactionId }: TransferActionsProps) {
               disabled={loading || !rejectReason.trim()}
               className="flex items-center gap-1.5 rounded-iwb-md bg-iwb-error px-4 py-2 text-xs font-semibold text-white transition-all hover:bg-iwb-error/90 disabled:opacity-50"
             >
-              {loading ? "..." : "Confirm Reject"}
+              {loading ? "..." : t("admin.transfers.confirmReject")}
             </button>
             <button
               onClick={() => { setShowReject(false); setRejectReason(""); }}
               className="rounded-iwb-md border border-iwb-border px-4 py-2 text-xs font-semibold text-iwb-slate"
             >
-              Cancel
+              {t("admin.transfers.cancel")}
             </button>
           </div>
         </div>
@@ -69,7 +71,7 @@ export function TransferActions({ transactionId }: TransferActionsProps) {
             className="flex items-center gap-1.5 rounded-iwb-md bg-iwb-teal px-4 py-2 text-xs font-semibold text-iwb-navy transition-all hover:bg-iwb-teal-dark disabled:opacity-50"
           >
             <i className="material-icons text-sm">check</i>
-            {loading ? "Processing..." : "Approve"}
+            {loading ? t("admin.transfers.processing") : t("admin.transfers.approve")}
           </button>
           <button
             onClick={() => setShowReject(true)}
@@ -77,7 +79,7 @@ export function TransferActions({ transactionId }: TransferActionsProps) {
             className="flex items-center gap-1.5 rounded-iwb-md border border-iwb-error/30 px-4 py-2 text-xs font-semibold text-iwb-error transition-all hover:bg-iwb-error/5 disabled:opacity-50"
           >
             <i className="material-icons text-sm">close</i>
-            Reject
+            {t("admin.transfers.reject")}
           </button>
         </div>
       )}

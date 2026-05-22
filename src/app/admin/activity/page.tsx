@@ -1,5 +1,6 @@
 import { createServiceClient } from "@/lib/supabase/service";
 import { Card } from "@/components/ui/card";
+import { t } from "@/i18n/server";
 
 interface PageProps {
   searchParams: Promise<Record<string, string>>;
@@ -24,6 +25,24 @@ export default async function AdminActivityPage({ searchParams }: PageProps) {
 
   const totalPages = Math.ceil((count ?? 0) / ITEMS_PER_PAGE);
 
+  const [
+    activityTitle,
+    actionCountLabel,
+    creditLabel,
+    debitLabel,
+    noActivityLabel,
+    noActivityDescLabel,
+    noDataLabel,
+  ] = await Promise.all([
+    t("admin.activity.title"),
+    (count ?? 0) === 1 ? t("admin.activity.actionCount", { count: String(count ?? 0) }) : t("admin.activity.actionCountPlural", { count: String(count ?? 0) }),
+    t("admin.activity.credit"),
+    t("admin.activity.debit"),
+    t("admin.activity.noAdminActivity"),
+    t("admin.activity.noAdminActivityDesc"),
+    t("common.noData"),
+  ]);
+
   function buildUrl(page: number) {
     const params = new URLSearchParams();
     if (page > 1) params.set("page", String(page));
@@ -34,9 +53,9 @@ export default async function AdminActivityPage({ searchParams }: PageProps) {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-iwb-navy">Activity Log</h1>
+          <h1 className="text-2xl font-semibold text-iwb-navy">{activityTitle}</h1>
           <p className="mt-1 text-sm text-iwb-slate">
-            {count ?? 0} admin action{(count ?? 0) !== 1 ? "s" : ""} recorded
+            {actionCountLabel}
           </p>
         </div>
       </div>
@@ -67,14 +86,14 @@ export default async function AdminActivityPage({ searchParams }: PageProps) {
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
                       <p className="text-sm font-semibold text-iwb-navy">
-                        {isCredit ? "Credit" : "Debit"}
+                        {isCredit ? creditLabel : debitLabel}
                       </p>
                       <span className="text-sm font-bold" style={{ color: isCredit ? "#00d4aa" : "#ba1a1a" }}>
                         ${Number(action.amount).toLocaleString("en-US", { minimumFractionDigits: 2 })}
                       </span>
                     </div>
                     <p className="mt-0.5 text-sm text-iwb-slate">
-                      {action.receiver_name ?? action.sender_name ?? "Unknown user"}
+                      {action.receiver_name ?? action.sender_name ?? noDataLabel}
                     </p>
                     {action.description ? (
                       <p className="mt-0.5 text-xs text-iwb-slate-light">
@@ -109,9 +128,9 @@ export default async function AdminActivityPage({ searchParams }: PageProps) {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <p className="text-sm font-medium text-iwb-navy">No admin activity yet</p>
+              <p className="text-sm font-medium text-iwb-navy">{noActivityLabel}</p>
               <p className="text-xs text-iwb-slate">
-                Admin credit/debit actions will appear here
+                {noActivityDescLabel}
               </p>
             </div>
           )}

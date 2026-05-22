@@ -1,5 +1,6 @@
 import { createServiceClient } from "@/lib/supabase/service";
 import { Card } from "@/components/ui/card";
+import { t } from "@/i18n/server";
 
 export default async function AdminReportsPage() {
   const supabase = createServiceClient();
@@ -57,40 +58,72 @@ export default async function AdminReportsPage() {
   const dailyData = Array.from(dailyMap.entries()).reverse();
   const maxDaily = Math.max(...dailyData.map(([, d]) => d.deposits + d.withdrawals + d.transfers), 1);
 
+  const [
+    reportsTitle,
+    reportsSubtitle,
+    totalDepositsLabel,
+    totalWithdrawalsLabel,
+    totalTransfersLabel,
+    allTimeCompletedLabel,
+    completedTransactionsLabel,
+    volume30DayLabel,
+    noDataLabel,
+    legendDeposits,
+    legendTransfers,
+    legendWithdrawals,
+    topUsersLabel,
+    noUsersBalancesLabel,
+  ] = await Promise.all([
+    t("admin.reports.title"),
+    t("admin.reports.subtitle"),
+    t("admin.reports.totalDeposits"),
+    t("admin.reports.totalWithdrawals"),
+    t("admin.reports.totalTransfers"),
+    t("admin.reports.allTimeCompleted"),
+    t("admin.reports.completedTransactions", { count: String(completedTxCount) }),
+    t("admin.reports.volume30Day"),
+    t("admin.reports.noData30Days"),
+    t("admin.reports.legendDeposits"),
+    t("admin.reports.legendTransfers"),
+    t("admin.reports.legendWithdrawals"),
+    t("admin.reports.topUsersByBalance"),
+    t("admin.reports.noUsersBalances"),
+  ]);
+
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-iwb-navy">Reports</h1>
-        <p className="mt-1 text-sm text-iwb-slate">Platform analytics and summaries</p>
+        <h1 className="text-2xl font-semibold text-iwb-navy">{reportsTitle}</h1>
+        <p className="mt-1 text-sm text-iwb-slate">{reportsSubtitle}</p>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-3">
         <Card className="p-6">
-          <p className="text-xs font-medium uppercase tracking-wider text-iwb-slate-light">Total Deposits</p>
+          <p className="text-xs font-medium uppercase tracking-wider text-iwb-slate-light">{totalDepositsLabel}</p>
           <p className="mt-1.5 text-2xl font-bold text-iwb-teal">
             ${totalDeposits.toLocaleString("en-US", { minimumFractionDigits: 2 })}
           </p>
-          <p className="mt-0.5 text-xs text-iwb-slate">All-time completed</p>
+          <p className="mt-0.5 text-xs text-iwb-slate">{allTimeCompletedLabel}</p>
         </Card>
         <Card className="p-6">
-          <p className="text-xs font-medium uppercase tracking-wider text-iwb-slate-light">Total Withdrawals</p>
+          <p className="text-xs font-medium uppercase tracking-wider text-iwb-slate-light">{totalWithdrawalsLabel}</p>
           <p className="mt-1.5 text-2xl font-bold text-iwb-error">
             ${totalWithdrawals.toLocaleString("en-US", { minimumFractionDigits: 2 })}
           </p>
-          <p className="mt-0.5 text-xs text-iwb-slate">All-time completed</p>
+          <p className="mt-0.5 text-xs text-iwb-slate">{allTimeCompletedLabel}</p>
         </Card>
         <Card className="p-6">
-          <p className="text-xs font-medium uppercase tracking-wider text-iwb-slate-light">Total Transfers</p>
+          <p className="text-xs font-medium uppercase tracking-wider text-iwb-slate-light">{totalTransfersLabel}</p>
           <p className="mt-1.5 text-2xl font-bold text-iwb-navy">
             ${totalTransfers.toLocaleString("en-US", { minimumFractionDigits: 2 })}
           </p>
-          <p className="mt-0.5 text-xs text-iwb-slate">{completedTxCount} completed transactions</p>
+          <p className="mt-0.5 text-xs text-iwb-slate">{completedTransactionsLabel}</p>
         </Card>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
         <Card className="p-6">
-          <h3 className="mb-4 text-sm font-semibold text-iwb-navy">30-Day Volume</h3>
+          <h3 className="mb-4 text-sm font-semibold text-iwb-navy">{volume30DayLabel}</h3>
           {dailyData.length > 0 ? (
             <div className="space-y-2">
               {dailyData.map(([day, data]) => {
@@ -121,24 +154,24 @@ export default async function AdminReportsPage() {
               })}
             </div>
           ) : (
-            <p className="py-8 text-center text-sm text-iwb-slate">No data for the last 30 days</p>
+            <p className="py-8 text-center text-sm text-iwb-slate">{noDataLabel}</p>
           )}
 
           <div className="mt-5 flex items-center gap-4 border-t border-iwb-border-light pt-4 text-xs text-iwb-slate">
             <span className="flex items-center gap-1.5">
-              <span className="size-2.5 rounded-full bg-iwb-teal" /> Deposits
+              <span className="size-2.5 rounded-full bg-iwb-teal" /> {legendDeposits}
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="size-2.5 rounded-full bg-iwb-navy" /> Transfers
+              <span className="size-2.5 rounded-full bg-iwb-navy" /> {legendTransfers}
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="size-2.5 rounded-full bg-iwb-error" /> Withdrawals
+              <span className="size-2.5 rounded-full bg-iwb-error" /> {legendWithdrawals}
             </span>
           </div>
         </Card>
 
         <Card className="p-6">
-          <h3 className="mb-4 text-sm font-semibold text-iwb-navy">Top Users by Balance</h3>
+          <h3 className="mb-4 text-sm font-semibold text-iwb-navy">{topUsersLabel}</h3>
           {userBalances.length > 0 ? (
             <div className="space-y-3">
               {userBalances.map((u, i) => {
@@ -178,7 +211,7 @@ export default async function AdminReportsPage() {
               })}
             </div>
           ) : (
-            <p className="py-8 text-center text-sm text-iwb-slate">No users with balances yet</p>
+            <p className="py-8 text-center text-sm text-iwb-slate">{noUsersBalancesLabel}</p>
           )}
         </Card>
       </div>
