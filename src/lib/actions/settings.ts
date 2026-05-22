@@ -77,3 +77,19 @@ export async function updatePassword(formData: FormData) {
   revalidatePath("/settings", "layout");
   return { success: true };
 }
+
+export async function updateLanguage(locale: string) {
+  const { createClient } = await import("@/lib/supabase/server");
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { error: "Not authenticated" };
+
+  const supported = ["en", "es", "fr"];
+  if (!supported.includes(locale)) return { error: "Unsupported locale" };
+
+  const { createServiceClient } = await import("@/lib/supabase/service");
+  const svc = createServiceClient();
+  const { error } = await svc.from("profiles").update({ language: locale }).eq("id", user.id);
+  if (error) return { error: error.message };
+  return { success: true };
+}
