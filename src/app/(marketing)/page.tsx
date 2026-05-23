@@ -12,7 +12,7 @@ export default async function HomePage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (user) redirect("/dashboard");
 
-  const [heroTitle, heroSubtitle, heroOpenAccount, heroSignIn, servicesTitle, servicesDesc, ctaTitle, ctaDesc, ctaRegister, ctaLogin, statsCustomers, statsCustomersLabel, statsCountries, statsCountriesLabel, statsTransferred, statsTransferredLabel, statsDesc, newsTitle, newsReadMore, newsDate1, newsTitle1, newsExcerpt1, newsDate2, newsTitle2, newsExcerpt2, newsDate3, newsTitle3, newsExcerpt3, service1Title, service1Desc, service2Title, service2Desc, service3Title, service3Desc, service4Title, service4Desc, service5Title, service5Desc, service6Title, service6Desc] = await Promise.all([
+  const [heroTitle, heroSubtitle, heroOpenAccount, heroSignIn, servicesTitle, servicesDesc, ctaTitle, ctaDesc, ctaRegister, ctaLogin, statsCustomers, statsCustomersLabel, statsCountries, statsCountriesLabel, statsTransferred, statsTransferredLabel, newsTitle, newsReadMore, newsDate1, newsTitle1, newsExcerpt1, newsDate2, newsTitle2, newsExcerpt2, newsDate3, newsTitle3, newsExcerpt3, service1Title, service1Desc, service2Title, service2Desc, service3Title, service3Desc, service4Title, service4Desc, service5Title, service5Desc, service6Title, service6Desc] = await Promise.all([
     t("marketing.hero.title"),
     t("marketing.hero.subtitle"),
     t("marketing.hero.openAccount"),
@@ -29,7 +29,6 @@ export default async function HomePage() {
     t("marketing.stats.countriesLabel"),
     t("marketing.stats.transferred"),
     t("marketing.stats.transferredLabel"),
-    t("marketing.stats.description"),
     t("marketing.news.title"),
     t("marketing.news.readMore"),
     t("marketing.news.date1"),
@@ -234,6 +233,7 @@ export default async function HomePage() {
         bgImage="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&q=80"
         className="py-24"
       >
+        <div className="absolute inset-0 bg-gradient-to-r from-iwb-teal/80 to-iwb-navy/80" />
         <div className="relative z-10 flex flex-col items-center px-6 text-center">
           <h2 className="font-chivo text-3xl font-bold text-white">{ctaTitle}</h2>
           <p className="mt-4 max-w-2xl font-dm-sans text-lg text-white/80">{ctaDesc}</p>

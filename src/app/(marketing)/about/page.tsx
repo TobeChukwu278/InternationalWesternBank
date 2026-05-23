@@ -1,5 +1,54 @@
 import { t } from "@/i18n/server";
 
+function GlobeIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10" />
+      <line x1="2" y1="12" x2="22" y2="12" />
+      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+    </svg>
+  );
+}
+
+function ShieldIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+    </svg>
+  );
+}
+
+function HandshakeIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M11 17a3 3 0 0 1-3-3V8" />
+      <path d="M13 17a3 3 0 0 0 3-3V8" />
+      <path d="M21 12.6V8a2 2 0 0 0-2-2h-2" />
+      <path d="M3 12.6V8a2 2 0 0 1 2-2h2" />
+      <path d="M7 6h10" />
+      <path d="M11 9v4" />
+      <path d="M13 9v4" />
+      <path d="M9 19h6" />
+    </svg>
+  );
+}
+
+function TrendingUpIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+      <polyline points="17 6 23 6 23 12" />
+    </svg>
+  );
+}
+
+const icons: Record<string, React.FC<{ className?: string }>> = {
+  public: GlobeIcon,
+  shield: ShieldIcon,
+  handshake: HandshakeIcon,
+  trending_up: TrendingUpIcon,
+};
+
 export default async function AboutPage() {
   const [pageTitle, pageSubtitle, missionTitle, missionText, visionTitle, visionText, valuesTitle, value1, value2, value3, value4] = await Promise.all([
     t("marketing.about.pageTitle"),
@@ -50,14 +99,17 @@ export default async function AboutPage() {
         <div className="mx-auto max-w-7xl">
           <h2 className="text-center text-2xl font-bold text-iwb-navy">{valuesTitle}</h2>
           <div className="mt-10 grid gap-6 md:grid-cols-4">
-            {values.map((v) => (
-              <div key={v.title} className="rounded-iwb-xl bg-white p-6 text-center shadow-iwb-card">
-                <span className={`mx-auto flex size-14 items-center justify-center rounded-full ${v.color}`}>
-                  <i className="material-icons text-2xl">{v.icon}</i>
-                </span>
-                <p className="mt-4 text-sm font-semibold text-iwb-navy">{v.title}</p>
-              </div>
-            ))}
+            {values.map((v) => {
+              const Icon = icons[v.icon];
+              return (
+                <div key={v.title} className="rounded-iwb-xl bg-white p-6 text-center shadow-iwb-card">
+                  <span className={`mx-auto flex size-14 items-center justify-center rounded-full ${v.color}`}>
+                    {Icon ? <Icon className="size-6" /> : null}
+                  </span>
+                  <p className="mt-4 text-sm font-semibold text-iwb-navy">{v.title}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
