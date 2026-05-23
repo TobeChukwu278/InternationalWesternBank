@@ -4,13 +4,13 @@ import { t } from "@/i18n/server";
 
 export async function Footer() {
   return (
-    <footer className="bg-iwb-navy text-white">
+    <footer className="bg-iwb-navy font-dm-sans text-white">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid gap-8 md:grid-cols-4">
           <div>
             <div className="flex items-center gap-3">
               <img src="/logo.png" alt="IWB" className="size-8" />
-              <span className="font-semibold">International WB</span>
+              <span className="font-chivo font-bold">International WB</span>
             </div>
             <p className="mt-3 text-sm text-white/60">
               {await t("marketing.footer.tagline")}
