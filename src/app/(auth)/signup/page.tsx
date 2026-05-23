@@ -68,7 +68,7 @@ export default function SignupPage() {
     const res = await signupWithKyc(formData);
 
     if (!res.success) {
-      setError(res.error ?? "Something went wrong");
+      setError(res.error ?? t("common.somethingWentWrong"));
       setSubmitting(false);
       setStatusMessage("");
       return;
@@ -91,9 +91,9 @@ export default function SignupPage() {
       await updateKycDocumentUrls(urlForm);
     }
 
-    if (!avatarUrl && avatarFile) setError("Profile photo upload failed. You can retry later in settings.");
-    if (!idFrontUrl && idFrontFile) setError("ID document upload failed. An admin can assist you.");
-    if (!idBackUrl && idBackFile) setError("ID document upload failed. An admin can assist you.");
+    if (!avatarUrl && avatarFile) setError(t("auth.signup.photoUploadFailed"));
+    if (!idFrontUrl && idFrontFile) setError(t("auth.signup.idUploadFailed"));
+    if (!idBackUrl && idBackFile) setError(t("auth.signup.idUploadFailed"));
 
     setStatusMessage("");
     setSubmitting(false);
