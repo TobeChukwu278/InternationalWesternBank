@@ -644,5 +644,126 @@
     "depositSubmittedBody": "Votre demande de dépôt de ${{amount}} a été soumise et est en attente d'approbation administrative.",
     "transferScheduled": "Transfert programmé",
     "transferScheduledBody": "Votre transfert de ${{amount}} à {{recipient}} a été programmé pour le {{date}}."
+  },
+  "marketing": {
+    "nav": {
+      "home": "Accueil",
+      "services": "Services",
+      "about": "À Propos",
+      "contact": "Contact",
+      "signIn": "Connexion",
+      "getStarted": "Commencer"
+    },
+    "hero": {
+      "title": "Banque Mondiale Sans Frontières",
+      "subtitle": "Envoyez de l'argent, gérez vos comptes et suivez vos transactions dans plus de 150 pays — le tout depuis une plateforme sécurisée.",
+      "openAccount": "Ouvrir un Compte",
+      "signIn": "Connexion"
+    },
+    "services": {
+      "title": "Nos Services",
+      "description": "Des solutions bancaires complètes pour les particuliers et les entreprises du monde entier.",
+      "pageTitle": "Services Bancaires Conçus pour Vous",
+      "pageSubtitle": "Des comptes personnels à la banque d'entreprise, nous avons tout ce dont vous avez besoin.",
+      "personalTitle": "Comptes Personnels",
+      "personalDesc": "Ouvrez un compte personnel en quelques minutes avec des taux compétitifs.",
+      "businessTitle": "Banque d'Entreprise",
+      "businessDesc": "Solutions sur mesure pour les entreprises de toutes tailles.",
+      "transfersTitle": "Transferts Internationaux",
+      "transfersDesc": "Envoyez de l'argent vers 150+ pays avec des taux de change compétitifs.",
+      "cardsTitle": "Cartes de Crédit et Débit",
+      "cardsDesc": "Cartes premium avec acceptation mondiale, récompenses et avantages voyage.",
+      "supportTitle": "Support 24h/24",
+      "supportDesc": "Notre équipe de support dédiée est disponible 24h/24 pour vous aider.",
+      "securityTitle": "Sécurité Avancée",
+      "securityDesc": "Cryptage de qualité bancaire et authentification multifacteur pour protéger votre argent."
+    },
+    "service1": {
+      "title": "Transferts Internationaux",
+      "description": "Envoyez de l'argent vers 150+ pays avec des taux compétitifs et un suivi en temps réel."
+    },
+    "service2": {
+      "title": "Comptes Multidevises",
+      "description": "Détenez et gérez plusieurs devises dans un seul compte."
+    },
+    "service3": {
+      "title": "Dépôts Rapides",
+      "description": "Déposez des fonds instantanément et commencez à transiger immédiatement."
+    },
+    "service4": {
+      "title": "Banque d'Entreprise",
+      "description": "Solutions personnalisées pour les entreprises de toutes tailles."
+    },
+    "service5": {
+      "title": "Support 24h/24",
+      "description": "Service client disponible 24h/24 dans plusieurs langues."
+    },
+    "service6": {
+      "title": "Plateforme Sécurisée",
+      "description": "Cryptage de qualité bancaire protégeant chaque transaction."
+    },
+    "cta": {
+      "title": "Banquez de N'importe Où",
+      "description": "Gérez votre argent, payez vos factures et effectuez des transferts depuis notre plateforme sécurisée.",
+      "register": "Inscrivez-vous",
+      "login": "Connexion"
+    },
+    "stats": {
+      "customers": "10,000+",
+      "customersLabel": "Clients Satisfaits",
+      "countries": "150+",
+      "countriesLabel": "Pays Desservis",
+      "transferred": "50M$+",
+      "transferredLabel": "Transféré",
+      "description": "Des milliers de clients dans le monde nous font confiance pour des services bancaires sécurisés."
+    },
+    "news": {
+      "title": "Dernières Nouvelles",
+      "readMore": "Lire la Suite",
+      "date1": "15 janvier 2026",
+      "title1": "Extension de Notre Portée Mondiale",
+      "excerpt1": "Nous sommes ravis d'annoncer notre expansion dans 10 nouveaux marchés en Asie et en Afrique...",
+      "date2": "20 décembre 2025",
+      "title2": "Nouvelles Fonctionnalités de l'App",
+      "excerpt2": "Notre dernière mise à jour inclut l'authentification biométrique, les transferts instantanés et plus...",
+      "date3": "5 novembre 2025",
+      "title3": "Mesures de Sécurité Renforcées",
+      "excerpt3": "Nous avons mis en place des protocoles de cryptage avancés pour sécuriser vos transactions..."
+    },
+    "footer": {
+      "tagline": "Une banque mondiale sécurisée au bout des doigts.",
+      "company": "Entreprise",
+      "support": "Support",
+      "contact": "Contact",
+      "privacy": "Politique de Confidentialité",
+      "copyright": "Tous droits réservés."
+    },
+    "about": {
+      "pageTitle": "À Propos d'International Western Bank",
+      "pageSubtitle": "Favoriser le commerce mondial grâce à des services bancaires sécurisés et accessibles depuis 2020.",
+      "missionTitle": "Notre Mission",
+      "missionText": "Fournir des services bancaires sécurisés et accessibles qui permettent aux particuliers et aux entreprises de transacter au-delà des frontières.",
+      "visionTitle": "Notre Vision",
+      "visionText": "Un monde où les frontières financières n'existent plus. Où envoyer de l'argent entre continents est aussi simple qu'envoyer un message.",
+      "valuesTitle": "Nos Valeurs",
+      "value1": "Portée Mondiale",
+      "value2": "Confiance et Sécurité",
+      "value3": "Client d'Abord",
+      "value4": "Innovation"
+    },
+    "contact": {
+      "pageTitle": "Contactez-Nous",
+      "pageSubtitle": "Nous sommes là pour vous aider. Contactez notre équipe pour toute question.",
+      "nameLabel": "Nom Complet",
+      "emailLabel": "Adresse Email",
+      "subjectLabel": "Sujet",
+      "messageLabel": "Message",
+      "send": "Envoyer le Message",
+      "address": "Notre Adresse",
+      "addressLine1": "249 E Ocean Blvd",
+      "addressLine2": "Long Beach, CA 90802, États-Unis",
+      "phone": "Téléphone",
+      "email": "Email"
+    }
   }
 }

@@ -645,5 +645,126 @@
     "depositSubmittedBody": "Your deposit request of ${{amount}} has been submitted and is pending admin approval.",
     "transferScheduled": "Transfer Scheduled",
     "transferScheduledBody": "Your transfer of ${{amount}} to {{recipient}} has been scheduled for {{date}}."
+  },
+  "marketing": {
+    "nav": {
+      "home": "Home",
+      "services": "Services",
+      "about": "About Us",
+      "contact": "Contact",
+      "signIn": "Sign In",
+      "getStarted": "Get Started"
+    },
+    "hero": {
+      "title": "Global Banking Without Borders",
+      "subtitle": "Send money, manage accounts, and track transactions across 150+ countries — all from one secure platform.",
+      "openAccount": "Open an Account",
+      "signIn": "Sign In"
+    },
+    "services": {
+      "title": "Our Services",
+      "description": "Comprehensive banking solutions for individuals and businesses worldwide.",
+      "pageTitle": "Banking Services Designed for You",
+      "pageSubtitle": "From personal accounts to business banking, we have everything you need to manage your finances globally.",
+      "personalTitle": "Personal Accounts",
+      "personalDesc": "Open a personal account in minutes with competitive rates and global access.",
+      "businessTitle": "Business Banking",
+      "businessDesc": "Tailored solutions for businesses of all sizes, from startups to enterprises.",
+      "transfersTitle": "International Transfers",
+      "transfersDesc": "Send money to 150+ countries with competitive exchange rates and low fees.",
+      "cardsTitle": "Credit & Debit Cards",
+      "cardsDesc": "Premium cards with worldwide acceptance, rewards, and travel benefits.",
+      "supportTitle": "24/7 Customer Support",
+      "supportDesc": "Our dedicated support team is available around the clock to help you.",
+      "securityTitle": "Advanced Security",
+      "securityDesc": "Bank-grade encryption and multi-factor authentication to protect your money."
+    },
+    "service1": {
+      "title": "International Transfers",
+      "description": "Send money to 150+ countries with competitive exchange rates and real-time tracking."
+    },
+    "service2": {
+      "title": "Multi-Currency Accounts",
+      "description": "Hold, manage, and exchange multiple currencies in a single account."
+    },
+    "service3": {
+      "title": "Fast Deposits",
+      "description": "Deposit funds instantly and start transacting immediately."
+    },
+    "service4": {
+      "title": "Business Banking",
+      "description": "Custom solutions for businesses from startups to enterprises."
+    },
+    "service5": {
+      "title": "24/7 Support",
+      "description": "Round-the-clock customer service in multiple languages."
+    },
+    "service6": {
+      "title": "Secure Platform",
+      "description": "Bank-grade encryption protecting every transaction."
+    },
+    "cta": {
+      "title": "Bank from Anywhere",
+      "description": "Manage your money, pay bills, and send transfers — all from our secure internet banking platform.",
+      "register": "Register Now",
+      "login": "Log In"
+    },
+    "stats": {
+      "customers": "10,000+",
+      "customersLabel": "Happy Customers",
+      "countries": "150+",
+      "countriesLabel": "Countries Served",
+      "transferred": "$50M+",
+      "transferredLabel": "Transferred",
+      "description": "Trusted by thousands of customers worldwide for secure and reliable banking services."
+    },
+    "news": {
+      "title": "Latest News",
+      "readMore": "Read More",
+      "date1": "January 15, 2026",
+      "title1": "Expanding Our Global Reach",
+      "excerpt1": "We are excited to announce our expansion into 10 new markets across Asia and Africa...",
+      "date2": "December 20, 2025",
+      "title2": "New Mobile App Features",
+      "excerpt2": "Our latest mobile app update brings biometric authentication, instant transfers, and more...",
+      "date3": "November 5, 2025",
+      "title3": "Enhanced Security Measures",
+      "excerpt3": "We have implemented advanced encryption protocols to ensure your transactions remain secure..."
+    },
+    "footer": {
+      "tagline": "Secure global banking at your fingertips.",
+      "company": "Company",
+      "support": "Support",
+      "contact": "Contact",
+      "privacy": "Privacy Policy",
+      "copyright": "All rights reserved."
+    },
+    "about": {
+      "pageTitle": "About International Western Bank",
+      "pageSubtitle": "Empowering global commerce through secure, accessible banking since 2020.",
+      "missionTitle": "Our Mission",
+      "missionText": "To provide seamless, secure, and accessible banking services that empower individuals and businesses to transact across borders without friction. We believe that everyone deserves access to global financial services.",
+      "visionTitle": "Our Vision",
+      "visionText": "A world where financial borders no longer exist. Where sending money across continents is as easy as sending a message. Where every business, regardless of size, can compete globally.",
+      "valuesTitle": "Our Values",
+      "value1": "Global Reach",
+      "value2": "Trust & Security",
+      "value3": "Customer First",
+      "value4": "Innovation"
+    },
+    "contact": {
+      "pageTitle": "Contact Us",
+      "pageSubtitle": "We are here to help. Reach out to our team for any inquiries or support.",
+      "nameLabel": "Full Name",
+      "emailLabel": "Email Address",
+      "subjectLabel": "Subject",
+      "messageLabel": "Message",
+      "send": "Send Message",
+      "address": "Our Address",
+      "addressLine1": "249 E Ocean Blvd",
+      "addressLine2": "Long Beach, CA 90802, United States",
+      "phone": "Phone",
+      "email": "Email"
+    }
   }
 }
