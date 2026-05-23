@@ -2,118 +2,164 @@ export function HeroIllustration() {
   return (
     <div className="relative flex items-center justify-center">
       <svg
-        viewBox="0 0 500 400"
+        viewBox="0 0 300 300"
         className="w-full max-w-lg"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
         <defs>
-          <linearGradient id="pathGlow" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#00D4AA" stopOpacity="0.6" />
-            <stop offset="100%" stopColor="#00D4AA" stopOpacity="0.1" />
-          </linearGradient>
-          <filter id="glow">
-            <feGaussianBlur stdDeviation="3" result="blur" />
+          <radialGradient id="ocean" cx="40%" cy="40%" r="60%">
+            <stop offset="0%" stopColor="#143A5C" />
+            <stop offset="100%" stopColor="#0A2540" />
+          </radialGradient>
+          <filter id="dotGlow">
+            <feGaussianBlur stdDeviation="1.5" result="blur" />
             <feMerge>
               <feMergeNode in="blur" />
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
-          <style>
-            {`
-              @keyframes dashMove {
-                to { stroke-dashoffset: -100; }
-              }
-              @keyframes pulse-dot {
-                0%, 100% { opacity: 0.3; transform: scale(0.8); }
-                50% { opacity: 1; transform: scale(1.2); }
-              }
-              @keyframes float-up {
-                0%, 100% { transform: translateY(0); opacity: 0.6; }
-                50% { transform: translateY(-8px); opacity: 1; }
-              }
-              .path-anim {
-                stroke-dasharray: 6 4;
-                animation: dashMove 2s linear infinite;
-              }
-              .pulse {
-                animation: pulse-dot 2s ease-in-out infinite;
-                transform-origin: center;
-              }
-              .float {
-                animation: float-up 3s ease-in-out infinite;
-              }
-            `}
-          </style>
+          <filter id="arcGlow">
+            <feGaussianBlur stdDeviation="2" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
         </defs>
 
-        {/* Simplified world map outline */}
-        <g stroke="white" strokeOpacity="0.15" strokeWidth="1.5" fill="none">
-          {/* North America */}
-          <path d="M80 100 Q90 85 110 85 Q130 85 140 95 Q150 105 145 120 Q140 135 130 140 Q120 145 110 140 Q100 135 95 125 Q85 115 80 100Z" />
-          {/* South America */}
-          <path d="M120 180 Q130 175 135 185 Q140 200 135 220 Q130 235 120 240 Q110 235 105 220 Q100 205 105 195 Q110 185 120 180Z" />
-          {/* Europe */}
-          <path d="M210 90 Q220 85 235 85 Q250 85 255 95 Q260 105 255 115 Q250 120 240 120 Q230 120 220 115 Q210 105 210 90Z" />
-          {/* Africa */}
-          <path d="M225 140 Q235 135 245 140 Q255 150 255 165 Q255 180 245 190 Q235 195 225 190 Q215 180 215 165 Q215 150 225 140Z" />
-          {/* Asia */}
-          <path d="M280 85 Q300 75 330 75 Q360 75 380 85 Q400 95 405 110 Q410 125 400 130 Q390 135 370 130 Q350 125 330 125 Q310 125 290 120 Q275 110 280 85Z" />
-          {/* Australia */}
-          <path d="M350 200 Q365 195 380 200 Q390 210 385 220 Q375 230 360 225 Q345 215 350 200Z" />
+        {/* Ocean base */}
+        <circle cx="150" cy="150" r="130" fill="url(#ocean)" stroke="#00D4AA" strokeWidth="0.5" strokeOpacity="0.15" />
+
+        {/* Faint latitude rings */}
+        <g stroke="#00D4AA" strokeWidth="0.4" strokeOpacity="0.08" fill="none">
+          <ellipse cx="150" cy="150" rx="130" ry="40" />
+          <ellipse cx="150" cy="150" rx="130" ry="80" />
         </g>
 
-        {/* Grid dots for "connected world" feel */}
-        <g fill="white" fillOpacity="0.05">
-          {Array.from({ length: 8 }).map((_, row) =>
-            Array.from({ length: 12 }).map((_, col) => (
-              <circle key={`d-${row}-${col}`} cx={40 + col * 38} cy={30 + row * 45} r="1.5" />
-            ))
-          )}
+        {/* North America — dot cluster */}
+        <g fill="#00D4AA" fillOpacity="0.7" filter="url(#dotGlow)">
+          {[
+            [85,75],[90,72],[95,70],[100,68],[105,70],[110,72],[115,75],
+            [80,85],[85,82],[90,80],[95,78],[100,76],[105,78],[110,80],[115,82],
+            [75,95],[80,92],[85,90],[90,88],[95,86],[100,84],[105,86],[110,88],
+            [80,105],[85,102],[90,100],[95,98],[100,96],[105,98],[110,100],
+            [85,115],[90,112],[95,110],[100,108],[105,110],
+            [90,125],[95,122],[100,120],[105,122],
+            [95,130],[100,128],
+          ].map(([cx = 0, cy = 0]) => (
+            <circle key={`na-${cx}-${cy}`} cx={cx} cy={cy} r={cy > 110 ? 1.2 : 1.5} />
+          ))}
         </g>
 
-        {/* Connection paths (Teal dashed lines) */}
-        <g stroke="#00D4AA" strokeWidth="2" filter="url(#glow)">
-          {/* NA → EU */}
-          <path className="path-anim" d="M130 110 Q180 80 230 100" />
-          {/* NA → SA */}
-          <path className="path-anim" d="M120 140 Q125 160 125 180" />
-          {/* EU → AF */}
-          <path className="path-anim" d="M240 120 Q240 130 235 140" />
-          {/* EU → AS */}
-          <path className="path-anim" d="M260 100 Q280 90 300 90" />
-          {/* NA → AS */}
-          <path className="path-anim" d="M140 105 Q220 60 310 90" />
-          {/* AS → AU */}
-          <path className="path-anim" d="M340 130 Q360 170 370 200" />
+        {/* South America — dot cluster */}
+        <g fill="#00D4AA" fillOpacity="0.7" filter="url(#dotGlow)">
+          {[
+            [118,155],[122,152],[126,155],[130,152],
+            [116,165],[120,162],[124,165],[128,162],[132,165],
+            [115,175],[119,172],[123,175],[127,172],[131,175],
+            [116,185],[120,182],[124,185],[128,182],
+            [118,195],[122,192],[126,195],
+            [120,205],[124,202],
+            [122,215],[126,212],
+            [124,225],
+            [128,230],[132,228],[136,230],
+            [130,215],[134,212],[138,215],
+          ].map(([cx, cy]) => (
+            <circle key={`sa-${cx}-${cy}`} cx={cx} cy={cy} r={1.2} />
+          ))}
         </g>
 
-        {/* Pulsing origin/destination dots */}
-        <g fill="#00D4AA" filter="url(#glow)">
-          <circle className="pulse" cx="130" cy="110" r="5" style={{ animationDelay: "0s" }} />
-          <circle className="pulse" cx="230" cy="100" r="4" style={{ animationDelay: "0.5s" }} />
-          <circle className="pulse" cx="125" cy="180" r="4" style={{ animationDelay: "1s" }} />
-          <circle className="pulse" cx="235" cy="140" r="4" style={{ animationDelay: "0.3s" }} />
-          <circle className="pulse" cx="300" cy="90" r="5" style={{ animationDelay: "0.7s" }} />
-          <circle className="pulse" cx="370" cy="200" r="4" style={{ animationDelay: "1.2s" }} />
+        {/* Europe — dot cluster */}
+        <g fill="#00D4AA" fillOpacity="0.7" filter="url(#dotGlow)">
+          {[
+            [175,78],[180,75],[185,73],[190,75],
+            [170,88],[175,85],[180,82],[185,80],[190,82],[195,85],
+            [168,98],[173,95],[178,92],[183,90],[188,92],[193,95],
+            [172,108],[177,105],[182,102],[187,105],
+            [178,115],[183,112],[188,115],
+            [186,120],[191,118],[195,120],
+          ].map(([cx, cy]) => (
+            <circle key={`eu-${cx}-${cy}`} cx={cx} cy={cy} r={1.5} />
+          ))}
         </g>
 
-        {/* Floating currency symbols */}
-        <g fill="#00D4AA" fillOpacity="0.6" className="float" style={{ animationDelay: "0s" }}>
-          <text x="160" y="85" fontSize="14" fontWeight="bold" fontFamily="sans-serif">$</text>
-        </g>
-        <g fill="#00D4AA" fillOpacity="0.6" className="float" style={{ animationDelay: "1s" }}>
-          <text x="270" y="110" fontSize="12" fontWeight="bold" fontFamily="sans-serif">€</text>
-        </g>
-        <g fill="#00D4AA" fillOpacity="0.6" className="float" style={{ animationDelay: "0.5s" }}>
-          <text x="340" y="100" fontSize="12" fontWeight="bold" fontFamily="sans-serif">£</text>
-        </g>
-        <g fill="#00D4AA" fillOpacity="0.6" className="float" style={{ animationDelay: "1.5s" }}>
-          <text x="180" y="165" fontSize="11" fontWeight="bold" fontFamily="sans-serif">¥</text>
+        {/* Africa — dot cluster */}
+        <g fill="#00D4AA" fillOpacity="0.7" filter="url(#dotGlow)">
+          {[
+            [183,130],[188,128],[193,130],[198,128],
+            [180,140],[185,138],[190,135],[195,138],[200,140],
+            [178,150],[183,148],[188,145],[193,148],[198,150],
+            [180,160],[185,158],[190,155],[195,158],
+            [182,170],[187,168],[192,170],
+            [184,180],[189,178],[194,180],
+            [186,190],[191,188],
+            [188,200],[193,198],
+            [192,208],[196,206],[200,208],
+            [196,195],[200,192],[204,195],
+            [192,180],[196,178],[200,180],
+          ].map(([cx, cy]) => (
+            <circle key={`af-${cx}-${cy}`} cx={cx} cy={cy} r={1.2} />
+          ))}
         </g>
 
-        {/* Central globe glow */}
-        <circle cx="250" cy="180" r="80" fill="url(#pathGlow)" opacity="0.3" />
+        {/* Asia — dot cluster */}
+        <g fill="#00D4AA" fillOpacity="0.7" filter="url(#dotGlow)">
+          {[
+            [200,65],[205,62],[210,60],[215,62],[220,65],[225,62],[230,60],[235,62],[240,65],[245,62],[250,65],
+            [195,75],[200,72],[205,70],[210,68],[215,70],[220,72],[225,70],[230,68],[235,70],[240,72],[245,70],[250,72],[255,75],[260,72],
+            [190,85],[195,82],[200,80],[205,78],[210,80],[215,82],[220,80],[225,78],[230,80],[235,82],[240,80],[245,78],[250,80],[255,82],
+            [195,95],[200,92],[205,90],[210,88],[215,90],[220,92],[225,90],[230,88],[235,90],[240,92],[245,90],[250,88],[255,90],
+            [200,105],[205,102],[210,100],[215,98],[220,100],[225,102],[230,100],[235,98],[240,100],[245,102],[250,100],
+            [205,115],[210,112],[215,110],[220,108],[225,110],[230,112],[235,110],[240,108],[245,110],
+            [210,125],[215,122],[220,120],[225,118],[230,120],[235,122],
+            [215,135],[220,132],[225,130],[230,128],
+            [220,142],[225,140],[230,138],
+            [230,148],[235,146],[240,148],
+            [200,115],[205,112],[210,110],
+            [230,110],[235,108],[240,110],[245,108],[250,110],
+          ].map(([cx, cy]) => (
+            <circle key={`as-${cx}-${cy}`} cx={cx} cy={cy} r={1.5} />
+          ))}
+        </g>
+
+        {/* Australia — dot cluster */}
+        <g fill="#00D4AA" fillOpacity="0.7" filter="url(#dotGlow)">
+          {[
+            [225,188],[230,185],[235,183],[240,185],[245,188],
+            [220,198],[225,195],[230,192],[235,190],[240,192],[245,195],[250,198],
+            [222,208],[227,205],[232,202],[237,200],[242,202],[247,205],
+            [225,218],[230,215],[235,212],[240,215],
+            [230,225],[235,222],[240,225],
+            [240,218],[245,215],[250,218],
+          ].map(([cx, cy]) => (
+            <circle key={`au-${cx}-${cy}`} cx={cx} cy={cy} r={1.2} />
+          ))}
+        </g>
+
+        {/* Financial hub arc lines */}
+        <g stroke="#00D4AA" strokeWidth="0.8" strokeOpacity="0.3" fill="none" filter="url(#arcGlow)">
+          {/* NYC ↔ London */}
+          <path d="M105 90 Q140 50 185 85" />
+          {/* NYC ↔ Tokyo */}
+          <path d="M105 90 Q180 20 240 70" />
+          {/* London ↔ Singapore */}
+          <path d="M185 85 Q180 150 225 140" />
+          {/* London ↔ Sydney */}
+          <path d="M185 85 Q200 170 235 200" />
+          {/* NYC ↔ São Paulo */}
+          <path d="M105 90 Q120 190 128 220" />
+        </g>
+
+        {/* Financial hub pulsing nodes */}
+        <g fill="#00D4AA" filter="url(#arcGlow)">
+          <circle cx="105" cy="90" r="4" opacity="0.9" />  {/* NYC */}
+          <circle cx="185" cy="85" r="4" opacity="0.9" />   {/* London */}
+          <circle cx="128" cy="220" r="3" opacity="0.9" />  {/* São Paulo */}
+          <circle cx="240" cy="70" r="4" opacity="0.9" />   {/* Tokyo */}
+          <circle cx="225" cy="140" r="3" opacity="0.9" />  {/* Singapore */}
+          <circle cx="235" cy="200" r="3" opacity="0.9" />  {/* Sydney */}
+        </g>
       </svg>
     </div>
   );
