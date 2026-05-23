@@ -1,45 +1,49 @@
-# Hero Illustration Redesign — Dot-Map Globe
+# Hero Illustration Redesign — WebGL Globe (Magic UI)
 
 ## Goal
-Replace the current animated SVG hero illustration (rough continent outlines, floating currency symbols, dashed connection lines) with a polished dot-map globe animation that reads as a professional fintech globe — not "vibecoded" SVG art.
+Replace the custom animated SVG hero illustration with a production-quality WebGL globe using Magic UI's Globe component (Cobe-based). Eliminates "vibecoded" hand-drawn SVG in favor of a polished 3D globe with auto-rotation, drag interaction, and financial hub markers.
 
 ## Current Problems
-- Continent paths are rough hand-drawn bezier curves — unrecognizable geography
-- Dashed connection lines + pulsing dots is a tired "connected world" trope
-- Floating currency symbols ($, €, £, ¥) feel cheap and crypto-like
-- Flat composition with no depth or "globe-ness"
-- No spatial reference — it looks like shapes floating in a circle, not a globe
+- Hand-drawn SVG continent paths were unrecognizable — not a real globe
+- CSS keyframe animations on SVG `r` attribute had cross-browser issues
+- Dot-map approach still looked DIY, not production-grade
+- Manual SVG is hard to maintain vs. a library component
 
-## New Design: Animated Dot-Map Globe
+## Solution: Magic UI WebGL Globe
 
-### Visual
-- **Base**: A perfect circle (~300px diameter) with a radial ocean gradient (deep navy ring at edge → slightly lighter indigo toward center) — reads as Earth from space
-- **Continents**: Dot clusters (teal, 1–3px circles with subtle filter glow) placed to form recognizable land masses: North America, South America, Europe, Africa, Asia, Australia. Dots are denser at landmass centers, sparser at edges
-- **Depth cues**: 1–2 faint concentric latitude ellipses crossing the sphere (opacity ≤ 0.08) — just enough to say "sphere" without clutter
-- **Arc lines**: 4–5 thin teal bezier curves (stroke-opacity 0.2–0.3) connecting financial hubs: NYC↔London, NYC↔Tokyo, London↔Singapore, London↔Sydney, NYC↔São Paulo
-- **No currency symbols**, no background grid dots, no dashed strokes
+### Stack
+- **Library**: `@magicui/globe` pattern (Cobe v2 + Motion)
+- **Dependencies**: `cobe` (WebGL globe rendering), `motion` (spring physics for drag inertia), `clsx` + `tailwind-merge` (class management)
+- **File**: `src/components/ui/globe.tsx` — reusable Globe component
+- **Wrapper**: `src/components/features/hero-illustration.tsx` — wraps Globe with IWB theme config
 
-### Animation (CSS keyframes, no JS libraries)
-- **Pulsing hubs**: Key financial city dots pulse gently (scale 1→1.4→1, opacity 0.8→1→0.8) on staggered animation-delay (0s, 0.5s, 1s, 1.5s, 2s)
-- **Flowing money particles**: Tiny glowing dots (~2px) travel along each arc line — created by duplicating the path with stroke-dashoffset animation to simulate money in transit
-- **Ambient breathing**: The entire globe container has a subtle scale pulse (1→1.02→1 over 6s, ease-in-out)
+### Visual Configuration
+- **Base color**: Deep navy `[0.04, 0.15, 0.25]` matching `#0A2540`
+- **Marker/glow color**: IWB teal `[0, 0.83, 0.67]` matching `#00D4AA`
+- **Markers**: 6 financial hubs — NYC, London, Tokyo, Singapore, Sydney, São Paulo
+- **Auto-rotation**: Continuous spin at 0.005 rad/frame
+- **Drag**: Mouse/touch drag with spring physics (mass: 1, damping: 30, stiffness: 100)
+- **Dark**: 0.1 (slight darkening for depth)
+- **Diffuse**: 0.6 (balanced lighting)
+- **Map brightness**: 1.5 (bright land masses against dark ocean)
+- **Map samples**: 16000 (high detail)
 
-### Technical Approach
-- Single `hero-illustration.tsx` component (replaces existing file)
-- Responsive: SVG `viewBox="0 0 300 300"`, rendered at `w-full max-w-lg` (~500px)
-- Colors: Uses IWB design tokens — `#00D4AA` (Teal) for dots/lines, `#0A2540` (Deep Navy) for background
-- All CSS animations inline via `<style>` inside `<defs>`
-- No external dependencies, no JS animation libraries
+### Technical Notes
+- Uses `cobe` v2 API — `onRender` callback removed, replaced with `requestAnimationFrame` loop calling `globe.update()` each frame
+- Globe component is `"use client"` — HeroIllustration similarly marked
+- `cn()` utility created at `src/lib/utils.ts` for class merging
+- Tailwind CSS v4 compatible — uses arbitrary value `max-w-[500px]` for sizing
 
 ### Layout in Hero Section
 - Globe sits on the right side of a two-column hero (left: headline + CTA buttons)
-- Dark navy background with subtle radial gradient overlay
+- Dark navy background with radial gradient overlay (unchanged)
 - Responsive: stacks vertically on mobile (globe below text)
 
 ## Acceptance Criteria
-- Reads clearly as a globe at first glance
-- Animations are smooth and subtle — no distracting movement
-- Dot-map continents are recognizable without being literal
-- No currency symbols, no hand-drawn continent outlines
-- Works in dark mode (bg is already dark)
+- Realistic 3D globe renders via WebGL
+- Auto-rotates smoothly
+- Draggable with spring inertia
+- 6 financial hub markers visible as teal dots
+- Colors match IWB brand (deep navy + teal)
 - Build passes, TypeScript clean
+- Smaller, more maintainable code than SVG equivalent
