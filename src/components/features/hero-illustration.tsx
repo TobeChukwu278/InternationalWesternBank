@@ -26,10 +26,38 @@ export function HeroIllustration() {
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
+          <style>
+            {`
+              @keyframes hubPulse {
+                0%, 100% { r: 4; opacity: 0.7; }
+                50% { r: 6; opacity: 1; }
+              }
+              @keyframes hubPulseSmall {
+                0%, 100% { r: 3; opacity: 0.7; }
+                50% { r: 5; opacity: 1; }
+              }
+              @keyframes flowDot {
+                0% { stroke-dashoffset: 200; opacity: 0; }
+                10% { opacity: 1; }
+                90% { opacity: 1; }
+                100% { stroke-dashoffset: 0; opacity: 0; }
+              }
+              @keyframes breathe {
+                0%, 100% { transform: scale(1); }
+                50% { transform: scale(1.02); }
+              }
+              .hub-large { animation: hubPulse 3s ease-in-out infinite; transform-origin: center; }
+              .hub-small { animation: hubPulseSmall 3s ease-in-out infinite; transform-origin: center; }
+              .flow-path { stroke-dasharray: 80 120; animation: flowDot 3s linear infinite; }
+              .flow-path-reverse { stroke-dasharray: 80 120; animation: flowDot 3s linear infinite reverse; }
+              .globe-breathe { animation: breathe 6s ease-in-out infinite; transform-origin: center; }
+            `}
+          </style>
         </defs>
 
-        {/* Ocean base */}
-        <circle cx="150" cy="150" r="130" fill="url(#ocean)" stroke="#00D4AA" strokeWidth="0.5" strokeOpacity="0.15" />
+        <g className="globe-breathe">
+          {/* Ocean base */}
+          <circle cx="150" cy="150" r="130" fill="url(#ocean)" stroke="#00D4AA" strokeWidth="0.5" strokeOpacity="0.15" />
 
         {/* Faint latitude rings */}
         <g stroke="#00D4AA" strokeWidth="0.4" strokeOpacity="0.08" fill="none">
@@ -137,28 +165,33 @@ export function HeroIllustration() {
           ))}
         </g>
 
-        {/* Financial hub arc lines */}
-        <g stroke="#00D4AA" strokeWidth="0.8" strokeOpacity="0.3" fill="none" filter="url(#arcGlow)">
-          {/* NYC ↔ London */}
+        {/* Arc lines (static) */}
+        <g stroke="#00D4AA" strokeWidth="0.8" strokeOpacity="0.25" fill="none" filter="url(#arcGlow)">
           <path d="M105 90 Q140 50 185 85" />
-          {/* NYC ↔ Tokyo */}
           <path d="M105 90 Q180 20 240 70" />
-          {/* London ↔ Singapore */}
           <path d="M185 85 Q180 150 225 140" />
-          {/* London ↔ Sydney */}
           <path d="M185 85 Q200 170 235 200" />
-          {/* NYC ↔ São Paulo */}
           <path d="M105 90 Q120 190 128 220" />
+        </g>
+
+        {/* Flowing particles (duplicate paths with dash animation) */}
+        <g stroke="#00D4AA" strokeWidth="1.5" strokeOpacity="0.8" fill="none" filter="url(#arcGlow)">
+          <path className="flow-path" d="M105 90 Q140 50 185 85" />
+          <path className="flow-path-reverse" style={{ animationDelay: "0.5s" }} d="M105 90 Q180 20 240 70" />
+          <path className="flow-path" style={{ animationDelay: "1s" }} d="M185 85 Q180 150 225 140" />
+          <path className="flow-path-reverse" style={{ animationDelay: "1.5s" }} d="M185 85 Q200 170 235 200" />
+          <path className="flow-path" style={{ animationDelay: "2s" }} d="M105 90 Q120 190 128 220" />
         </g>
 
         {/* Financial hub pulsing nodes */}
         <g fill="#00D4AA" filter="url(#arcGlow)">
-          <circle cx="105" cy="90" r="4" opacity="0.9" />  {/* NYC */}
-          <circle cx="185" cy="85" r="4" opacity="0.9" />   {/* London */}
-          <circle cx="128" cy="220" r="3" opacity="0.9" />  {/* São Paulo */}
-          <circle cx="240" cy="70" r="4" opacity="0.9" />   {/* Tokyo */}
-          <circle cx="225" cy="140" r="3" opacity="0.9" />  {/* Singapore */}
-          <circle cx="235" cy="200" r="3" opacity="0.9" />  {/* Sydney */}
+          <circle cx="105" cy="90" r="4" opacity="0.9" style={{ animationDelay: "0s" }} className="hub-large" />  {/* NYC */}
+          <circle cx="185" cy="85" r="4" opacity="0.9" style={{ animationDelay: "0.5s" }} className="hub-large" />   {/* London */}
+          <circle cx="128" cy="220" r="3" opacity="0.9" style={{ animationDelay: "1s" }} className="hub-small" />  {/* São Paulo */}
+          <circle cx="240" cy="70" r="4" opacity="0.9" style={{ animationDelay: "1.5s" }} className="hub-small" />   {/* Tokyo */}
+          <circle cx="225" cy="140" r="3" opacity="0.9" style={{ animationDelay: "2s" }} className="hub-small" />  {/* Singapore */}
+          <circle cx="235" cy="200" r="3" opacity="0.9" style={{ animationDelay: "2.5s" }} className="hub-small" />  {/* Sydney */}
+        </g>
         </g>
       </svg>
     </div>
