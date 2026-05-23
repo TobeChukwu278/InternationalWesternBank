@@ -1,6 +1,9 @@
 @import "tailwindcss";
 
 @theme {
+  --font-chivo: var(--font-chivo);
+  --font-dm-sans: var(--font-dm-sans);
+
   --color-iwb-navy: #0a2540;
   --color-iwb-navy-light: #1a3550;
   --color-iwb-teal: #00d4aa;
