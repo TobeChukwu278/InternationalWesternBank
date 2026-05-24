@@ -5,6 +5,31 @@ import { createServiceClient } from "@/lib/supabase/service";
 import { isAdminSession } from "@/lib/admin-auth";
 import { createNotificationSystem } from "@/lib/actions/notifications";
 
+async function uploadFile(
+  svc: ReturnType<typeof createServiceClient>,
+  bucket: string,
+  userId: string,
+  fileName: string,
+  file: File,
+): Promise<string | null> {
+  const ext = file.name.split(".").pop() ?? "jpg";
+  const path = `${userId}/${fileName}.${ext}`;
+  const arrayBuffer = await file.arrayBuffer();
+
+  const { error } = await svc.storage.from(bucket).upload(path, arrayBuffer, {
+    contentType: file.type,
+    upsert: true,
+  });
+
+  if (error) {
+    console.error(`Upload failed (${bucket}/${path}):`, error.message);
+    return null;
+  }
+
+  const { data } = await svc.storage.from(bucket).getPublicUrl(path);
+  return data?.publicUrl ?? null;
+}
+
 export async function signupWithKyc(formData: FormData) {
   const { createClient } = await import("@/lib/supabase/server");
   const supabase = await createClient();
@@ -18,25 +43,41 @@ export async function signupWithKyc(formData: FormData) {
   const addressCity = formData.get("address_city") as string;
   const addressState = formData.get("address_state") as string;
   const addressZip = formData.get("address_zip") as string;
-  const avatarUrl = formData.get("avatar_url") as string;
-  const idFrontUrl = formData.get("id_document_front") as string;
-  const idBackUrl = formData.get("id_document_back") as string;
   const ssnLastFour = formData.get("ssn_last_four") as string;
+  const avatarFile = formData.get("avatar") as File | null;
+  const idFrontFile = formData.get("id_front") as File | null;
+  const idBackFile = formData.get("id_back") as File | null;
+  const redirectTo = formData.get("redirect_to") as string;
 
   if (!email || !password || !fullName) return { error: "Missing required fields" };
+
+  const svc = createServiceClient();
 
   const { data: authData, error: authError } = await supabase.auth.signUp({
     email,
     password,
     options: {
       data: { full_name: fullName },
+      emailRedirectTo: redirectTo
+        ? `${redirectTo}/auth/callback?next=/pending-verification`
+        : undefined,
     },
   });
 
   if (authError) return { error: authError.message };
   if (!authData.user) return { error: "Failed to create user" };
 
-  const svc = createServiceClient();
+  const userId = authData.user.id;
+
+  const avatarUrl = avatarFile && avatarFile.size > 0
+    ? await uploadFile(svc, "profile-photos", userId, "profile", avatarFile)
+    : null;
+  const idFrontUrl = idFrontFile && idFrontFile.size > 0
+    ? await uploadFile(svc, "kyc-documents", userId, "front", idFrontFile)
+    : null;
+  const idBackUrl = idBackFile && idBackFile.size > 0
+    ? await uploadFile(svc, "kyc-documents", userId, "back", idBackFile)
+    : null;
 
   const { error: updateError } = await svc
     .from("profiles")
@@ -54,19 +95,19 @@ export async function signupWithKyc(formData: FormData) {
       status: "pending",
       kyc_status: "pending",
     })
-    .eq("id", authData.user.id);
+    .eq("id", userId);
 
   if (updateError) return { error: `Failed to save profile: ${updateError.message}` };
 
   await createNotificationSystem(
-    authData.user.id,
+    userId,
     "Registration Submitted",
     "Your account registration has been submitted and is pending verification. We'll notify you once it's approved.",
     "system",
   );
 
   revalidatePath("/", "layout");
-  return { success: true, userId: authData.user.id };
+  return { success: true, userId };
 }
 
 export async function updateKycDocumentUrls(formData: FormData) {

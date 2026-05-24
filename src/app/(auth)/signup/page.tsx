@@ -3,8 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/card";
-import { signupWithKyc, updateKycDocumentUrls } from "@/lib/actions/kyc";
-import { uploadProfilePhoto, uploadKycDocument } from "@/lib/upload";
+import { signupWithKyc } from "@/lib/actions/kyc";
 import { PersonalInfo } from "./steps/personal-info";
 import { IdentityDocs } from "./steps/identity-docs";
 import { ReviewSubmit } from "./steps/review-submit";
@@ -63,7 +62,11 @@ export default function SignupPage() {
     formData.set("address_city", personalInfo.address_city);
     formData.set("address_state", personalInfo.address_state);
     formData.set("address_zip", personalInfo.address_zip);
+    formData.set("redirect_to", window.location.origin);
     if (ssnLastFour) formData.set("ssn_last_four", ssnLastFour);
+    if (avatarFile) formData.set("avatar", avatarFile);
+    if (idFrontFile) formData.set("id_front", idFrontFile);
+    if (idBackFile) formData.set("id_back", idBackFile);
 
     const res = await signupWithKyc(formData);
 
@@ -74,30 +77,9 @@ export default function SignupPage() {
       return;
     }
 
-    const userId = res.userId!;
-
-    setStatusMessage(t("auth.signup.uploadingDocs"));
-
-    const avatarUrl = avatarFile ? await uploadProfilePhoto(avatarFile, userId) : null;
-    const idFrontUrl = idFrontFile ? await uploadKycDocument(idFrontFile, userId, "front") : null;
-    const idBackUrl = idBackFile ? await uploadKycDocument(idBackFile, userId, "back") : null;
-
-    if (avatarUrl || idFrontUrl || idBackUrl) {
-      const urlForm = new FormData();
-      urlForm.set("user_id", userId);
-      if (avatarUrl) urlForm.set("avatar_url", avatarUrl);
-      if (idFrontUrl) urlForm.set("id_document_front", idFrontUrl);
-      if (idBackUrl) urlForm.set("id_document_back", idBackUrl);
-      await updateKycDocumentUrls(urlForm);
-    }
-
-    if (!avatarUrl && avatarFile) setError(t("auth.signup.photoUploadFailed"));
-    if (!idFrontUrl && idFrontFile) setError(t("auth.signup.idUploadFailed"));
-    if (!idBackUrl && idBackFile) setError(t("auth.signup.idUploadFailed"));
-
-    setStatusMessage("");
     setSubmitting(false);
-    router.push("/pending-verification");
+    setStatusMessage("");
+    router.push("/verify-email");
   }
 
   return (

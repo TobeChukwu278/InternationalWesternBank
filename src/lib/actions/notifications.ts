@@ -124,4 +124,17 @@ export async function createNotificationSystem(
     type,
     reference: reference ?? null,
   });
+
+  const { data: profile } = await svc
+    .from("profiles")
+    .select("email")
+    .eq("id", userId)
+    .single();
+
+  if (profile?.email) {
+    const { sendEmail } = await import("@/lib/email");
+    const { notificationTemplate } = await import("@/lib/email-templates");
+    const { subject, html } = notificationTemplate({ title, message, type, reference });
+    await sendEmail(profile.email, subject, html);
+  }
 }

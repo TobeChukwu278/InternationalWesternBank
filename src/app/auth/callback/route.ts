@@ -14,5 +14,10 @@ export async function GET(request: NextRequest) {
     }
   }
 
+  const errorType = searchParams.get("error");
+  if (errorType) {
+    return NextResponse.redirect(`${origin}/login?error=${errorType}`);
+  }
+
   return NextResponse.redirect(`${origin}/login?error=auth_failed`);
 }

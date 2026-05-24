@@ -20,7 +20,7 @@ export function Navbar() {
   return (
     <header
       className={`sticky top-0 z-50 transition-all duration-300 ${
-        scrolled ? "bg-iwb-navy shadow-lg" : "bg-transparent"
+        scrolled ? "bg-iwb-navy shadow-lg" : "bg-iwb-navy/70 backdrop-blur-sm"
       }`}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
