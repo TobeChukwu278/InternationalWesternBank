@@ -11,7 +11,7 @@ if (apiKey) {
   }
 }
 
-const FROM = "IWB Notifications <onboarding@resend.dev>";
+const FROM = process.env.RESEND_FROM ?? "IWB Notifications <noreply@iwb-bank.com>";
 
 export async function sendEmail(
   to: string,
