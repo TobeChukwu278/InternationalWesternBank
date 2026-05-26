@@ -126,6 +126,41 @@ describe("notificationTemplate", () => {
   });
 });
 
+describe("approval notification email", () => {
+  const approvalData = {
+    title: "Account Approved",
+    message: "Your account has been verified and approved. You can now access all IWB banking services.",
+    type: "system" as const,
+  };
+
+  it("has the correct subject line", () => {
+    const result = notificationTemplate(approvalData);
+    expect(result.subject).toBe("[IWB] Account Approved");
+  });
+
+  it("contains the approval message in the HTML body", () => {
+    const result = notificationTemplate(approvalData);
+    expect(result.html).toContain("Your account has been verified and approved");
+    expect(result.html).toContain("You can now access all IWB banking services");
+  });
+
+  it("shows the System Notification badge", () => {
+    const result = notificationTemplate(approvalData);
+    expect(result.html).toContain("System Notification");
+  });
+
+  it("includes the Sign in to your account link", () => {
+    const result = notificationTemplate({ ...approvalData, siteUrl: "https://example.com" });
+    expect(result.html).toContain("https://example.com/login");
+    expect(result.html).toContain("Sign in to your account");
+  });
+
+  it("has no reference section (approval has no reference)", () => {
+    const result = notificationTemplate(approvalData);
+    expect(result.html).not.toContain("Reference:");
+  });
+});
+
 describe("sendEmail error handling", () => {
   beforeEach(() => {
     vi.resetModules();

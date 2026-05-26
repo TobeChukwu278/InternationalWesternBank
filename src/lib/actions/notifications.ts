@@ -117,13 +117,17 @@ export async function createNotificationSystem(
   const { createServiceClient } = await import("@/lib/supabase/service");
   const svc = createServiceClient();
 
-  await svc.from("notifications").insert({
+  const { error: notifError } = await svc.from("notifications").insert({
     user_id: userId,
     title,
     message,
     type,
     reference: reference ?? null,
   });
+
+  if (notifError) {
+    console.error(`[notif] Failed to insert notification for user ${userId}:`, notifError.message);
+  }
 
   const { data: profile } = await svc
     .from("profiles")
