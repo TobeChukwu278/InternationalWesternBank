@@ -51,6 +51,11 @@ export async function signupWithKyc(formData: FormData) {
 
   if (!email || !password || !fullName) return { error: "Missing required fields" };
 
+  console.log("[signup] Supabase URL:", process.env.NEXT_PUBLIC_SUPABASE_URL?.slice(0, 50));
+  console.log("[signup] Anon key set:", !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+  console.log("[signup] Service key set:", !!process.env.SUPABASE_SERVICE_ROLE_KEY);
+  console.log("[signup] Email:", email);
+
   const svc = createServiceClient();
 
   const { data: authData, error: authError } = await supabase.auth.signUp({
@@ -64,10 +69,18 @@ export async function signupWithKyc(formData: FormData) {
     },
   });
 
-  if (authError) return { error: authError.message };
-  if (!authData.user) return { error: "Failed to create user" };
+  if (authError) {
+    console.error("[signup] auth.signUp error:", authError.message);
+    return { error: authError.message };
+  }
+  if (!authData.user) {
+    console.error("[signup] auth.signUp returned null user — email likely already exists (unconfirmed)");
+    return { error: "An account with this email already exists but is not yet confirmed. Check your inbox for the verification email, or try logging in." };
+  }
 
   const userId = authData.user.id;
+
+  console.log("[signup] User created. ID:", userId);
 
   const avatarUrl = avatarFile && avatarFile.size > 0
     ? await uploadFile(svc, "profile-photos", userId, "profile", avatarFile)
@@ -78,6 +91,8 @@ export async function signupWithKyc(formData: FormData) {
   const idBackUrl = idBackFile && idBackFile.size > 0
     ? await uploadFile(svc, "kyc-documents", userId, "back", idBackFile)
     : null;
+
+  console.log("[signup] Uploaded files — avatar:", !!avatarUrl, "idFront:", !!idFrontUrl, "idBack:", !!idBackUrl);
 
   const { error: updateError } = await svc
     .from("profiles")
@@ -97,7 +112,11 @@ export async function signupWithKyc(formData: FormData) {
     })
     .eq("id", userId);
 
-  if (updateError) return { error: `Failed to save profile: ${updateError.message}` };
+  if (updateError) {
+    console.error("[signup] Profile update failed:", updateError.message, updateError);
+    return { error: `Failed to save profile: ${updateError.message}` };
+  }
+  console.log("[signup] Profile updated successfully for user:", userId);
 
   await createNotificationSystem(
     userId,
