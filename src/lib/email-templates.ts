@@ -43,11 +43,14 @@ function baseHtml(title: string, bodyContent: string): string {
 </html>`.trim();
 }
 
+const DEFAULT_SITE_URL = "https://international-western-bank-q75w.vercel.app";
+
 interface NotificationEmailProps {
   title: string;
   message: string;
   type: "transfer" | "deposit" | "system";
   reference?: string;
+  siteUrl?: string;
 }
 
 const typeIcons: Record<string, string> = {
@@ -62,10 +65,11 @@ const typeHeaders: Record<string, string> = {
   system: "System Notification",
 };
 
-export function notificationTemplate({ title, message, type, reference }: NotificationEmailProps): {
+export function notificationTemplate({ title, message, type, reference, siteUrl }: NotificationEmailProps): {
   subject: string;
   html: string;
 } {
+  const baseUrl = siteUrl || DEFAULT_SITE_URL;
   const icon = typeIcons[type] || "\u{1F514}";
   const typeLabel = typeHeaders[type] || "Notification";
 
@@ -102,7 +106,7 @@ export function notificationTemplate({ title, message, type, reference }: Notifi
           <p style="margin:0;font-size:13px;color:#A0AEC0;text-align:center;">
             This is an automated notification from IWB. Please do not reply to this email.
             <br>
-            <a href="https://iwb-bank.vercel.app/login" style="color:#00D4AA;text-decoration:underline;">Sign in to your account</a> for more details.
+            <a href="${baseUrl}/login" style="color:#00D4AA;text-decoration:underline;">Sign in to your account</a> for more details.
           </p>
         </td>
       </tr>

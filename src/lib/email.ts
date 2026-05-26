@@ -1,6 +1,15 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY!);
+const apiKey = process.env.RESEND_API_KEY;
+
+let resend: Resend | null = null;
+if (apiKey) {
+  try {
+    resend = new Resend(apiKey);
+  } catch (err) {
+    console.error("Failed to initialize Resend client:", err);
+  }
+}
 
 const FROM = "IWB Notifications <onboarding@resend.dev>";
 
@@ -9,6 +18,12 @@ export async function sendEmail(
   subject: string,
   html: string,
 ): Promise<{ success: boolean; error?: string }> {
+  if (!resend) {
+    const msg = "RESEND_API_KEY not configured";
+    console.error("Email not sent:", msg);
+    return { success: false, error: msg };
+  }
+
   try {
     await resend.emails.send({ from: FROM, to, subject, html });
     return { success: true };

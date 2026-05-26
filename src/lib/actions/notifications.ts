@@ -134,7 +134,15 @@ export async function createNotificationSystem(
   if (profile?.email) {
     const { sendEmail } = await import("@/lib/email");
     const { notificationTemplate } = await import("@/lib/email-templates");
-    const { subject, html } = notificationTemplate({ title, message, type, reference });
-    await sendEmail(profile.email, subject, html);
+    const { subject, html } = notificationTemplate({
+      title, message, type, reference,
+      siteUrl: process.env.NEXT_PUBLIC_SITE_URL,
+    });
+    const result = await sendEmail(profile.email, subject, html);
+    if (!result.success) {
+      console.error(`Failed to send email notification to ${profile.email}:`, result.error);
+    }
+  } else {
+    console.warn(`No email found for user ${userId} — skipping email notification`);
   }
 }
