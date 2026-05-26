@@ -61,15 +61,15 @@ describe("notificationTemplate", () => {
     expect(result.html).toContain("#0A2540");
   });
 
-  it("includes the notification type badge", () => {
-    const transfer = notificationTemplate({ title: "T", message: "M", type: "transfer" });
-    expect(transfer.html).toContain("Transfer Notification");
+  it("includes the status badge that reflects the outcome", () => {
+    const approved = notificationTemplate({ title: "Account Approved", message: "M", type: "system" });
+    expect(approved.html).toContain("Success");
 
-    const deposit = notificationTemplate({ title: "T", message: "M", type: "deposit" });
-    expect(deposit.html).toContain("Deposit Notification");
+    const pending = notificationTemplate({ title: "Transfer Pending Approval", message: "M", type: "transfer" });
+    expect(pending.html).toContain("Pending");
 
-    const system = notificationTemplate({ title: "T", message: "M", type: "system" });
-    expect(system.html).toContain("System Notification");
+    const rejected = notificationTemplate({ title: "Transfer Rejected", message: "M", type: "transfer" });
+    expect(rejected.html).toContain("Action Required");
   });
 
   it("generates valid HTML with DOCTYPE and structure", () => {
@@ -94,15 +94,15 @@ describe("notificationTemplate", () => {
     expect(result.html).toContain("Your account needs attention");
   });
 
-  it("includes the correct emoji icon per type", () => {
-    const transfer = notificationTemplate({ title: "T", message: "M", type: "transfer" });
-    expect(transfer.html).toContain("🔄");
+  it("shows the correct status icon per status category", () => {
+    const success = notificationTemplate({ title: "Account Approved", message: "M", type: "system" });
+    expect(success.html).toContain("✓");
 
-    const deposit = notificationTemplate({ title: "T", message: "M", type: "deposit" });
-    expect(deposit.html).toContain("💰");
+    const warning = notificationTemplate({ title: "Transfer Pending Approval", message: "M", type: "transfer" });
+    expect(warning.html).toContain("⏳");
 
-    const system = notificationTemplate({ title: "T", message: "M", type: "system" });
-    expect(system.html).toContain("ℹ️");
+    const error = notificationTemplate({ title: "Transfer Rejected", message: "M", type: "transfer" });
+    expect(error.html).toContain("!");
   });
 
   it("uses provided siteUrl in the login link", () => {
@@ -124,6 +124,23 @@ describe("notificationTemplate", () => {
     });
     expect(result.html).toContain("https://international-western-bank-q75w.vercel.app/login");
   });
+
+  it("renders the logo image with the site URL", () => {
+    const result = notificationTemplate({
+      title: "Test", message: "Test", type: "system",
+      siteUrl: "https://example.com",
+    });
+    expect(result.html).toContain('src="https://example.com/logo.png"');
+  });
+
+  it("includes a Sign In button (not just a text link)", () => {
+    const result = notificationTemplate({
+      title: "Test", message: "Test", type: "system",
+    });
+    expect(result.html).toContain("Sign In to Your Account");
+    expect(result.html).toContain('background-color:#0A2540');
+    expect(result.html).toContain('border-radius:8px');
+  });
 });
 
 describe("approval notification email", () => {
@@ -144,15 +161,15 @@ describe("approval notification email", () => {
     expect(result.html).toContain("You can now access all IWB banking services");
   });
 
-  it("shows the System Notification badge", () => {
+  it("shows a Success badge", () => {
     const result = notificationTemplate(approvalData);
-    expect(result.html).toContain("System Notification");
+    expect(result.html).toContain("Success");
   });
 
-  it("includes the Sign in to your account link", () => {
+  it("includes the Sign In button linking to the site", () => {
     const result = notificationTemplate({ ...approvalData, siteUrl: "https://example.com" });
     expect(result.html).toContain("https://example.com/login");
-    expect(result.html).toContain("Sign in to your account");
+    expect(result.html).toContain("Sign In to Your Account");
   });
 
   it("has no reference section (approval has no reference)", () => {
