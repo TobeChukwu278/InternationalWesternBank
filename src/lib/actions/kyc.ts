@@ -69,13 +69,16 @@ export async function signupWithKyc(formData: FormData) {
     },
   });
 
+  console.log("[signup] emailRedirectTo:", redirectTo ? `${redirectTo}/auth/callback?next=/pending-verification` : "not set");
+
   if (authError) {
     console.error("[signup] auth.signUp error:", authError.message);
     return { error: authError.message };
   }
   if (!authData.user) {
-    console.error("[signup] auth.signUp returned null user — email likely already exists (unconfirmed)");
-    return { error: "An account with this email already exists but is not yet confirmed. Check your inbox for the verification email, or try logging in." };
+    console.log("[signup] auth.signUp returned null user — email already exists & confirmation re-sent. Guiding user to check inbox.");
+    revalidatePath("/", "layout");
+    return { success: true, info: "email_sent" };
   }
 
   const userId = authData.user.id;
