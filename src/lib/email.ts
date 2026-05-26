@@ -16,10 +16,17 @@ if (user && pass) {
 
 const FROM = process.env.SMTP_FROM || user || "noreply@iwb-bank.com";
 
+export interface EmailAttachment {
+  filename: string;
+  content: Buffer;
+  contentType: string;
+}
+
 export async function sendEmail(
   to: string,
   subject: string,
   html: string,
+  attachments?: EmailAttachment[],
 ): Promise<{ success: boolean; error?: string }> {
   if (!transporter) {
     const msg = "SMTP_USER or SMTP_PASS not configured";
@@ -28,7 +35,13 @@ export async function sendEmail(
   }
 
   try {
-    await transporter.sendMail({ from: `"IWB Notifications" <${FROM}>`, to, subject, html });
+    await transporter.sendMail({
+      from: `"IWB Notifications" <${FROM}>`,
+      to,
+      subject,
+      html,
+      attachments,
+    });
     return { success: true };
   } catch (err) {
     console.error("Failed to send email:", err);

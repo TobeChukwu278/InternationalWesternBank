@@ -113,6 +113,7 @@ export async function createNotificationSystem(
   message: string,
   type: NotificationType,
   reference?: string,
+  attachment?: { filename: string; content: Buffer; contentType: string },
 ) {
   const { createServiceClient } = await import("@/lib/supabase/service");
   const svc = createServiceClient();
@@ -142,7 +143,7 @@ export async function createNotificationSystem(
       title, message, type, reference,
       siteUrl: process.env.NEXT_PUBLIC_SITE_URL,
     });
-    const result = await sendEmail(profile.email, subject, html);
+    const result = await sendEmail(profile.email, subject, html, attachment ? [attachment] : undefined);
     if (!result.success) {
       console.error(`Failed to send email notification to ${profile.email}:`, result.error);
     }

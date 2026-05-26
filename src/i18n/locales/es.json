@@ -245,7 +245,10 @@
     "scheduleDescription": "Enviar esta transferencia automáticamente en el futuro",
     "recentRecipients": "Destinatarios Recientes",
     "addNew": "Añadir Nuevo",
-    "searchByAccount": "Buscar por cuenta"
+    "searchByAccount": "Buscar por cuenta",
+    "accountNumber": "Número de Cuenta",
+    "accountHolderName": "Titular de la Cuenta",
+    "bankName": "Nombre del Banco"
   },
   "transactions": {
     "title": "Transacciones",

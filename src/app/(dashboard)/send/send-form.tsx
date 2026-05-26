@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { useLocale } from "@/i18n/client";
 import { useToast } from "@/components/ui/toast";
-import { RecipientSearch } from "@/components/features/recipient-search";
 import { sendMoney } from "@/lib/actions/transfer";
 import { TransferDetails } from "./transfer-details";
 import { ScheduleToggle } from "./schedule-toggle";
@@ -28,11 +27,10 @@ interface SubAccountOption {
 interface SendFormProps {
   subAccounts: SubAccountOption[];
   accountNumber: string;
-  recentRecipients: { account_number: string; full_name: string }[];
   preferredCurrency: string;
 }
 
-export function SendForm({ subAccounts, accountNumber, recentRecipients, preferredCurrency }: SendFormProps) {
+export function SendForm({ subAccounts, accountNumber, preferredCurrency }: SendFormProps) {
   const router = useRouter();
   const { showToast } = useToast();
   const defaultAccount = subAccounts.find((sa) => sa.is_default) ?? subAccounts[0];
@@ -42,7 +40,9 @@ export function SendForm({ subAccounts, accountNumber, recentRecipients, preferr
   const [result, setResult] = useState<ResultState>(null);
   const [lastReference, setLastReference] = useState("");
 
-  const [recipient, setRecipient] = useState<{ accountNumber: string; fullName: string } | null>(null);
+  const [recipientAccountNumber, setRecipientAccountNumber] = useState("");
+  const [recipientName, setRecipientName] = useState("");
+  const [recipientBank, setRecipientBank] = useState("");
   const [fromAccount, setFromAccount] = useState(defaultAccount?.id ?? "");
   const [amount, setAmount] = useState("");
   const [reference, setReference] = useState("");
@@ -54,14 +54,16 @@ export function SendForm({ subAccounts, accountNumber, recentRecipients, preferr
   const selectedSub = subAccounts.find((sa) => sa.id === fromAccount);
   const numAmount = parseFloat(amount) || 0;
   const exceedsBalance = selectedSub ? numAmount > selectedSub.balance : false;
-  const canSubmit = recipient?.accountNumber && numAmount > 0 && !exceedsBalance;
+  const canSubmit = recipientAccountNumber.length > 0 && recipientName.length > 0 && recipientBank.length > 0 && numAmount > 0 && !exceedsBalance;
 
   const handleConfirm = useCallback(async () => {
-    if (!recipient || !canSubmit) return;
+    if (!canSubmit) return;
     setSubmitting(true);
 
     const formData = new FormData();
-    formData.set("recipient", recipient.accountNumber);
+    formData.set("recipient_account_number", recipientAccountNumber);
+    formData.set("recipient_name", recipientName);
+    formData.set("recipient_bank", recipientBank);
     formData.set("from_sub_account", fromAccount);
     formData.set("amount", amount);
     formData.set("description", reference || "");
@@ -85,14 +87,14 @@ export function SendForm({ subAccounts, accountNumber, recentRecipients, preferr
     }
 
     setSubmitting(false);
-  }, [recipient, canSubmit, fromAccount, amount, reference, scheduleEnabled, scheduleDate, showToast, router]);
+  }, [recipientAccountNumber, recipientName, recipientBank, canSubmit, fromAccount, amount, reference, scheduleEnabled, scheduleDate, showToast, router, t]);
 
   if (step === "result" && result) {
     return (
       <SendResult
         status={result.status}
         amount={amount}
-        recipientName={recipient?.fullName ?? ""}
+        recipientName={recipientName}
         reference={lastReference}
         error={result.error ?? undefined}
         scheduledDate={scheduleEnabled ? scheduleDate : undefined}
@@ -106,7 +108,7 @@ export function SendForm({ subAccounts, accountNumber, recentRecipients, preferr
   return (
     <div className="space-y-6">
       <div>
-          <h1 className="text-2xl font-semibold text-iwb-navy">{t('send.title')}</h1>
+        <h1 className="text-2xl font-semibold text-iwb-navy">{t('send.title')}</h1>
         <p className="mt-1 text-sm text-iwb-slate">
           {t("send.subtitle")}
         </p>
@@ -117,11 +119,44 @@ export function SendForm({ subAccounts, accountNumber, recentRecipients, preferr
           <i className="material-icons text-iwb-teal">person</i>
           <h2 className="text-sm font-semibold text-iwb-navy">{t('send.recipient')}</h2>
         </div>
-        <RecipientSearch
-          recentRecipients={recentRecipients}
-          onSelect={setRecipient}
-          selected={recipient}
-        />
+        <div className="space-y-4">
+          <div>
+            <label className="block text-xs font-medium text-iwb-slate-light uppercase tracking-wider mb-1.5">
+              {t("send.accountNumber")}
+            </label>
+            <input
+              type="text"
+              value={recipientAccountNumber}
+              onChange={(e) => setRecipientAccountNumber(e.target.value)}
+              placeholder="e.g. IWB-123456789"
+              className="w-full rounded-iwb-lg border border-iwb-border bg-white px-4 py-3 text-sm text-iwb-navy placeholder:text-iwb-slate-light focus:outline-none focus:border-iwb-teal focus:ring-2 focus:ring-iwb-teal/10 transition-colors"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-iwb-slate-light uppercase tracking-wider mb-1.5">
+              {t("send.accountHolderName")}
+            </label>
+            <input
+              type="text"
+              value={recipientName}
+              onChange={(e) => setRecipientName(e.target.value)}
+              placeholder="e.g. John Doe"
+              className="w-full rounded-iwb-lg border border-iwb-border bg-white px-4 py-3 text-sm text-iwb-navy placeholder:text-iwb-slate-light focus:outline-none focus:border-iwb-teal focus:ring-2 focus:ring-iwb-teal/10 transition-colors"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-iwb-slate-light uppercase tracking-wider mb-1.5">
+              {t("send.bankName")}
+            </label>
+            <input
+              type="text"
+              value={recipientBank}
+              onChange={(e) => setRecipientBank(e.target.value)}
+              placeholder="e.g. Chase Bank"
+              className="w-full rounded-iwb-lg border border-iwb-border bg-white px-4 py-3 text-sm text-iwb-navy placeholder:text-iwb-slate-light focus:outline-none focus:border-iwb-teal focus:ring-2 focus:ring-iwb-teal/10 transition-colors"
+            />
+          </div>
+        </div>
       </Card>
 
       <Card className="p-6">
@@ -167,8 +202,9 @@ export function SendForm({ subAccounts, accountNumber, recentRecipients, preferr
 
       {step === "confirmation" ? (
         <SendConfirmation
-          recipientName={recipient?.fullName ?? ""}
-          recipientAccount={recipient?.accountNumber ?? ""}
+          recipientAccountNumber={recipientAccountNumber}
+          recipientName={recipientName}
+          recipientBank={recipientBank}
           fromAccountName={selectedSub?.type ? (selectedSub.type.charAt(0).toUpperCase() + selectedSub.type.slice(1)) : ""}
           amount={amount}
           reference={reference}

@@ -3,8 +3,9 @@
 import { useLocale } from "@/i18n/client";
 
 interface SendConfirmationProps {
+  recipientAccountNumber: string;
   recipientName: string;
-  recipientAccount: string;
+  recipientBank: string;
   fromAccountName: string;
   amount: string;
   reference: string;
@@ -19,8 +20,9 @@ const currencySymbols: Record<string, string> = {
 };
 
 export function SendConfirmation({
+  recipientAccountNumber,
   recipientName,
-  recipientAccount,
+  recipientBank,
   fromAccountName,
   amount,
   reference,
@@ -45,7 +47,15 @@ export function SendConfirmation({
           <div className="py-4 space-y-3 border-b border-dashed border-iwb-border-light">
             <div className="flex justify-between items-center">
               <span className="text-xs text-iwb-slate-light">{t("send.to")}</span>
-              <span className="text-sm font-medium text-iwb-navy">{recipientName} •••• {recipientAccount.slice(-4)}</span>
+              <span className="text-sm font-medium text-iwb-navy text-right max-w-[160px] truncate">{recipientName}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-xs text-iwb-slate-light">{t("send.accountNumber")}</span>
+              <span className="text-sm font-medium text-iwb-navy font-mono">{recipientAccountNumber}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-xs text-iwb-slate-light">{t("send.bankName")}</span>
+              <span className="text-sm font-medium text-iwb-navy">{recipientBank}</span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-xs text-iwb-slate-light">{t('send.fromAccount')}</span>
