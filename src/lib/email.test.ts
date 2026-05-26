@@ -166,9 +166,9 @@ describe("sendEmail error handling", () => {
     vi.resetModules();
   });
 
-  it("handles missing RESEND_API_KEY gracefully", async () => {
-    const OLD_KEY = process.env.RESEND_API_KEY;
-    delete process.env.RESEND_API_KEY;
+  it("handles missing SENDGRID_API_KEY gracefully", async () => {
+    const OLD_KEY = process.env.SENDGRID_API_KEY;
+    delete process.env.SENDGRID_API_KEY;
 
     vi.resetModules();
     const { sendEmail } = await import("./email");
@@ -178,6 +178,6 @@ describe("sendEmail error handling", () => {
     expect(result.success).toBe(false);
     expect(result.error).toBeDefined();
 
-    process.env.RESEND_API_KEY = OLD_KEY;
+    process.env.SENDGRID_API_KEY = OLD_KEY;
   });
 });
