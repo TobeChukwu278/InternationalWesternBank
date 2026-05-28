@@ -111,7 +111,7 @@ function PhoneTransferSvg({ className }: { className?: string }) {
       statLabel: statsCustomersLabel,
       title: vpGlobalReachTitle,
       description: vpGlobalReachDesc,
-      image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&q=85",
+      image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&q=85",
     },
     {
       icon: <StarIcon className="size-7 text-iwb-teal" />,
