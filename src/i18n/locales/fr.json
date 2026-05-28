@@ -748,18 +748,20 @@
       "transferredLabel": "Transféré",
       "description": "Des milliers de clients dans le monde nous font confiance pour des services bancaires sécurisés et fiables."
     },
-    "news": {
-      "title": "Dernières Nouvelles",
-      "readMore": "Lire la Suite",
-      "date1": "15 janvier 2026",
-      "title1": "Extension de Notre Portée Mondiale",
-      "excerpt1": "Nous sommes ravis d'annoncer notre expansion dans 10 nouveaux marchés en Asie et en Afrique...",
-      "date2": "20 décembre 2025",
-      "title2": "Nouvelles Fonctionnalités de l'App",
-      "excerpt2": "Notre dernière mise à jour inclut l'authentification biométrique, les transferts instantanés et plus...",
-      "date3": "5 novembre 2025",
-      "title3": "Mesures de Sécurité Renforcées",
-      "excerpt3": "Nous avons mis en place des protocoles de cryptage avancés pour sécuriser vos transactions..."
+    "highlights": {
+      "title": "Points Forts de la Plateforme",
+      "1": {
+        "title": "Transferts Internationaux Instantanés",
+        "desc": "Envoyez de l'argent à l'étranger en quelques minutes, pas en jours. Notre réseau couvre plus de 150 pays avec des taux de change compétitifs et un suivi en temps réel."
+      },
+      "2": {
+        "title": "Comptes Multi-Devises",
+        "desc": "Gérez et échangez plus de 40 devises dans un seul compte. Changez de devise aux taux du marché en direct sans marges cachées."
+      },
+      "3": {
+        "title": "Sécurité Vérifiée par les Admins",
+        "desc": "Chaque transfert est examiné par notre équipe avant traitement. Combiné au cryptage de qualité bancaire et à la 2FA, votre argent reste protégé en permanence."
+      }
     },
     "footer": {
       "tagline": "Une banque mondiale sécurisée au bout des doigts.",
@@ -820,6 +822,38 @@
       "addressLine2": "Long Beach, CA 90802, États-Unis",
       "phone": "Téléphone",
       "email": "Email"
+    },
+    "valueProps": {
+      "globalReach": {
+        "title": "Portée Mondiale",
+        "desc": "Avec des clients dans plus de 150 pays, International Western Bank connecte les particuliers et les entreprises sur tous les continents. Notre plateforme multi-devises prend en charge les transactions en temps réel dans plus de 40 devises avec des taux de change compétitifs et sans frais cachés."
+      },
+      "countriesServed": {
+        "title": "Pays Desservis",
+        "desc": "Que vous envoyiez de l'argent à votre famille à l'étranger ou que vous gériez la paie internationale de votre entreprise, notre réseau couvre plus de 150 pays avec des partenariats bancaires locaux qui garantissent une livraison rapide et fiable. La plupart des transferts arrivent sous 24 heures."
+      },
+      "secureTransfers": {
+        "title": "Transferts Sécurisés",
+        "desc": "La sécurité est notre fondation. Chaque transaction est protégée par un cryptage de qualité bancaire, une authentification multifacteur et une surveillance de la fraude 24h/24. Notre équipe de conformité garantit que tous les transferts respectent les réglementations internationales, vous offrant une tranquillité d'esprit à chaque transaction."
+      }
+    },
+    "testimonials": {
+      "title": "Ce Que Disent Nos Clients",
+      "1": {
+        "name": "Sarah Chen",
+        "location": "Singapour",
+        "quote": "Je dirige une entreprise de commerce électronique qui s'approvisionne sur trois continents. Les comptes multi-devises d'IWB m'économisent des milliers de dollars en frais de conversion chaque mois. Les transferts sont instantanés et les taux de change sont systématiquement les meilleurs que j'aie trouvés."
+      },
+      "2": {
+        "name": "James Okonkwo",
+        "location": "Lagos, Nigéria",
+        "quote": "Envoyer de l'argent chez moi prenait des jours et coûtait une fortune. Avec IWB, ma famille reçoit les fonds le jour même. L'application mobile est incroyablement facile à utiliser et le service client répond au téléphone quand j'appelle."
+      },
+      "3": {
+        "name": "Maria Gonzalez",
+        "location": "Barcelone, Espagne",
+        "quote": "En tant que consultante indépendante travaillant avec des clients américains et asiatiques, j'avais besoin d'une banque qui comprenait les affaires internationales. La plateforme professionnelle d'IWB rend la facturation, la réception des paiements et les déclarations fiscales complètement transparentes."
+      }
     }
   }
 }

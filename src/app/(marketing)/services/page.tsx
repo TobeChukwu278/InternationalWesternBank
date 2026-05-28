@@ -139,7 +139,7 @@ export default async function ServicesPage() {
   return (
     <div>
       <section className="relative overflow-hidden bg-iwb-navy px-6 py-24 lg:px-16 lg:py-28">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80')] bg-cover bg-center opacity-10" />
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800&q=80')] bg-cover bg-center opacity-10" />
         <div className="absolute inset-0 bg-gradient-to-b from-iwb-navy/50 via-iwb-navy to-iwb-navy" />
         <div className="relative z-10 mx-auto max-w-2xl text-center">
           <ScrollReveal>
@@ -224,7 +224,7 @@ export default async function ServicesPage() {
 
       <section className="relative overflow-hidden bg-iwb-teal px-6 py-24 lg:px-16 lg:py-28">
         <div
-          className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&q=80')] bg-cover bg-center opacity-10"
+          className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&q=80')] bg-cover bg-center opacity-10"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-iwb-teal/90 to-iwb-teal/70" />
         <div className="relative z-10 mx-auto max-w-2xl text-center">

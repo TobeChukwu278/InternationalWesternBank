@@ -5,14 +5,14 @@ import { t } from "@/i18n/server";
 import { HeroIllustration } from "@/components/features/hero-illustration";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { ParallaxSection } from "@/components/ui/parallax-section";
-import { GlobeIcon, BuildingIcon, LightningIcon, CreditCardIcon, HeadsetIcon, LockIcon, StarIcon, ArrowRightIcon } from "@/components/ui/icons";
+import { GlobeIcon, BuildingIcon, LightningIcon, CreditCardIcon, HeadsetIcon, LockIcon, StarIcon } from "@/components/ui/icons";
 
 export default async function HomePage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (user) redirect("/dashboard");
 
-  const [heroTitle, heroSubtitle, heroOpenAccount, heroSignIn, servicesTitle, servicesDesc, ctaTitle, ctaDesc, ctaRegister, ctaLogin, statsCustomers, statsCustomersLabel, statsCountries, statsCountriesLabel, statsTransferred, statsTransferredLabel, newsTitle, newsReadMore, newsDate1, newsTitle1, newsExcerpt1, newsDate2, newsTitle2, newsExcerpt2, newsDate3, newsTitle3, newsExcerpt3, service1Title, service1Desc, service2Title, service2Desc, service3Title, service3Desc, service4Title, service4Desc, service5Title, service5Desc, service6Title, service6Desc] = await Promise.all([
+  const [heroTitle, heroSubtitle, heroOpenAccount, heroSignIn, servicesTitle, servicesDesc, ctaTitle, ctaDesc, ctaRegister, ctaLogin, statsCustomers, statsCustomersLabel, statsCountries, statsCountriesLabel, statsTransferred, statsTransferredLabel, highlightsTitle, highlight1Title, highlight1Desc, highlight2Title, highlight2Desc, highlight3Title, highlight3Desc, service1Title, service1Desc, service2Title, service2Desc, service3Title, service3Desc, service4Title, service4Desc, service5Title, service5Desc, service6Title, service6Desc, vpGlobalReachTitle, vpGlobalReachDesc, vpCountriesServedTitle, vpCountriesServedDesc, vpSecureTransfersTitle, vpSecureTransfersDesc, testimonialsTitle, testimonial1Name, testimonial1Location, testimonial1Quote, testimonial2Name, testimonial2Location, testimonial2Quote, testimonial3Name, testimonial3Location, testimonial3Quote] = await Promise.all([
     t("marketing.hero.title"),
     t("marketing.hero.subtitle"),
     t("marketing.hero.openAccount"),
@@ -29,17 +29,13 @@ export default async function HomePage() {
     t("marketing.stats.countriesLabel"),
     t("marketing.stats.transferred"),
     t("marketing.stats.transferredLabel"),
-    t("marketing.news.title"),
-    t("marketing.news.readMore"),
-    t("marketing.news.date1"),
-    t("marketing.news.title1"),
-    t("marketing.news.excerpt1"),
-    t("marketing.news.date2"),
-    t("marketing.news.title2"),
-    t("marketing.news.excerpt2"),
-    t("marketing.news.date3"),
-    t("marketing.news.title3"),
-    t("marketing.news.excerpt3"),
+    t("marketing.highlights.title"),
+    t("marketing.highlights.1.title"),
+    t("marketing.highlights.1.desc"),
+    t("marketing.highlights.2.title"),
+    t("marketing.highlights.2.desc"),
+    t("marketing.highlights.3.title"),
+    t("marketing.highlights.3.desc"),
     t("marketing.service1.title"),
     t("marketing.service1.description"),
     t("marketing.service2.title"),
@@ -52,6 +48,22 @@ export default async function HomePage() {
     t("marketing.service5.description"),
     t("marketing.service6.title"),
     t("marketing.service6.description"),
+    t("marketing.valueProps.globalReach.title"),
+    t("marketing.valueProps.globalReach.desc"),
+    t("marketing.valueProps.countriesServed.title"),
+    t("marketing.valueProps.countriesServed.desc"),
+    t("marketing.valueProps.secureTransfers.title"),
+    t("marketing.valueProps.secureTransfers.desc"),
+    t("marketing.testimonials.title"),
+    t("marketing.testimonials.1.name"),
+    t("marketing.testimonials.1.location"),
+    t("marketing.testimonials.1.quote"),
+    t("marketing.testimonials.2.name"),
+    t("marketing.testimonials.2.location"),
+    t("marketing.testimonials.2.quote"),
+    t("marketing.testimonials.3.name"),
+    t("marketing.testimonials.3.location"),
+    t("marketing.testimonials.3.quote"),
   ]);
 
 function PhoneTransferSvg({ className }: { className?: string }) {
@@ -97,47 +109,47 @@ function PhoneTransferSvg({ className }: { className?: string }) {
       icon: <GlobeIcon className="size-7 text-iwb-teal" />,
       stat: statsCustomers,
       statLabel: statsCustomersLabel,
-      title: "Global Reach",
-      description: "With customers in over 150 countries, International Western Bank connects people and businesses across every continent. Our multi-currency platform supports real-time transactions in 40+ currencies with competitive exchange rates and no hidden fees.",
-      image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=600&q=80",
+      title: vpGlobalReachTitle,
+      description: vpGlobalReachDesc,
+      image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&q=85",
     },
     {
       icon: <StarIcon className="size-7 text-iwb-teal" />,
       stat: statsCountries,
       statLabel: statsCountriesLabel,
-      title: "Countries Served",
-      description: "Whether you're sending money to family abroad or managing international payroll for your business, our network spans 150+ countries with local banking partnerships that ensure fast, reliable delivery. Most transfers arrive within 24 hours.",
-      image: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=600&q=80",
+      title: vpCountriesServedTitle,
+      description: vpCountriesServedDesc,
+      image: "https://images.unsplash.com/photo-1521295121783-8a321d551ad2?w=600&q=85",
     },
     {
       icon: <LockIcon className="size-7 text-iwb-teal" />,
       stat: statsTransferred,
       statLabel: statsTransferredLabel,
-      title: "Transferred Securely",
-      description: "Security is our foundation. Every transaction is protected by bank-grade encryption, multi-factor authentication, and 24/7 fraud monitoring. Our compliance team ensures all transfers meet international regulations, giving you peace of mind with every transaction.",
+      title: vpSecureTransfersTitle,
+      description: vpSecureTransfersDesc,
       image: "",
     },
   ];
 
   const services = [
-    { icon: <GlobeIcon className="size-6" />, title: service1Title, desc: service1Desc, img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400&q=60" },
-    { icon: <BuildingIcon className="size-6" />, title: service2Title, desc: service2Desc, img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&q=60" },
-    { icon: <LightningIcon className="size-6" />, title: service3Title, desc: service3Desc, img: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&q=60" },
-    { icon: <CreditCardIcon className="size-6" />, title: service4Title, desc: service4Desc, img: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&q=60" },
-    { icon: <HeadsetIcon className="size-6" />, title: service5Title, desc: service5Desc, img: "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=400&q=60" },
-    { icon: <LockIcon className="size-6" />, title: service6Title, desc: service6Desc, img: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=400&q=60" },
+    { icon: <GlobeIcon className="size-6" />, title: service1Title, desc: service1Desc, img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500&q=80" },
+    { icon: <BuildingIcon className="size-6" />, title: service2Title, desc: service2Desc, img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=500&q=80" },
+    { icon: <LightningIcon className="size-6" />, title: service3Title, desc: service3Desc, img: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=500&q=80" },
+    { icon: <CreditCardIcon className="size-6" />, title: service4Title, desc: service4Desc, img: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=500&q=80" },
+    { icon: <HeadsetIcon className="size-6" />, title: service5Title, desc: service5Desc, img: "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=500&q=80" },
+    { icon: <LockIcon className="size-6" />, title: service6Title, desc: service6Desc, img: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=500&q=80" },
   ];
 
   const testimonials = [
-    { name: "Sarah Chen", location: "Singapore", quote: "I run an e-commerce business sourcing from three continents. IWB's multi-currency accounts save me thousands in conversion fees every month. The transfers are instant and the exchange rates are consistently the best I've found.", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=80" },
-    { name: "James Okonkwo", location: "Lagos, Nigeria", quote: "Sending money home used to take days and cost a fortune. With IWB, my family gets funds the same day. The mobile app is incredibly easy to use, and customer support actually picks up the phone when I call.", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80" },
-    { name: "Maria Gonzalez", location: "Barcelona, Spain", quote: "As a freelance consultant working with US and Asian clients, I needed a bank that understood international business. IWB's dedicated business platform makes invoicing, receiving payments, and tax reporting completely seamless.", image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&q=80" },
+    { name: testimonial1Name, location: testimonial1Location, quote: testimonial1Quote, image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=80" },
+    { name: testimonial2Name, location: testimonial2Location, quote: testimonial2Quote, image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80" },
+    { name: testimonial3Name, location: testimonial3Location, quote: testimonial3Quote, image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&q=80" },
   ];
 
-  const newsPosts = [
-    { date: newsDate1, title: newsTitle1, excerpt: newsExcerpt1, img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&q=60" },
-    { date: newsDate2, title: newsTitle2, excerpt: newsExcerpt2, img: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&q=60" },
-    { date: newsDate3, title: newsTitle3, excerpt: newsExcerpt3, img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&q=60" },
+  const highlights = [
+    { icon: "send", title: highlight1Title, desc: highlight1Desc },
+    { icon: "currency_exchange", title: highlight2Title, desc: highlight2Desc },
+    { icon: "verified", title: highlight3Title, desc: highlight3Desc },
   ];
 
   return (
@@ -176,10 +188,10 @@ function PhoneTransferSvg({ className }: { className?: string }) {
           <div className="relative flex flex-1 items-center justify-center overflow-hidden">
             <div
               className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: "url(https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80)" }}
+              style={{ backgroundImage: "url(https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1000&q=85)" }}
             />
             <div className="absolute inset-0 bg-gradient-to-l from-iwb-navy/70 to-transparent" />
-            <div className="relative z-10 scale-75 lg:scale-100">
+            <div className="relative z-10 w-full max-w-[500px] px-8 md:max-w-[600px] lg:max-w-[700px]">
               <HeroIllustration />
             </div>
           </div>
@@ -210,6 +222,26 @@ function PhoneTransferSvg({ className }: { className?: string }) {
                   </div>
                 </div>
               </ScrollReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Trust Badges */}
+      <section className="bg-iwb-surface px-6 py-16 lg:px-16">
+        <div className="mx-auto max-w-5xl">
+          <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+            {[
+              { icon: "verified_user", label: "256-bit Encryption", sub: "Bank-grade security" },
+              { icon: "credit_score", label: "PCI DSS Compliant", sub: "Certified secure" },
+              { icon: "gavel", label: "FCA Regulated", sub: "Licensed & audited" },
+              { icon: "fingerprint", label: "2FA Protection", sub: "Biometric auth" },
+            ].map((b) => (
+              <div key={b.label} className="flex flex-col items-center rounded-xl border border-iwb-border-light bg-white p-5 text-center transition-shadow hover:shadow-sm">
+                <span className="material-icons text-2xl text-iwb-teal">{b.icon}</span>
+                <p className="mt-2 font-chivo text-sm font-bold text-iwb-navy">{b.label}</p>
+                <p className="mt-0.5 font-dm-sans text-xs text-iwb-slate-light">{b.sub}</p>
+              </div>
             ))}
           </div>
         </div>
@@ -251,7 +283,7 @@ function PhoneTransferSvg({ className }: { className?: string }) {
       <section className="bg-iwb-navy px-6 py-24 lg:px-16">
         <div className="mx-auto max-w-7xl">
           <ScrollReveal>
-            <h2 className="font-chivo text-3xl font-bold text-white">What Our Customers Say</h2>
+            <h2 className="font-chivo text-3xl font-bold text-white">{testimonialsTitle}</h2>
           </ScrollReveal>
           <div className="mt-12 grid gap-8 md:grid-cols-3">
             {testimonials.map((t, i) => (
@@ -274,7 +306,7 @@ function PhoneTransferSvg({ className }: { className?: string }) {
 
       {/* Internet Banking CTA — Parallax */}
       <ParallaxSection
-        bgImage="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&q=80"
+        bgImage="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=85"
         className="py-32 before:absolute before:inset-0 before:bg-gradient-to-r before:from-iwb-teal/80 before:to-iwb-navy/80 before:pointer-events-none before:z-[1]"
       >
         <div className="relative z-20 flex flex-col items-center px-8 text-center sm:px-12 lg:px-16">
@@ -297,47 +329,24 @@ function PhoneTransferSvg({ className }: { className?: string }) {
         </div>
       </ParallaxSection>
 
-      {/* Stats + News */}
-      <section className="bg-[#F5F0EB] px-6 py-24 lg:px-16">
+      {/* Platform Highlights */}
+      <section className="bg-[#0A2540] px-6 py-24 lg:px-16">
         <div className="mx-auto max-w-7xl">
-          <div className="flex flex-wrap items-center justify-center gap-8 text-center">
-            <div>
-              <p className="font-chivo text-4xl font-bold text-iwb-navy">{statsCustomers}</p>
-              <p className="font-dm-sans text-sm text-iwb-slate">{statsCustomersLabel}</p>
-            </div>
-            <span className="hidden h-8 w-px bg-iwb-slate/30 md:block" />
-            <div>
-              <p className="font-chivo text-4xl font-bold text-iwb-navy">{statsCountries}</p>
-              <p className="font-dm-sans text-sm text-iwb-slate">{statsCountriesLabel}</p>
-            </div>
-            <span className="hidden h-8 w-px bg-iwb-slate/30 md:block" />
-            <div>
-              <p className="font-chivo text-4xl font-bold text-iwb-navy">{statsTransferred}</p>
-              <p className="font-dm-sans text-sm text-iwb-slate">{statsTransferredLabel}</p>
-            </div>
-          </div>
-
-          <div className="mt-20">
-            <h2 className="text-center font-chivo text-3xl font-bold text-iwb-navy">{newsTitle}</h2>
-            <div className="mt-12 grid gap-8 md:grid-cols-3">
-              {newsPosts.map((post, i) => (
-                <ScrollReveal key={post.title} delay={i * 100}>
-                  <div className="overflow-hidden rounded-xl bg-white shadow-sm">
-                    <div className="h-44 overflow-hidden">
-                      <img src={post.img} alt="" className="h-full w-full object-cover" loading="lazy" />
-                    </div>
-                    <div className="p-5">
-                      <p className="font-dm-sans text-xs text-iwb-slate-light">{post.date}</p>
-                      <h3 className="mt-2 font-chivo text-base font-bold text-iwb-navy">{post.title}</h3>
-                      <p className="mt-2 font-dm-sans text-sm text-iwb-slate">{post.excerpt}</p>
-                      <span className="mt-3 inline-flex items-center gap-1 font-dm-sans text-sm font-bold text-iwb-teal">
-                        {newsReadMore} <ArrowRightIcon className="size-3.5" />
-                      </span>
-                    </div>
-                  </div>
-                </ScrollReveal>
-              ))}
-            </div>
+          <ScrollReveal>
+            <h2 className="text-center font-chivo text-3xl font-bold text-white">{highlightsTitle}</h2>
+          </ScrollReveal>
+          <div className="mt-16 grid gap-6 md:grid-cols-3">
+            {highlights.map((h, i) => (
+              <ScrollReveal key={h.title} delay={i * 100}>
+                <div className="flex flex-col items-center rounded-xl border border-iwb-teal/20 bg-white/5 p-8 text-center backdrop-blur-sm transition-all hover:-translate-y-1 hover:border-iwb-teal/40 hover:bg-white/10">
+                  <span className="flex size-14 items-center justify-center rounded-full bg-iwb-teal/10">
+                    <i className="material-icons text-2xl text-iwb-teal">{h.icon}</i>
+                  </span>
+                  <h3 className="mt-5 font-chivo text-lg font-bold text-white">{h.title}</h3>
+                  <p className="mt-3 font-dm-sans text-sm leading-relaxed text-white/70">{h.desc}</p>
+                </div>
+              </ScrollReveal>
+            ))}
           </div>
         </div>
       </section>

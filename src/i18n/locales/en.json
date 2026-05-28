@@ -748,18 +748,20 @@
       "transferredLabel": "Transferred",
       "description": "Trusted by thousands of customers worldwide for secure and reliable banking services."
     },
-    "news": {
-      "title": "Latest News",
-      "readMore": "Read More",
-      "date1": "January 15, 2026",
-      "title1": "Expanding Our Global Reach",
-      "excerpt1": "We are excited to announce our expansion into 10 new markets across Asia and Africa...",
-      "date2": "December 20, 2025",
-      "title2": "New Mobile App Features",
-      "excerpt2": "Our latest mobile app update brings biometric authentication, instant transfers, and more...",
-      "date3": "November 5, 2025",
-      "title3": "Enhanced Security Measures",
-      "excerpt3": "We have implemented advanced encryption protocols to ensure your transactions remain secure..."
+    "highlights": {
+      "title": "Platform Highlights",
+      "1": {
+        "title": "Instant International Transfers",
+        "desc": "Send money across borders in minutes, not days. Our network covers 150+ countries with competitive exchange rates and real-time tracking for every transfer."
+      },
+      "2": {
+        "title": "Multi-Currency Accounts",
+        "desc": "Hold, manage, and exchange 40+ currencies in a single account. Switch between currencies at live mid-market rates with no hidden markups."
+      },
+      "3": {
+        "title": "Admin-Verified Security",
+        "desc": "Every transfer is reviewed by our team before processing. Combined with bank-grade encryption and 2FA, your money stays protected at all times."
+      }
     },
     "footer": {
       "tagline": "Secure global banking at your fingertips.",
@@ -820,6 +822,38 @@
       "addressLine2": "Long Beach, CA 90802, United States",
       "phone": "Phone",
       "email": "Email"
+    },
+    "valueProps": {
+      "globalReach": {
+        "title": "Global Reach",
+        "desc": "With customers in over 150 countries, International Western Bank connects people and businesses across every continent. Our multi-currency platform supports real-time transactions in 40+ currencies with competitive exchange rates and no hidden fees."
+      },
+      "countriesServed": {
+        "title": "Countries Served",
+        "desc": "Whether you're sending money to family abroad or managing international payroll for your business, our network spans 150+ countries with local banking partnerships that ensure fast, reliable delivery. Most transfers arrive within 24 hours."
+      },
+      "secureTransfers": {
+        "title": "Transferred Securely",
+        "desc": "Security is our foundation. Every transaction is protected by bank-grade encryption, multi-factor authentication, and 24/7 fraud monitoring. Our compliance team ensures all transfers meet international regulations, giving you peace of mind with every transaction."
+      }
+    },
+    "testimonials": {
+      "title": "What Our Customers Say",
+      "1": {
+        "name": "Sarah Chen",
+        "location": "Singapore",
+        "quote": "I run an e-commerce business sourcing from three continents. IWB's multi-currency accounts save me thousands in conversion fees every month. The transfers are instant and the exchange rates are consistently the best I've found."
+      },
+      "2": {
+        "name": "James Okonkwo",
+        "location": "Lagos, Nigeria",
+        "quote": "Sending money home used to take days and cost a fortune. With IWB, my family gets funds the same day. The mobile app is incredibly easy to use, and customer support actually picks up the phone when I call."
+      },
+      "3": {
+        "name": "Maria Gonzalez",
+        "location": "Barcelona, Spain",
+        "quote": "As a freelance consultant working with US and Asian clients, I needed a bank that understood international business. IWB's dedicated business platform makes invoicing, receiving payments, and tax reporting completely seamless."
+      }
     }
   }
 }

@@ -23,13 +23,13 @@ export function Navbar() {
         scrolled ? "bg-iwb-navy shadow-lg" : "bg-iwb-navy/70 backdrop-blur-sm"
       }`}
     >
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-3">
-          <img src="/logo.png" alt="IWB" className="size-8" />
-          <span className="font-chivo text-lg font-bold text-white">International WB</span>
+      <div className="mx-auto flex h-14 sm:h-16 max-w-7xl items-center justify-between px-3 sm:px-6 lg:px-8">
+        <Link href="/" className="flex items-center gap-2 sm:gap-3 shrink-0">
+          <img src="/logo.png" alt="IWB" className="size-7 sm:size-8" />
+          <span className="hidden sm:inline font-chivo text-base sm:text-lg font-bold text-white">International WB</span>
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-6 lg:gap-8 md:flex">
           <Link
             href="/services"
             className="font-dm-sans text-sm font-medium text-white/70 transition-colors hover:text-white"
@@ -50,16 +50,16 @@ export function Navbar() {
           </Link>
         </nav>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-3">
           <Link
             href="/login"
-            className="rounded-iwb-md border border-white px-4 py-2 font-dm-sans text-sm font-medium text-white transition-all hover:bg-white/10"
+            className="rounded-iwb-md border border-white/70 px-3 py-1.5 sm:px-4 sm:py-2 font-dm-sans text-xs sm:text-sm font-medium text-white transition-all hover:bg-white/10 whitespace-nowrap"
           >
             {t("marketing.nav.signIn")}
           </Link>
           <Link
             href="/signup"
-            className="rounded-iwb-md bg-iwb-teal px-4 py-2 font-dm-sans text-sm font-semibold text-iwb-navy transition-all hover:bg-iwb-teal-dark"
+            className="rounded-iwb-md bg-iwb-teal px-3 py-1.5 sm:px-4 sm:py-2 font-dm-sans text-xs sm:text-sm font-semibold text-iwb-navy transition-all hover:bg-iwb-teal-dark whitespace-nowrap"
           >
             {t("marketing.nav.getStarted")}
           </Link>

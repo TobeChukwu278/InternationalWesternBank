@@ -748,18 +748,20 @@
       "transferredLabel": "Transferido",
       "description": "Confiado por miles de clientes en todo el mundo para servicios bancarios seguros."
     },
-    "news": {
-      "title": "Últimas Noticias",
-      "readMore": "Leer Más",
-      "date1": "15 de enero de 2026",
-      "title1": "Expandiendo Nuestro Alcance Global",
-      "excerpt1": "Nos complace anunciar nuestra expansión a 10 nuevos mercados en Asia y África...",
-      "date2": "20 de diciembre de 2025",
-      "title2": "Nuevas Funciones de la App Móvil",
-      "excerpt2": "Nuestra última actualización incluye autenticación biométrica, transferencias instantáneas y más...",
-      "date3": "5 de noviembre de 2025",
-      "title3": "Medidas de Seguridad Mejoradas",
-      "excerpt3": "Hemos implementado protocolos de cifrado avanzados para garantizar la seguridad de sus transacciones..."
+    "highlights": {
+      "title": "Lo Destacado de la Plataforma",
+      "1": {
+        "title": "Transferencias Internacionales Instantáneas",
+        "desc": "Envíe dinero al extranjero en minutos, no días. Nuestra red cubre más de 150 países con tipos de cambio competitivos y seguimiento en tiempo real."
+      },
+      "2": {
+        "title": "Cuentas Multimoneda",
+        "desc": "Administre e intercambie más de 40 monedas en una sola cuenta. Cambie entre divisas a tasas de mercado en vivo sin márgenes ocultos."
+      },
+      "3": {
+        "title": "Seguridad Verificada por Administradores",
+        "desc": "Cada transferencia es revisada por nuestro equipo antes de procesarse. Combinado con cifrado de grado bancario y 2FA, su dinero permanece protegido."
+      }
     },
     "footer": {
       "tagline": "Banca global segura al alcance de sus dedos.",
@@ -820,6 +822,38 @@
       "addressLine2": "Long Beach, CA 90802, Estados Unidos",
       "phone": "Teléfono",
       "email": "Correo Electrónico"
+    },
+    "valueProps": {
+      "globalReach": {
+        "title": "Alcance Global",
+        "desc": "Con clientes en más de 150 países, International Western Bank conecta a personas y empresas en todos los continentes. Nuestra plataforma multimoneda admite transacciones en tiempo real en más de 40 monedas con tasas de cambio competitivas y sin comisiones ocultas."
+      },
+      "countriesServed": {
+        "title": "Países Atendidos",
+        "desc": "Ya sea que envíe dinero a su familia en el extranjero o administre la nómina internacional de su empresa, nuestra red abarca más de 150 países con asociaciones bancarias locales que garantizan una entrega rápida y confiable. La mayoría de las transferencias llegan dentro de las 24 horas."
+      },
+      "secureTransfers": {
+        "title": "Transferencias Seguras",
+        "desc": "La seguridad es nuestra base. Cada transacción está protegida por cifrado de grado bancario, autenticación multifactor y monitoreo de fraude 24/7. Nuestro equipo de cumplimiento garantiza que todas las transferencias cumplan con las regulaciones internacionales, brindándole tranquilidad en cada transacción."
+      }
+    },
+    "testimonials": {
+      "title": "Lo Que Dicen Nuestros Clientes",
+      "1": {
+        "name": "Sarah Chen",
+        "location": "Singapur",
+        "quote": "Dirijo un negocio de comercio electrónico que se abastece de tres continentes. Las cuentas multimoneda de IWB me ahorran miles en comisiones de conversión cada mes. Las transferencias son instantáneas y los tipos de cambio son consistentemente los mejores que he encontrado."
+      },
+      "2": {
+        "name": "James Okonkwo",
+        "location": "Lagos, Nigeria",
+        "quote": "Enviar dinero a casa solía tomar días y costar una fortuna. Con IWB, mi familia recibe los fondos el mismo día. La aplicación móvil es increíblemente fácil de usar y el servicio al cliente responde el teléfono cuando llamo."
+      },
+      "3": {
+        "name": "Maria Gonzalez",
+        "location": "Barcelona, España",
+        "quote": "Como consultora independiente que trabaja con clientes estadounidenses y asiáticos, necesitaba un banco que entendiera los negocios internacionales. La plataforma empresarial de IWB hace que la facturación, el cobro de pagos y la declaración de impuestos sean completamente fluidos."
+      }
     }
   }
 }
