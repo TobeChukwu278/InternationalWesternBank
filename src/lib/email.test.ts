@@ -183,11 +183,9 @@ describe("sendEmail error handling", () => {
     vi.resetModules();
   });
 
-  it("handles missing SMTP credentials gracefully", async () => {
-    const OLD_USER = process.env.SMTP_USER;
-    const OLD_PASS = process.env.SMTP_PASS;
-    delete process.env.SMTP_USER;
-    delete process.env.SMTP_PASS;
+  it("handles missing RESEND_API_KEY gracefully", async () => {
+    const OLD_KEY = process.env.RESEND_API_KEY;
+    delete process.env.RESEND_API_KEY;
 
     vi.resetModules();
     const { sendEmail } = await import("./email");
@@ -197,7 +195,6 @@ describe("sendEmail error handling", () => {
     expect(result.success).toBe(false);
     expect(result.error).toBeDefined();
 
-    process.env.SMTP_USER = OLD_USER;
-    process.env.SMTP_PASS = OLD_PASS;
+    process.env.RESEND_API_KEY = OLD_KEY;
   });
 });

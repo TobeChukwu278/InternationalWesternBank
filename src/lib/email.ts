@@ -1,20 +1,14 @@
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 
-const user = process.env.SMTP_USER;
-const pass = process.env.SMTP_PASS;
+const apiKey = process.env.RESEND_API_KEY;
 
-let transporter: nodemailer.Transporter | null = null;
+let resend: Resend | null = null;
 
-if (user && pass) {
-  transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false,
-    auth: { user, pass },
-  });
+if (apiKey) {
+  resend = new Resend(apiKey);
 }
 
-const FROM = process.env.SMTP_FROM || user || "noreply@iwb-bank.com";
+const FROM = process.env.RESEND_FROM || (process.env.RESEND_API_KEY ? "IWB Notifications <notifications@iwb-bank.com>" : "");
 
 export interface EmailAttachment {
   filename: string;
@@ -28,19 +22,23 @@ export async function sendEmail(
   html: string,
   attachments?: EmailAttachment[],
 ): Promise<{ success: boolean; error?: string }> {
-  if (!transporter) {
-    const msg = "SMTP_USER or SMTP_PASS not configured";
+  if (!resend) {
+    const msg = "RESEND_API_KEY not configured";
     console.error("Email not sent:", msg);
     return { success: false, error: msg };
   }
 
   try {
-    await transporter.sendMail({
-      from: `"IWB Notifications" <${FROM}>`,
+    await resend.emails.send({
+      from: FROM,
       to,
       subject,
       html,
-      attachments,
+      attachments: attachments?.map((a) => ({
+        filename: a.filename,
+        content: a.content.toString("base64"),
+        content_type: a.contentType,
+      })),
     });
     return { success: true };
   } catch (err) {
