@@ -84,7 +84,7 @@ export async function updateLanguage(locale: string) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { error: "Not authenticated" };
 
-  const supported = ["en", "es", "fr"];
+  const supported = ["en", "es", "fr", "it"];
   if (!supported.includes(locale)) return { error: "Unsupported locale" };
 
   const { createServiceClient } = await import("@/lib/supabase/service");
